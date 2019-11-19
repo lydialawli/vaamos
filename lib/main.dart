@@ -94,7 +94,6 @@ class _MyHomePageState extends State<MyHomePage> {
       'no carbs all day',
       'wrote in journal',
       'cold shower',
-      'hakuna'
     ];
     final List<Color> colorCodes = <Color>[
       Colors.orange,

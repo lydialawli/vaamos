@@ -24,7 +24,7 @@ class GoalState extends State<Goal> {
         },
         child: Container(
           alignment: Alignment.center,
-          height: 70,
+          height: 80,
           color: isDone ? widget.bgColor : Colors.grey[100],
           child: Text(widget.sentence,
               style: TextStyle(

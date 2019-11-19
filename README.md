@@ -1,16 +1,22 @@
-# vaamos
+# VAAMOS
 
-A new Flutter project.
+A Flutter app to help keep track of daily achievements.
 
-## Getting Started
+## MVP
 
-This project is a starting point for a Flutter application.
+Features:
 
-A few resources to get you started if this is your first Flutter project:
+- add a maximum of 5 goals
+- delete goal option
+- mark "today" goals as complete one by one
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Tasks
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- general layout
+  - [ ] add input field
+  - [ ] on long press addGoalBox ==> change into input field
+
+- Basic file system
+  - [ ] create file for the array of goals
+  - [ ] read function to get string of goals to display
+  - [ ] save input into storage
