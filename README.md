@@ -13,7 +13,7 @@ Features:
 ## Tasks
 
 - general layout
-  - [ ] add input field
+  - [x] add input field
   - [ ] on long press addGoalBox ==> change into input field
 
 - Basic file system

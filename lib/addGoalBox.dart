@@ -7,12 +7,19 @@ class AddGoalBox extends StatelessWidget {
 
   Widget input() {
     return TextField(
+      // onChanged: (text) {
+      //   print("First text field: $text");
+      // },
+      textInputAction: TextInputAction.done,
+      onSubmitted: (text) {
+        print("goal is: $text");
+      },
       textAlign: TextAlign.center,
-      maxLength: 4,
+      maxLength: 30,
       style: buttonStyling(),
       decoration: InputDecoration(
         border: InputBorder.none,
-        hintText: 'What is your goal',
+        hintText: 'What is your goal?',
       ),
     );
   }
