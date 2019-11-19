@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
-class AddGoalBox extends StatelessWidget {
+class AddGoalBox extends StatefulWidget {
+  @override
+  GoalInputState createState() => GoalInputState();
+}
+
+class GoalInputState extends State<AddGoalBox> {
+  bool longPressFlag = false;
+  String goalText = '';
+
   TextStyle buttonStyling() {
     return TextStyle(fontSize: 20, color: Colors.black);
   }
@@ -12,7 +20,9 @@ class AddGoalBox extends StatelessWidget {
       // },
       textInputAction: TextInputAction.done,
       onSubmitted: (text) {
-        print("goal is: $text");
+        setState(() {
+          goalText = text;
+        });
       },
       textAlign: TextAlign.center,
       maxLength: 30,
@@ -32,16 +42,16 @@ class AddGoalBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        // onTap: () {
-        //   setState(() {
-        //     isDone = !isDone;
-        //   });
-        // },
+        onLongPress: () {
+          setState(() {
+            longPressFlag = !longPressFlag;
+          });
+        },
         child: Container(
             alignment: Alignment.center,
             height: 70,
             color: Colors.grey[100],
-            child: input()),
+            child: longPressFlag ? input() : longPressButton()),
       ),
     );
   }

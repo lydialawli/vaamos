@@ -14,7 +14,7 @@ Features:
 
 - general layout
   - [x] add input field
-  - [ ] on long press addGoalBox ==> change into input field
+  - [x] on long press addGoalBox ==> change into input field
 
 - Basic file system
   - [ ] create file for the array of goals

@@ -6,9 +6,7 @@ class Goal extends StatefulWidget {
   final Color bgColor;
 
   @override
-  State<StatefulWidget> createState() {
-    return GoalState();
-  }
+  GoalState createState() => GoalState();
 }
 
 class GoalState extends State<Goal> {

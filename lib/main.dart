@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget listGoals() {
     final List<String> entries = <String>[
-      'made the bedd',
+      'made the bed',
       'no carbs all day',
       'wrote in journal',
       'cold shower',
