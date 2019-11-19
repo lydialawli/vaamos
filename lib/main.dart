@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vaamos/goal.dart';
+import 'package:vaamos/addGoalBox.dart';
 
 void main() => runApp(MyApp());
 
@@ -93,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
       'no carbs all day',
       'wrote in journal',
       'cold shower',
+      'hakuna'
     ];
     final List<Color> colorCodes = <Color>[
       Colors.orange,
@@ -109,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     if (entries.length != 5) {
-      goals.add(Goal(sentence: 'long press to add', bgColor: Colors.grey));
+      goals.add(AddGoalBox());
     }
 
     return Column(

@@ -12,7 +12,7 @@ class Goal extends StatefulWidget {
 }
 
 class GoalState extends State<Goal> {
-   bool isDone = false;
+  bool isDone = false;
 
   Widget build(BuildContext context) {
     return Material(
