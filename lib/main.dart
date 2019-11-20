@@ -31,7 +31,7 @@ class HomeState extends State<Home> {
   void initState() {
     super.initState();
     widget.storage
-        .read()
+        .startStorage()
         .then((content) =>  print(content));
   }
 
