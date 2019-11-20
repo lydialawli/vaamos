@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vaamos/goal.dart';
 import 'package:vaamos/addGoalBox.dart';
+import 'package:vaamos/localFileSystem.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,12 +10,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
-      ),
-      home: MyHomePage(title: 'vaamos'),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.pink,
+        ),
+        home: MyHomePage(title: 'vaamos'));
   }
 }
 
@@ -29,7 +29,6 @@ class MyHomePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
   final String title;
 
   @override
@@ -37,18 +36,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // int _counter = 0;
-
-  // void _incrementCounter() {
-  //   setState(() {
-  //     // This call to setState tells the Flutter framework that something has
-  //     // changed in this State, which causes it to rerun the build method below
-  //     // so that the display can reflect the updated values. If we changed
-  //     // _counter without calling setState(), then the build method would not be
-  //     // called again, and so nothing would appear to happen.
-  //     _counter++;
-  //   });
-  // }
+  String test;
 
   Widget dailyContainer() {
     return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -143,6 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    LocalFileSystem.test();
     return Container(
         decoration: BoxDecoration(color: Colors.red), child: homeLayout());
   }

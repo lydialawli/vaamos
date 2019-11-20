@@ -5,9 +5,19 @@ class AddGoalBox extends StatefulWidget {
   GoalInputState createState() => GoalInputState();
 }
 
+
+
 class GoalInputState extends State<AddGoalBox> {
   bool longPressFlag = false;
   String goalText = '';
+
+  // _save() async {
+  //   final directory = await getApplicationDocumentsDirectory();
+  //   final file = File('${directory.path}/my_file.txt');
+  //   final text = 'Hello World!';
+  //   await file.writeAsString(text);
+  //   print('saved');
+  // }
 
   TextStyle buttonStyling() {
     return TextStyle(fontSize: 20, color: Colors.black);
