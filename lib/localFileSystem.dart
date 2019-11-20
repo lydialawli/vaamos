@@ -1,8 +1,31 @@
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'dart:convert';
 
 class LocalFileSystem {
-  String fileName = "storage.txt";
+  String fileName = "test.json";
+//   Map<String, dynamic> initialData = {
+//     "goals": [
+//         {
+//             "name": "made my bed",
+//             "id": 1,
+//             "isActive": true
+//         }
+//     ],
+//     "history": [
+//         {
+//             "day": 20,
+//             "month": 11,
+//             "year": 2019,
+//             "goals": [
+//                 {
+//                     "id": 1,
+//                     "isDone": false
+//                 }
+//             ]
+//         }
+//     ]
+// };
 
   Future<bool> checkIfFileExists() async {
     final dir = await getApplicationDocumentsDirectory();
@@ -23,7 +46,8 @@ class LocalFileSystem {
     if (fileExists) {
       content = await jsonFile.readAsString();
     } else {
-      content = 'no content';
+      await jsonFile.writeAsString('testing');
+      content = await jsonFile.readAsString();
     }
 
     return content;
