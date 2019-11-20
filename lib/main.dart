@@ -14,20 +14,27 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.pink,
         ),
-        home: Home(title: 'vaamos'));
+        home: Home(title: 'vaamos', storage: LocalFileSystem()));
   }
 }
 
 class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
+  Home({Key key, this.title, this.storage}) : super(key: key);
   final String title;
-
+  final LocalFileSystem storage;
   @override
   HomeState createState() => HomeState();
 }
 
 class HomeState extends State<Home> {
- 
+  @override
+  void initState() {
+    super.initState();
+    widget.storage
+        .read()
+        .then((content) =>  print(content));
+  }
+
   Widget dailyContainer() {
     return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
       Text('TODAY',
@@ -51,11 +58,11 @@ class HomeState extends State<Home> {
                 padding: const EdgeInsets.all(20),
                 child: Column(children: [
                   dailyContainer(),
-                  RaisedButton(
-                      child: Text('Read'),
-                      onPressed: () {
-                        LocalFileSystem.read();
-                      })
+                  // RaisedButton(
+                  //     child: Text('Read'),
+                  //     onPressed: () {
+                  //       LocalFileSystem.read();
+                  //     })
                 ]))));
   }
 

@@ -4,27 +4,22 @@ import 'dart:io';
 class LocalFileSystem {
   String fileName = "storage.json";
 
-  static checkIfFileExists() async {
+  Future<bool> checkIfFileExists() async {
     final directory = await getApplicationDocumentsDirectory();
     final jsonFile = File('${directory.path}/storage.json');
     bool fileExists = false;
     fileExists = jsonFile.existsSync();
-
-    print(fileExists);
+    return fileExists;
   }
 
-  // static createJsonFile() async {
-    
-  // }
-
-  static read() async {
+  Future<String> read() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/storage.txt');
+      final file = File('${directory.path}/storage.json');
       String text = await file.readAsString();
-      print(text);
+      return text;
     } catch (e) {
-      print("Couldn't read file");
+      return "Couldn't read file";
     }
   }
 
@@ -36,8 +31,5 @@ class LocalFileSystem {
     print('saved');
   }
 
-  static void test() {
-    print('--> connected to LocalFileSystem');
-    // return 'yay, it works!';
-  }
+
 }
