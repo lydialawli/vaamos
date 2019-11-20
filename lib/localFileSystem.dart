@@ -1,9 +1,21 @@
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
-class LocalFileSystem  {
-  File jsonFile;
-  Directory dir;
+class LocalFileSystem {
+  String fileName = "storage.json";
+
+  static checkIfFileExists() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final jsonFile = File('${directory.path}/storage.json');
+    bool fileExists = false;
+    fileExists = jsonFile.existsSync();
+
+    print(fileExists);
+  }
+
+  // static createJsonFile() async {
+    
+  // }
 
   static read() async {
     try {
@@ -16,15 +28,13 @@ class LocalFileSystem  {
     }
   }
 
-  static save() async {
+  static save(aString) async {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/storage.txt');
-    final text = 'buu';
+    final text = aString;
     await file.writeAsString(text);
     print('saved');
   }
-
-  
 
   static void test() {
     print('--> connected to LocalFileSystem');

@@ -1,0 +1,22 @@
+{
+    "goals": [
+        {
+            "name": "made my bed",
+            "id": 1,
+            "isActive": true
+        }
+    ],
+    "history": [
+        {
+            "day": 12,
+            "month": 11,
+            "year": 2019,
+            "goals": [
+                {
+                    "id": 1,
+                    "isDone": false
+                }
+            ]
+        }
+    ]
+}

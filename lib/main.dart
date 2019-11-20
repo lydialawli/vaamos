@@ -14,30 +14,20 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.pink,
         ),
-        home: MyHomePage(title: 'vaamos'));
+        home: Home(title: 'vaamos'));
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+class Home extends StatefulWidget {
+  Home({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  HomeState createState() => HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  String test;
-
+class HomeState extends State<Home> {
+ 
   Widget dailyContainer() {
     return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
       Text('TODAY',
@@ -64,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   RaisedButton(
                       child: Text('Read'),
                       onPressed: () {
-                         LocalFileSystem.read();
+                        LocalFileSystem.read();
                       })
                 ]))));
   }
