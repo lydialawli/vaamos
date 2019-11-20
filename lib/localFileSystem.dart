@@ -1,29 +1,33 @@
-// import 'package:path_provider/path_provider.dart';
-// import 'dart:async';
-// import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class LocalFileSystem  {
-  // static _read() async {
-  //   try {
-  //     final directory = await getApplicationDocumentsDirectory();
-  //     final file = File('${directory.path}/my_file.txt');
-  //     String text = await file.readAsString();
-  //     print(text);
-  //   } catch (e) {
-  //     print("Couldn't read file");
-  //   }
-  // }
+  File jsonFile;
+  Directory dir;
 
-  // static _save() async {
-  //   final directory = await getApplicationDocumentsDirectory();
-  //   final file = File('${directory.path}/my_file.txt');
-  //   final text = 'Hello World!';
-  //   await file.writeAsString(text);
-  //   print('saved');
-  // }
+  static read() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/storage.txt');
+      String text = await file.readAsString();
+      print(text);
+    } catch (e) {
+      print("Couldn't read file");
+    }
+  }
+
+  static save() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/storage.txt');
+    final text = 'buu';
+    await file.writeAsString(text);
+    print('saved');
+  }
+
+  
 
   static void test() {
-    print('yay, it works!');
+    print('--> connected to LocalFileSystem');
     // return 'yay, it works!';
   }
 }

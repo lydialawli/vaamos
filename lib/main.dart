@@ -58,9 +58,15 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Colors.white,
         child: Center(
             child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: dailyContainer(),
-        )));
+                padding: const EdgeInsets.all(20),
+                child: Column(children: [
+                  dailyContainer(),
+                  RaisedButton(
+                      child: Text('Read'),
+                      onPressed: () {
+                         LocalFileSystem.read();
+                      })
+                ]))));
   }
 
   Widget addButton() {
@@ -131,7 +137,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    LocalFileSystem.test();
     return Container(
         decoration: BoxDecoration(color: Colors.red), child: homeLayout());
   }
