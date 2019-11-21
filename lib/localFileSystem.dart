@@ -44,8 +44,6 @@ class LocalFileSystem {
     } else {
       jsonFile.createSync();
 
-      // String initialGoal = toJson(new GoalModel(
-      //     goalSentence: 'do my homework', goalId: 1, goalIsActive: true));
       GoalModel initialGoal = new GoalModel(
           goalSentence: 'do my homework', goalId: 1, goalIsActive: true);
 
@@ -59,6 +57,39 @@ class LocalFileSystem {
       return content;
     }
   }
+
+  static GoalModel fromJsonMap(Map<String, dynamic> parsedJson) {
+    return GoalModel(
+        goalId: parsedJson['id'],
+        goalSentence: parsedJson['sentence'],
+        goalIsActive: parsedJson['isActive']);
+  }
+
+  static ListGoals fromJsonArray(List<dynamic> parsedJson){
+    List<GoalModel> goals = new List<GoalModel>();
+    goals = parsedJson.map((i)=> fromJsonMap(i)).toList();
+    return new ListGoals(goals: goals);
+  }
+
+  // static List<GoalModel> fromJsonArray(String jsonString) {
+  //   Map<String, dynamic> decodedMap = jsonDecode(jsonString);
+  //   List<dynamic> dynamicList = decodedMap['goals'];
+  //   List<GoalModel> goals = new List<GoalModel>();
+  //   dynamicList.forEach((f) {
+  //     GoalModel s = fromJsonMap(f);
+  //     goals.add(s);
+  //   });
+  //   return goals;
+  // }
+
+//   factory Product.fromJson(Map<String, dynamic> parsedJson){
+
+//   return Product(
+//     id: parsedJson['id'],
+//     name: parsedJson['name'],
+//     images: parsedJson['images']
+//   );
+// }
 
   static String listToJson(List<GoalModel> goals) {
     List<Map<String, dynamic>> x = goals

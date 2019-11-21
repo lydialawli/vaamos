@@ -23,4 +23,10 @@ class GoalModel {
   // }
 }
 
+class ListGoals {
+  final List<GoalModel> goals;
 
+  ListGoals({
+    this.goals,
+  });
+}
