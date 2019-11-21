@@ -1,20 +1,14 @@
-class Goal{
-  String goalSentence;
+class Goal {
   int goalId;
+  String goalSentence;
   bool goalIsActive;
 
-  Goal({
-    this.goalSentence,
-    this.goalId,
-    this.goalIsActive
-});
+  Goal({this.goalSentence, this.goalId, this.goalIsActive});
 
- factory Goal.fromJson(Map<String, dynamic> parsedJson){
+  factory Goal.fromJson(Map<String, dynamic> parsedJson) {
     return Goal(
-      goalSentence: parsedJson['sentence'],
-      goalId : parsedJson['id'],
-      goalIsActive : parsedJson ['isActive']
-    );
+        goalId: parsedJson['id'],
+        goalSentence: parsedJson['sentence'],
+        goalIsActive: parsedJson['isActive']);
   }
 }
-

@@ -17,7 +17,7 @@ class GoalInputState extends State<AddGoalBox> {
 
   File jsonFile;
   Directory dir;
-  String fileName = "test1.json";
+  String fileName = "test2.json";
   bool fileExists = true;
   Map<String, String> goalsContent;
 
