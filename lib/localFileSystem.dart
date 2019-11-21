@@ -1,9 +1,10 @@
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
+// import 'package:flutter/material.dart';
 
 class LocalFileSystem {
-  String fileName = "test.json";
+  String fileName = "test2.json";
 //   Map<String, dynamic> initialData = {
 //     "goals": [
 //         {
@@ -27,32 +28,29 @@ class LocalFileSystem {
 //     ]
 // };
 
-  Future<bool> checkIfFileExists() async {
-    final dir = await getApplicationDocumentsDirectory();
-    final jsonFile = File('${dir.path}/$fileName');
-    bool fileExists = false;
-    fileExists = jsonFile.existsSync();
-    return fileExists;
-  }
 
-  Future<String> startStorage() async {
+   startStorage() async {
     final dir = await getApplicationDocumentsDirectory();
     final jsonFile = File('${dir.path}/$fileName');
     bool fileExists = false;
     fileExists = jsonFile.existsSync();
 
-    String content;
+    Map<String, dynamic> content;
 
     if (fileExists) {
-      content = await jsonFile.readAsString();
+      content = json.decode(jsonFile.readAsStringSync());
+      return content;
     } else {
-      await jsonFile.writeAsString('testing');
-      content = await jsonFile.readAsString();
+      Map<String, dynamic> firstGoal = {'name': 'made my bed'};
+      jsonFile.createSync();
+      jsonFile.writeAsStringSync(json.encode(firstGoal));
+
+      content = json.decode(jsonFile.readAsStringSync());
+      return content;
     }
 
-    return content;
+    
   }
-
 
   Future<String> read() async {
     try {
@@ -64,6 +62,19 @@ class LocalFileSystem {
       return "==> Couldn't read file";
     }
   }
+
+  // void writeToFile(String key, dynamic value) {
+  //   print("Writing to file!");
+  //   Map<String, dynamic> content = {key: value};
+  //   if (fileExists) {
+  //     print("File exists");
+  //     Map<String, dynamic> jsonFileContent = json.decode(jsonFile.readAsStringSync());
+  //     jsonFileContent.addAll(content);
+  //     jsonFile.writeAsStringSync(json.encode(jsonFileContent));
+
+  //    fileContent = json.decode(jsonFile.readAsStringSync()));
+  //   print(fileContent);
+  // }
 
   Future<File> write(aString) async {
     final directory = await getApplicationDocumentsDirectory();

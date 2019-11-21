@@ -66,18 +66,7 @@ class HomeState extends State<Home> {
                 ]))));
   }
 
-  Widget addButton() {
-    return Container(
-      alignment: Alignment.center,
-      height: 70,
-      color: Colors.grey[100],
-      child: Text('long press to add a goal',
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.black,
-          )),
-    );
-  }
+ 
 
   Widget listGoals() {
     final List<String> entries = <String>[
