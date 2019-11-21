@@ -11,6 +11,21 @@ class AddGoalBox extends StatefulWidget {
   GoalInputState createState() => GoalInputState();
 }
 
+// class GoalModel {
+//   String sentence;
+// Map<String, dynamic> content = {'name': value};
+//   GoalModel(this.sentence);
+
+//   static String toJson(GoalModel s) {
+//     Map<String, dynamic> map() => {
+//           'name': s.sentence
+//         };
+
+//     String result = jsonEncode(map());
+//     return result;
+//   }
+// }
+
 class GoalInputState extends State<AddGoalBox> {
   bool longPressFlag = false;
   String goalText = '';
@@ -31,9 +46,13 @@ class GoalInputState extends State<AddGoalBox> {
     });
   }
 
+ 
   void writeToFile(String value) {
     print("Writing to file!");
-    Map<String, dynamic> content = {'name': value};
+    Map<String, dynamic> content = {
+      'name': value,
+      'number': 1
+      };
     if (fileExists) {
       print("File exists");
       Map<String, dynamic> jsonFileContent =
@@ -44,15 +63,6 @@ class GoalInputState extends State<AddGoalBox> {
           () => goalsContent = json.decode(jsonFile.readAsStringSync()));
       print(goalsContent);
     }
-  }
-
-  Future<File> write(aString) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$fileName');
-    final text = aString;
-    await file.writeAsString(text);
-
-    return file;
   }
 
   TextStyle buttonStyling() {

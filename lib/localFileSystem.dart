@@ -1,10 +1,12 @@
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
+import 'package:vaamos/model/goal_model.dart';
+
 // import 'package:flutter/material.dart';
 
 class LocalFileSystem {
-  String fileName = "test2.json";
+  String fileName = "test7.json";
 //   Map<String, dynamic> initialData = {
 //     "goals": [
 //         {
@@ -28,8 +30,7 @@ class LocalFileSystem {
 //     ]
 // };
 
-
-   startStorage() async {
+  startStorage() async {
     final dir = await getApplicationDocumentsDirectory();
     final jsonFile = File('${dir.path}/$fileName');
     bool fileExists = false;
@@ -41,15 +42,44 @@ class LocalFileSystem {
       content = json.decode(jsonFile.readAsStringSync());
       return content;
     } else {
-      Map<String, dynamic> firstGoal = {'name': 'made my bed'};
       jsonFile.createSync();
-      jsonFile.writeAsStringSync(json.encode(firstGoal));
+
+      // String initialGoal = toJson(new GoalModel(
+      //     goalSentence: 'do my homework', goalId: 1, goalIsActive: true));
+      GoalModel initialGoal = new GoalModel(
+          goalSentence: 'do my homework', goalId: 1, goalIsActive: true);
+
+      List<GoalModel> goals = new List<GoalModel>();
+      goals.add(initialGoal);
+
+      String listGoals = listToJson(goals);
+      jsonFile.writeAsStringSync(listGoals);
 
       content = json.decode(jsonFile.readAsStringSync());
       return content;
     }
+  }
 
-    
+  static String listToJson(List<GoalModel> goals) {
+    List<Map<String, dynamic>> x = goals
+        .map((f) => {
+              'name': f.goalSentence,
+              'id': f.goalId,
+              'isActive': f.goalIsActive
+            })
+        .toList();
+
+    Map<String, dynamic> map() => {'goals': x};
+    String result = jsonEncode(map());
+    return result;
+  }
+
+  static String toJson(GoalModel s) {
+    Map<String, dynamic> map() =>
+        {'name': s.goalSentence, 'id': s.goalId, 'isActive': s.goalIsActive};
+
+    String result = jsonEncode(map());
+    return result;
   }
 
   Future<String> read() async {
