@@ -43,11 +43,16 @@ class HomeState extends State<Home> {
         body: Container(
           child: Center(
             child: FutureBuilder(
-                future: DefaultAssetBundle.of(context)
-                    .loadString('assets/goal.json'),
-                builder: (context, snapshot) {
+                future: loadGoals(),
+                builder: (context, goalsSnap) {
                   // Decode the JSON
-                  var goalsList = json.decode(snapshot.data.toString());
+                  // var goalsList = json.decode(snapshot.data.toString());
+                  var goalsList = goalsSnap.data;
+                  if (goalsSnap.connectionState == ConnectionState.none &&
+                      goalsSnap.hasData == null) {
+                    print('goalsSnap data is: ${goalsSnap.data}');
+                    return Container();
+                  }
                   var todayDate = DateTime.now();
                   String today =
                       formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
@@ -69,9 +74,12 @@ class HomeState extends State<Home> {
                           children: <Widget>[
                             Text(today),
                             GoalWidget(
-                                sentence: goalsList[index]['name'],
+                                sentence: goalsList[index].goalName,
                                 bgColor: colorCodes[index])
-                        
+                            // Text("goal name is: " + goalsList[index]['name']),
+                            // Text("is active: " +
+                            //     goalsList[index]['isActive'].toString()),
+                            // Text("id: " + goalsList[index]['id'].toString()),
                           ],
                         ),
                       );

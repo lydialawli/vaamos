@@ -8,7 +8,7 @@ class Goal {
 
   Goal({this.goalName, this.goalId, this.goalIsActive});
 
-  factory Goal.fromJson(Map<String, dynamic> parsedJson) {
+  factory Goal.goalFromJson(Map<String, dynamic> parsedJson) {
     return Goal(
         goalName: parsedJson['name'].toString(),
         goalId: parsedJson['id'],
@@ -31,19 +31,25 @@ class ListGoals {
     this.goals,
   });
 
-  factory ListGoals.fromJson(List<dynamic> parsedJson) {
+ static List<Goal> fromJson(List<dynamic> parsedJson) {
     List<Goal> goals = new List<Goal>();
-    goals = parsedJson.map((i) => Goal.fromJson(i)).toList();
+    goals = parsedJson.map((i) => Goal.goalFromJson(i)).toList();
 
-    return new ListGoals(goals: goals);
+    return goals;
   }
+  // factory ListGoals.fromJson(List<dynamic> parsedJson) {
+  //   List<Goal> goals = new List<Goal>();
+  //   goals = parsedJson.map((i) => Goal.fromJson(i)).toList();
+
+  //   return new ListGoals(goals: goals);
+  // }
 
   static List<Goal> fromJsonArray(String jsonString) {
     Map<String, dynamic> decodedMap = jsonDecode(jsonString);
     List<dynamic> dynamicList = decodedMap['goals'];
     List<Goal> goals = new List<Goal>();
     dynamicList.forEach((f) {
-      Goal s = Goal.fromJson(f);
+      Goal s = Goal.goalFromJson(f);
       goals.add(s);
     });
     return goals;

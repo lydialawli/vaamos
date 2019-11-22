@@ -1,13 +1,13 @@
 import 'dart:async' show Future;
-import 'package:flutter/services.dart' show rootBundle;
-// import 'dart:convert';
+// import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
 import 'dart:io';
 import 'package:vaamos/model/goal_model.dart';
 import 'package:path_provider/path_provider.dart';
 
-Future<String> _loadGoalsFolder() async {
-  return await rootBundle.loadString('assets/goal.json');
-}
+// Future<String> _loadGoalsFolder() async {
+//   return await rootBundle.loadString('assets/goal.json');
+// }
 
 Future<String> read() async {
   String fileName = "test7.json";
@@ -22,16 +22,16 @@ Future<String> read() async {
   }
 }
 
-Future loadGoals() async {
-  String jsonGoals = await _loadGoalsFolder();
-  List<Goal> goals = ListGoals.fromJsonArray(jsonGoals);
-  print("1st goal is " +
-      goals[0].goalName +
-      'and is ' +
-      goals[0].goalIsActive.toString());
 
-  // return goals;
+
+Future loadGoals() async {
+  String jsonGoals = await read();
+  List<Goal> goals = ListGoals.fromJsonArray(jsonGoals);
+  // print("1st goal is " + goals[0].goalName + 'and is ' + goals[0].goalIsActive.toString());
+    
+  return goals;
 }
+
 
 // Future<String> _loadPhotoAsset() async {
 //   return await rootBundle.loadString('assets/photo.json');
