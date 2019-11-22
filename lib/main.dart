@@ -4,7 +4,7 @@ import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/localFileSystem.dart';
 import 'package:vaamos/model/goal_model.dart';
 import 'package:vaamos/services/goal_services.dart';
-import 'dart:convert';
+// import 'dart:convert';
 import 'package:date_format/date_format.dart';
 
 void main() => runApp(MyApp());
@@ -34,11 +34,101 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   List data;
 
+  final List<Color> colorCodes = <Color>[
+    Colors.orange,
+    Colors.cyan,
+    Colors.purple,
+    Colors.lightGreen,
+    Colors.pink
+  ];
+
+  Widget dailyGoals(goals) {
+   
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        return Column(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                GoalWidget(
+                    sentence: goals[index].goalName,
+                    bgColor: colorCodes[index],
+                    isDone: false),
+              ],
+            ),
+            AddGoalBox()
+            
+          ],
+        );
+      },
+      itemCount: goals == null ? 0 : goals.length,
+    );
+  }
+
+
+  // Widget listGoals(goals) {
+   
+  //   List<Widget> goals = [];
+
+  //   for (int i = 0; i < goals.length; i++) {
+  //     goals.add(GoalWidget(sentence: goals[i].goalName, bgColor: colorCodes[i]));
+  //   }
+
+  //   if (goals.length != 5) {
+  //     goals.add(AddGoalBox());
+  //   }
+
+  //   return Column(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: goals);
+
+  // }
+
+  Widget dateTitle() {
+    return Column(children: [
+      Text('TODAY',
+          style: TextStyle(
+            fontSize: 30,
+            color: Colors.black87,
+          )),
+      Text('wednesday',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey,
+          ))
+    ]);
+  }
+
+  Widget topContainer() {
+    return Container(
+        color: Colors.white,
+        child: Center(
+            child: Padding(
+                padding: const EdgeInsets.all(20),
+                child:
+                    Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  dateTitle(),
+                ]))));
+  }
+
+  Widget bottomContainer(x) {
+    return Container(color: Colors.white, child: Center(child: dailyGoals(x)));
+  }
+
   @override
   Widget build(BuildContext context) {
+    var todayDate = DateTime.now();
+    String today = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
+
     return Scaffold(
         appBar: AppBar(
-          title: Text("Load local JSON file"),
+          elevation: 0.0,
+          title: Text('Today is ' + today,
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.grey,
+              )),
+          backgroundColor: Colors.white,
         ),
         body: Container(
           child: Center(
@@ -51,145 +141,15 @@ class HomeState extends State<Home> {
                     print('goalsSnap data is: ${goalsSnap.data}');
                     return Container();
                   }
-                  var todayDate = DateTime.now();
-                  String today =
-                      formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
-
-                  final List<Color> colorCodes = <Color>[
-                    Colors.orange,
-                    Colors.cyan,
-                    Colors.purple,
-                    Colors.lightGreen,
-                    Colors.pink
-                  ];
-
-                  return ListView.builder(
-                    // Build the ListView
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Text(today),
-                            GoalWidget(
-                                sentence: goalsList[index].goalName,
-                                bgColor: colorCodes[index],
-                                isDone: false
-                                )
-                            // Text("goal name is: " + goalsList[index]['name']),
-                            // Text("is active: " +
-                            //     goalsList[index]['isActive'].toString()),
-                            // Text("id: " + goalsList[index]['id'].toString()),
-                          ],
-                        ),
-                      );
-                    },
-                    itemCount: goalsList == null ? 0 : goalsList.length,
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(flex: 2, child: topContainer()),
+                      Expanded(flex: 8, child: bottomContainer(goalsList))
+                    ],
                   );
                 }),
           ),
         ));
   }
-  // List<Goal> goalsList;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   loadGoals();
-  //   // loadGoals().then((result) => goalsList = result);
-  //   // loadGoals().then((result) => setState(() {
-  //   //       goals = result;
-  //   //     }));
-  //   widget.storage.startStorage().then((content) => print(content));
-  // }
-
-  // Widget dailyContainer() {
-  //   return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-  //     Text('TODAY',
-  //         style: TextStyle(
-  //           fontSize: 30,
-  //           color: Colors.black87,
-  //         )),
-  //     Text('wednesday',
-  //         style: TextStyle(
-  //           fontSize: 14,
-  //           color: Colors.grey,
-  //         ))
-  //   ]);
-  // }
-
-  // Widget topContainer() {
-  //   return Container(
-  //       color: Colors.white,
-  //       child: Center(
-  //           child: Padding(
-  //               padding: const EdgeInsets.all(20),
-  //               child: Column(children: [
-  //                 dailyContainer(),
-  //                 // RaisedButton(
-  //                 //     child: Text('Read'),
-  //                 //     onPressed: () {
-  //                 //       LocalFileSystem.read();
-  //                 //     })
-  //               ]))));
-  // }
-
-  // Widget listGoals() {
-  //   final List<String> listGoalsName = <String>[
-  //     'made the bed',
-  //     'no carbs all day',
-  //     'wrote in journal',
-  //     'cold shower',
-  //   ];
-  //   final List<Color> colorCodes = <Color>[
-  //     Colors.orange,
-  //     Colors.cyan,
-  //     Colors.purple,
-  //     Colors.lightGreen,
-  //     Colors.pink
-  //   ];
-
-  //   List<Widget> goals = [];
-
-  //   for (int i = 0; i < listGoalsName.length; i++) {
-  //     goals.add(GoalWidget(sentence: listGoalsName[i], bgColor: colorCodes[i]));
-  //   }
-
-  //   if (listGoalsName.length != 5) {
-  //     goals.add(AddGoalBox());
-  //   }
-
-  //   return Column(
-  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: goals);
-
-  //   // return ListView.separated(
-  //   //   itemCount: entries.length,
-  //   //   itemBuilder: (BuildContext context, int index) {
-  //   //     return Goal(sentence: entries[index], bgColor: colorCodes[index]);
-  //   //   },
-  //   //   separatorBuilder: (BuildContext context, int index) =>
-  //   //       SizedBox(height: 8.0),
-  //   // );
-  // }
-
-  // Widget bottomContainer() {
-  //   return Container(color: Colors.white, child: Center(child: listGoals()));
-  // }
-
-  // Widget homeLayout() {
-  //   return Column(
-  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //     children: [
-  //       Expanded(flex: 3, child: topContainer()),
-  //       Expanded(flex: 7, child: bottomContainer())
-  //       // Expanded(flex: 7, child: Center(child: Goal(sentence:'nice', bgColor:Colors.amber[100]))),
-  //     ],
-  //   );
-  // }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   // print('result is: ' + goalsList[0].goalName.toString());
-  //   return Container(
-  //       decoration: BoxDecoration(color: Colors.red), child: homeLayout());
-  // }
 }

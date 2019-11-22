@@ -66,7 +66,7 @@ class GoalInputState extends State<AddGoalBox> {
   }
 
   TextStyle buttonStyling() {
-    return TextStyle(fontSize: 20, color: Colors.black);
+    return TextStyle(fontSize: 20, color: Colors.grey);
   }
 
   Widget input() {
@@ -108,7 +108,7 @@ class GoalInputState extends State<AddGoalBox> {
         },
         child: Container(
             alignment: Alignment.center,
-            height: 70,
+            height: 80,
             color: Colors.grey[100],
             child: longPressFlag ? input() : longPressButton()),
       ),
