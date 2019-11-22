@@ -45,8 +45,6 @@ class HomeState extends State<Home> {
             child: FutureBuilder(
                 future: loadGoals(),
                 builder: (context, goalsSnap) {
-                  // Decode the JSON
-                  // var goalsList = json.decode(snapshot.data.toString());
                   var goalsList = goalsSnap.data;
                   if (goalsSnap.connectionState == ConnectionState.none &&
                       goalsSnap.hasData == null) {
@@ -75,7 +73,9 @@ class HomeState extends State<Home> {
                             Text(today),
                             GoalWidget(
                                 sentence: goalsList[index].goalName,
-                                bgColor: colorCodes[index])
+                                bgColor: colorCodes[index],
+                                isDone: false
+                                )
                             // Text("goal name is: " + goalsList[index]['name']),
                             // Text("is active: " +
                             //     goalsList[index]['isActive'].toString()),

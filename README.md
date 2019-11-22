@@ -17,6 +17,6 @@ Features:
   - [x] on long press addGoalBox ==> change into input field
 
 - Basic file system
-  - [ ] create file for the array of goals
+  - [x] create test file for the array of goals "goals.json" (auto created when user first opens app)
   - [ ] read function to get string of goals to display
   - [ ] save input into storage
