@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vaamos/goal.dart';
 import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/localFileSystem.dart';
+import 'package:vaamos/services/goal_services.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,6 +31,7 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    loadGoals();
     widget.storage
         .startStorage()
         .then((content) =>  print(content));

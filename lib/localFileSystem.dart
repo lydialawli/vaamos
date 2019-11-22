@@ -44,10 +44,10 @@ class LocalFileSystem {
     } else {
       jsonFile.createSync();
 
-      GoalModel initialGoal = new GoalModel(
-          goalSentence: 'do my homework', goalId: 1, goalIsActive: true);
+      Goal initialGoal = new Goal(
+          goalName: 'do my homework', goalId: 1, goalIsActive: true);
 
-      List<GoalModel> goals = new List<GoalModel>();
+      List<Goal> goals = new List<Goal>();
       goals.add(initialGoal);
 
       String listGoals = listToJson(goals);
@@ -58,15 +58,15 @@ class LocalFileSystem {
     }
   }
 
-  static GoalModel fromJsonMap(Map<String, dynamic> parsedJson) {
-    return GoalModel(
+  static Goal fromJsonMap(Map<String, dynamic> parsedJson) {
+    return Goal(
         goalId: parsedJson['id'],
-        goalSentence: parsedJson['sentence'],
+        goalName: parsedJson['name'],
         goalIsActive: parsedJson['isActive']);
   }
 
   static ListGoals fromJsonArray(List<dynamic> parsedJson){
-    List<GoalModel> goals = new List<GoalModel>();
+    List<Goal> goals = new List<Goal>();
     goals = parsedJson.map((i)=> fromJsonMap(i)).toList();
     return new ListGoals(goals: goals);
   }
@@ -82,19 +82,11 @@ class LocalFileSystem {
   //   return goals;
   // }
 
-//   factory Product.fromJson(Map<String, dynamic> parsedJson){
 
-//   return Product(
-//     id: parsedJson['id'],
-//     name: parsedJson['name'],
-//     images: parsedJson['images']
-//   );
-// }
-
-  static String listToJson(List<GoalModel> goals) {
+  static String listToJson(List<Goal> goals) {
     List<Map<String, dynamic>> x = goals
         .map((f) => {
-              'name': f.goalSentence,
+              'name': f.goalName,
               'id': f.goalId,
               'isActive': f.goalIsActive
             })
@@ -105,9 +97,9 @@ class LocalFileSystem {
     return result;
   }
 
-  static String toJson(GoalModel s) {
+  static String toJson(Goal s) {
     Map<String, dynamic> map() =>
-        {'name': s.goalSentence, 'id': s.goalId, 'isActive': s.goalIsActive};
+        {'name': s.goalName, 'id': s.goalId, 'isActive': s.goalIsActive};
 
     String result = jsonEncode(map());
     return result;

@@ -1,16 +1,17 @@
 // import 'dart:convert';
+import 'dart:convert';
 
-class GoalModel {
-  String goalSentence;
+class Goal {
+  String goalName;
   int goalId;
   bool goalIsActive;
 
-  GoalModel({this.goalSentence, this.goalId, this.goalIsActive});
+  Goal({this.goalName, this.goalId, this.goalIsActive});
 
-  factory GoalModel.fromJson(Map<String, dynamic> parsedJson) {
-    return GoalModel(
+  factory Goal.fromJson(Map<String, dynamic> parsedJson) {
+    return Goal(
+        goalName: parsedJson['name'].toString(),
         goalId: parsedJson['id'],
-        goalSentence: parsedJson['sentence'],
         goalIsActive: parsedJson['isActive']);
   }
 
@@ -24,9 +25,27 @@ class GoalModel {
 }
 
 class ListGoals {
-  final List<GoalModel> goals;
+  final List<Goal> goals;
 
   ListGoals({
     this.goals,
   });
+
+  factory ListGoals.fromJson(List<dynamic> parsedJson) {
+    List<Goal> goals = new List<Goal>();
+    goals = parsedJson.map((i) => Goal.fromJson(i)).toList();
+
+    return new ListGoals(goals: goals);
+  }
+
+  static List<Goal> fromJsonArray(String jsonString) {
+    Map<String, dynamic> decodedMap = jsonDecode(jsonString);
+    List<dynamic> dynamicList = decodedMap['goals'];
+    List<Goal> goals = new List<Goal>();
+    dynamicList.forEach((f) {
+      Goal s = Goal.fromJson(f);
+      goals.add(s);
+    });
+    return goals;
+  }
 }
