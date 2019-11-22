@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:vaamos/goal.dart';
+import 'package:vaamos/goalWidget.dart';
 import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/localFileSystem.dart';
+import 'package:vaamos/model/goal_model.dart';
 import 'package:vaamos/services/goal_services.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,13 +30,16 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  // List<Goal> goalsList;
   @override
   void initState() {
     super.initState();
     loadGoals();
-    widget.storage
-        .startStorage()
-        .then((content) =>  print(content));
+    // loadGoals().then((result) => goalsList = result);
+    // loadGoals().then((result) => setState(() {
+    //       goals = result;
+    //     }));
+    widget.storage.startStorage().then((content) => print(content));
   }
 
   Widget dailyContainer() {
@@ -68,10 +73,8 @@ class HomeState extends State<Home> {
                 ]))));
   }
 
- 
-
   Widget listGoals() {
-    final List<String> entries = <String>[
+    final List<String> listGoalsName = <String>[
       'made the bed',
       'no carbs all day',
       'wrote in journal',
@@ -87,11 +90,11 @@ class HomeState extends State<Home> {
 
     List<Widget> goals = [];
 
-    for (int i = 0; i < entries.length; i++) {
-      goals.add(Goal(sentence: entries[i], bgColor: colorCodes[i]));
+    for (int i = 0; i < listGoalsName.length; i++) {
+      goals.add(GoalWidget(sentence: listGoalsName[i], bgColor: colorCodes[i]));
     }
 
-    if (entries.length != 5) {
+    if (listGoalsName.length != 5) {
       goals.add(AddGoalBox());
     }
 
@@ -125,6 +128,7 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    // print('result is: ' + goalsList[0].goalName.toString());
     return Container(
         decoration: BoxDecoration(color: Colors.red), child: homeLayout());
   }

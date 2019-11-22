@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class Goal extends StatefulWidget {
-  Goal({this.sentence, this.bgColor});
+class GoalWidget extends StatefulWidget {
+  GoalWidget({this.sentence, this.bgColor});
   final String sentence;
   final Color bgColor;
 
   @override
-  GoalState createState() => GoalState();
+  GoalWidgetState createState() => GoalWidgetState();
 }
 
-class GoalState extends State<Goal> {
+class GoalWidgetState extends State<GoalWidget> {
   bool isDone = false;
 
   Widget build(BuildContext context) {
