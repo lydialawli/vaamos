@@ -5,6 +5,7 @@ import 'package:vaamos/localFileSystem.dart';
 import 'package:vaamos/model/goal_model.dart';
 import 'package:vaamos/services/goal_services.dart';
 import 'dart:convert';
+import 'package:date_format/date_format.dart';
 
 void main() => runApp(MyApp());
 
@@ -47,6 +48,17 @@ class HomeState extends State<Home> {
                 builder: (context, snapshot) {
                   // Decode the JSON
                   var goalsList = json.decode(snapshot.data.toString());
+                  var todayDate = DateTime.now();
+                  String today =
+                      formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
+
+                  final List<Color> colorCodes = <Color>[
+                    Colors.orange,
+                    Colors.cyan,
+                    Colors.purple,
+                    Colors.lightGreen,
+                    Colors.pink
+                  ];
 
                   return ListView.builder(
                     // Build the ListView
@@ -55,9 +67,11 @@ class HomeState extends State<Home> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
-                            Text("goal name is: " + goalsList[index]['name']),
-                            Text("is active: " + goalsList[index]['isActive'].toString()),
-                            Text("id: " + goalsList[index]['id'].toString()),
+                            Text(today),
+                            GoalWidget(
+                                sentence: goalsList[index]['name'],
+                                bgColor: colorCodes[index])
+                        
                           ],
                         ),
                       );
