@@ -18,5 +18,6 @@ Features:
 
 - Basic file system
   - [x] create test file for the array of goals "goals.json" (auto created when user first opens app)
-  - [ ] read function to get string of goals to display
-  - [ ] save input into storage
+  - [x] storage.json
+  - [x] read function to get string of goals to display
+  - [x] save input into storage

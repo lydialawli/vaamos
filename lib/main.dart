@@ -77,25 +77,41 @@ class HomeState extends State<Home> {
     });
   }
 
-  Widget dailyGoals(goals) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return Column(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                GoalWidget(
-                    sentence: goals[index].goalName,
-                    bgColor: colorCodes[index],
-                    isDone: false),
-              ],
-            )
-          ],
-        );
-      },
-      itemCount: goals == null ? 0 : goals.length,
-    );
+  // Widget dailyGoals(goals) {
+  //   return ListView.builder(
+  //     itemBuilder: (BuildContext context, int index) {
+  //       return Column(
+  //         children: <Widget>[
+  //           Column(
+  //             crossAxisAlignment: CrossAxisAlignment.stretch,
+  //             children: <Widget>[
+  //               GoalWidget(
+  //                   sentence: goals[index].goalName,
+  //                   bgColor: colorCodes[index],
+  //                   isDone: false),
+  //             ],
+  //           )
+  //         ],
+  //       );
+  //     },
+  //     itemCount: goals == null ? 0 : goals.length,
+  //   );
+  // }
+
+  Widget widgetGoals(goals) {
+    List<Widget> goalsDisplay = [];
+
+    for (int i = 0; i < goals.length; i++) {
+      goalsDisplay.add(GoalWidget(
+          sentence: goals[i].goalName, bgColor: colorCodes[i], isDone: false));
+    }
+
+    if (goals.length < 5) {
+      goalsDisplay.add(AddGoalBox(onSubmitGoal));
+    }
+
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start, children: goalsDisplay);
   }
 
   Widget dateTitle() {
@@ -128,7 +144,7 @@ class HomeState extends State<Home> {
   Widget bottomContainer(x) {
     return Container(
         color: Colors.white,
-        child: Container(child: Center(child: dailyGoals(x))));
+        child: Container(child: Center(child: widgetGoals(x))));
   }
 
   @override
@@ -150,8 +166,8 @@ class HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Expanded(flex: 2, child: topContainer()),
-            Expanded(flex: 7, child: bottomContainer(loadedGoals)),
-            Expanded(flex: 1, child: AddGoalBox(onSubmitGoal))
+            Expanded(flex: 8, child: bottomContainer(loadedGoals)),
+            // Expanded(flex: 1, child: AddGoalBox(onSubmitGoal))
           ],
         ));
   }

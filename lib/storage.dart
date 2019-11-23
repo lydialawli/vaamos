@@ -75,4 +75,18 @@ class Storage {
     List<Goal> goals = ListGoals.fromJsonArray(jsonGoals);
     return goals;
   }
+
+
+  static Goal fromJsonMap(Map<String, dynamic> parsedJson) {
+    return Goal(
+        goalId: parsedJson['id'],
+        goalName: parsedJson['name'],
+        goalIsActive: parsedJson['isActive']);
+  }
+
+  static ListGoals fromJsonArray(List<dynamic> parsedJson) {
+    List<Goal> goals = new List<Goal>();
+    goals = parsedJson.map((i) => fromJsonMap(i)).toList();
+    return new ListGoals(goals: goals);
+  }
 }

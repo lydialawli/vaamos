@@ -32,18 +32,18 @@ class LocalFileSystem {
 
 
 
-  static Goal fromJsonMap(Map<String, dynamic> parsedJson) {
-    return Goal(
-        goalId: parsedJson['id'],
-        goalName: parsedJson['name'],
-        goalIsActive: parsedJson['isActive']);
-  }
+  // static Goal fromJsonMap(Map<String, dynamic> parsedJson) {
+  //   return Goal(
+  //       goalId: parsedJson['id'],
+  //       goalName: parsedJson['name'],
+  //       goalIsActive: parsedJson['isActive']);
+  // }
 
-  static ListGoals fromJsonArray(List<dynamic> parsedJson) {
-    List<Goal> goals = new List<Goal>();
-    goals = parsedJson.map((i) => fromJsonMap(i)).toList();
-    return new ListGoals(goals: goals);
-  }
+  // static ListGoals fromJsonArray(List<dynamic> parsedJson) {
+  //   List<Goal> goals = new List<Goal>();
+  //   goals = parsedJson.map((i) => fromJsonMap(i)).toList();
+  //   return new ListGoals(goals: goals);
+  // }
 
   // static List<GoalModel> fromJsonArray(String jsonString) {
   //   Map<String, dynamic> decodedMap = jsonDecode(jsonString);
