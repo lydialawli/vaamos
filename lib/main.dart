@@ -134,27 +134,13 @@ class HomeState extends State<Home> {
               )),
           backgroundColor: Colors.white,
         ),
-        body: Container(
-          child: Center(
-            child: FutureBuilder(
-                future: loadGoalsOld(),
-                builder: (context, goalsSnap) {
-                  var goalsList = goalsSnap.data;
-                  if (goalsSnap.connectionState == ConnectionState.none &&
-                      goalsList == null) {
-                    print('goalsSnap data is: $goalsList');
-                    return Container();
-                  }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(flex: 2, child: topContainer()),
-                      Expanded(flex: 7, child: bottomContainer(goalsList)),
-                      Expanded(flex: 1, child: AddGoalBox(onSubmitGoal))
-                    ],
-                  );
-                }),
-          ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(flex: 2, child: topContainer()),
+            Expanded(flex: 7, child: bottomContainer(loadedGoals)),
+            Expanded(flex: 1, child: AddGoalBox(onSubmitGoal))
+          ],
         ));
   }
 }
