@@ -32,7 +32,7 @@ class GoalWidgetState extends State<GoalWidget> {
         },
         child: Container(
           alignment: Alignment.center,
-          height: 80,
+          height: 90,
           color: isDone ? widget.bgColor : Colors.grey[100],
           child: new Text(widget.sentence,
               style: TextStyle(

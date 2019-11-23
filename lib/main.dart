@@ -104,6 +104,9 @@ class HomeState extends State<Home> {
     for (int i = 0; i < goals.length; i++) {
       goalsDisplay.add(GoalWidget(
           sentence: goals[i].goalName, bgColor: colorCodes[i], isDone: false));
+      goalsDisplay.add(Container(
+        height: 10,
+      ));
     }
 
     if (goals.length < 5) {

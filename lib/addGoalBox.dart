@@ -112,7 +112,7 @@ class GoalInputState extends State<AddGoalBox> {
         },
         child: Container(
             alignment: Alignment.center,
-            height: 80,
+            height: 90,
             color: Colors.grey[100],
             child: longPressFlag ? inputButton() : longPressButton()),
       ),
