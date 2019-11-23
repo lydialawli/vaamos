@@ -43,7 +43,6 @@ class HomeState extends State<Home> {
   ];
 
   Widget dailyGoals(goals) {
-   
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
         return Column(
@@ -57,8 +56,6 @@ class HomeState extends State<Home> {
                     isDone: false),
               ],
             ),
-            AddGoalBox()
-            
           ],
         );
       },
@@ -66,21 +63,20 @@ class HomeState extends State<Home> {
     );
   }
 
-
   // Widget listGoals(goals) {
-   
-  //   List<Widget> goals = [];
+
+  //   List<Widget> goalsList = [];
 
   //   for (int i = 0; i < goals.length; i++) {
-  //     goals.add(GoalWidget(sentence: goals[i].goalName, bgColor: colorCodes[i]));
+  //     goalsList.add(GoalWidget(sentence: goals[i].goalName, bgColor: colorCodes[i],isDone: false));
   //   }
 
   //   if (goals.length != 5) {
-  //     goals.add(AddGoalBox());
+  //     goalsList.add(AddGoalBox());
   //   }
 
   //   return Column(
-  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: goals);
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: goalsList);
 
   // }
 
@@ -145,7 +141,8 @@ class HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Expanded(flex: 2, child: topContainer()),
-                      Expanded(flex: 8, child: bottomContainer(goalsList))
+                      Expanded(flex: 7, child: bottomContainer(goalsList)),
+                      Expanded(flex: 1, child:  AddGoalBox())
                     ],
                   );
                 }),
