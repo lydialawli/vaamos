@@ -7,22 +7,21 @@ import 'package:vaamos/model/goal_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Storage {
-  static String goalsFile = "test7.json";
-
+  static String goalsFileName = "test7.json";
 
   static startStorage() async {
     final dir = await getApplicationDocumentsDirectory();
-    final goalsJson = File('${dir.path}/$goalsFile');
+    final goalsFile = File('${dir.path}/$goalsFileName');
     bool fileExists = false;
-    fileExists = goalsJson.existsSync();
+    fileExists = goalsFile.existsSync();
 
     Map<String, dynamic> content;
 
     if (fileExists) {
-      content = json.decode(goalsJson.readAsStringSync());
+      content = json.decode(goalsFile.readAsStringSync());
       print('storage started with ' + content.toString());
     } else {
-      goalsJson.createSync();
+      goalsFile.createSync();
 
       Goal initialGoal =
           new Goal(goalName: 'make the bed', goalId: 1, goalIsActive: true);
@@ -30,12 +29,23 @@ class Storage {
       List<Goal> goals = new List<Goal>();
       goals.add(initialGoal);
 
-      String listGoals = goalsListToJson(goals);
-      goalsJson.writeAsStringSync(listGoals);
+      saveGoals(goals);
 
-      content = json.decode(goalsJson.readAsStringSync());
+      content = json.decode(goalsFile.readAsStringSync());
       print('storage initialised with ' + content.toString());
     }
+  }
+
+  static saveGoals(goals) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final goalsFile = File('${dir.path}/$goalsFileName');
+
+    String goalsString = goalsListToJson(goals);
+    write(goalsFile, goalsString);
+  }
+
+  static write(File aFile, String aString) {
+    aFile.writeAsStringSync(aString);
   }
 
   static String goalsListToJson(List<Goal> goals) {
@@ -52,7 +62,7 @@ class Storage {
   static readGoalsFile() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final jsonFile = File('${directory.path}/$goalsFile');
+      final jsonFile = File('${directory.path}/$goalsFileName');
       String text = await jsonFile.readAsString();
       return text;
     } catch (e) {

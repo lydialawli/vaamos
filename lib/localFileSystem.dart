@@ -30,33 +30,7 @@ class LocalFileSystem {
 //     ]
 // };
 
-  startStorage() async {
-    final dir = await getApplicationDocumentsDirectory();
-    final jsonFile = File('${dir.path}/$fileName');
-    bool fileExists = false;
-    fileExists = jsonFile.existsSync();
 
-    Map<String, dynamic> content;
-
-    if (fileExists) {
-      content = json.decode(jsonFile.readAsStringSync());
-      print('storage started with ' + content.toString());
-    } else {
-      jsonFile.createSync();
-
-      Goal initialGoal =
-          new Goal(goalName: 'make the bed', goalId: 1, goalIsActive: true);
-
-      List<Goal> goals = new List<Goal>();
-      goals.add(initialGoal);
-
-      String listGoals = goalsListToJson(goals);
-      jsonFile.writeAsStringSync(listGoals);
-
-      content = json.decode(jsonFile.readAsStringSync());
-      print('storage initialised with ' + content.toString());
-    }
-  }
 
   static Goal fromJsonMap(Map<String, dynamic> parsedJson) {
     return Goal(
@@ -82,16 +56,6 @@ class LocalFileSystem {
   //   return goals;
   // }
 
-  static String goalsListToJson(List<Goal> goals) {
-    List<Map<String, dynamic>> x = goals
-        .map((f) =>
-            {'name': f.goalName, 'id': f.goalId, 'isActive': f.goalIsActive})
-        .toList();
-
-    Map<String, dynamic> map() => {'goals': x};
-    String result = jsonEncode(map());
-    return result;
-  }
 
   static String goalToJson(Goal s) {
     Map<String, dynamic> map() =>

@@ -37,6 +37,7 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   List data;
   List<Goal> loadedGoals;
+  int goalsCount;
 
   @override
   void initState() {
@@ -47,9 +48,10 @@ class HomeState extends State<Home> {
 
   initGoals() async {
     var results = await Storage.loadGoals();
-    print('here is ==> ' + results[0].goalName);
+    print('here is ==> ' + results.length.toString());
     setState(() {
       loadedGoals = results;
+      goalsCount = results.length;
     });
   }
 
@@ -62,7 +64,17 @@ class HomeState extends State<Home> {
   ];
 
   onSubmitGoal(String value) {
-    print(value);
+    int newId = goalsCount + 1;
+    Goal newGoal = new Goal(goalName: value, goalId: newId, goalIsActive: true);
+
+    List<Goal> goals = loadedGoals;
+    goals.add(newGoal);
+
+    Storage.saveGoals(goals);
+    setState(() {
+      loadedGoals = goals;
+      goalsCount = newId;
+    });
   }
 
   Widget dailyGoals(goals) {
