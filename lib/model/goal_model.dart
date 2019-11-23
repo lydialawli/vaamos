@@ -51,18 +51,18 @@ class StorageModel {
     List<dynamic> goalsList = decodedMap['goals'];
     List<dynamic> historyList = decodedMap['history'];
 
-    List<Goal> goals = new List<Goal>();
+    List<Goal> listGoals = new List<Goal>();
     goalsList.forEach((f) {
       Goal s = Goal.goalFromJson(f);
-      goals.add(s);
+      listGoals.add(s);
     });
 
-    List<Goal> history = new List<Goal>();
+    List<Instance> listHistory = new List<Instance>();
     historyList.forEach((f) {
-      Goal s = Goal.goalFromJson(f);
-      goals.add(s);
+      Instance s = Instance.instanceFromJson(f);
+      listHistory.add(s);
     });
-    return StorageModel(goals: goalsList, history: historyList);
+    return StorageModel(goals: listGoals, history: listHistory);
   }
   // static List<Goal> fromJson(List<dynamic> parsedJson) {
   //   List<Goal> goals = new List<Goal>();

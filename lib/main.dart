@@ -44,16 +44,20 @@ class HomeState extends State<Home> {
   void initState() {
     super.initState();
     initGoals();
-    Storage.startStorage();
   }
 
   initGoals() async {
-    var results = await Storage.loadGoals();
-    print('here is ==> ' + results.length.toString());
+    // var results = await Storage.loadGoals();
+    var todayDate = DateTime.now();
+
+    Storage.startStorage(todayDate);
+
+    // print('here is ==> ' + results.length.toString());
     setState(() {
-      loadedGoals = results;
-      goalsCount = results.length;
-      loadingData = false;
+      // loadedGoals = results;
+      // goalsCount = results.length;
+      // loadingData = false;
+      todayDate = todayDate;
     });
   }
 
@@ -72,14 +76,13 @@ class HomeState extends State<Home> {
     List<Goal> goals = loadedGoals;
     goals.add(newGoal);
 
-    Storage.saveGoals(goals);
-    setState(() {
-      loadedGoals = goals;
-      goalsCount = newId;
-    });
+    // Storage.saveGoals(goals);
+    // setState(() {
+    //   loadedGoals = goals;
+    //   goalsCount = newId;
+    // });
   }
 
- 
   Widget widgetGoals(goals) {
     List<Widget> goalsDisplay = [];
 
@@ -129,7 +132,8 @@ class HomeState extends State<Home> {
   Widget bottomContainer(x) {
     return Container(
         color: Colors.white,
-        child: Container(child: Center(child: loadingData ? spinner() : widgetGoals(x))));
+        child: Container(
+            child: Center(child: loadingData ? spinner() : widgetGoals(x))));
   }
 
   Widget spinner() {
@@ -137,7 +141,6 @@ class HomeState extends State<Home> {
       value: null,
       valueColor: AlwaysStoppedAnimation<Color>(Colors.cyan),
     );
-   
   }
 
   @override

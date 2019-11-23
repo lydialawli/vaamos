@@ -7,9 +7,9 @@ import 'package:vaamos/model/goal_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Storage {
-  static String goalsFileName = "test7.json";
+  static String goalsFileName = "test12.json";
 
-  static startStorage() async {
+  static startStorage(todayDate) async {
     final dir = await getApplicationDocumentsDirectory();
     final goalsFile = File('${dir.path}/$goalsFileName');
     bool fileExists = false;
@@ -23,29 +23,61 @@ class Storage {
     } else {
       goalsFile.createSync();
 
-      Goal initialGoal =
-          new Goal(goalName: 'make the bed', goalId: 1, goalIsActive: true);
-
-      List<Goal> goals = new List<Goal>();
-      goals.add(initialGoal);
-
-      saveGoals(goals);
-
+      createFirstData(todayDate, goalsFile);
+      // initialiseFirstGoal();
+      print('==>' + goalsFile.toString());
       content = json.decode(goalsFile.readAsStringSync());
       print('storage initialised with ' + content.toString());
     }
   }
 
-  static saveGoals(goals) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final goalsFile = File('${dir.path}/$goalsFileName');
+  static createFirstData(todayDate, goalsFile) {
+    Goal initialGoal =
+        new Goal(goalName: 'make the bed', goalId: 1, goalIsActive: true);
+    Instance firstInstance =
+        new Instance(date: todayDate.toString(), goalIds: [1]);
 
-    String goalsString = goalsListToJson(goals);
-    write(goalsFile, goalsString);
+    List<Instance> listHistory = new List<Instance>();
+    listHistory.add(firstInstance);
+
+    List<Goal> listGoals = new List<Goal>();
+    listGoals.add(initialGoal);
+
+    StorageModel storage =
+        new StorageModel(goals: listGoals, history: listHistory);
+
+    savetoStorageJson(storage, goalsFile);
   }
 
-  static write(File aFile, String aString) {
-    aFile.writeAsStringSync(aString);
+  // static initialiseFirstGoal() {
+  //   Goal initialGoal =
+  //       new Goal(goalName: 'make the bed', goalId: 1, goalIsActive: true);
+  //   List<Goal> goals = new List<Goal>();
+  //   goals.add(initialGoal);
+
+  //   saveGoals(goals);
+  // }
+
+  static savetoStorageJson(storage, goalsFile) async {
+    String storageString = storageToJson(storage);
+    write(goalsFile, storageString);
+  }
+
+  static String storageToJson(StorageModel storage) {
+    List<Map<String, dynamic>> x = storage.goals
+        .map((f) => {
+              'name': f.goalName,
+              'goalId': f.goalId,
+              'isActive': f.goalIsActive
+            })
+        .toList();
+    List<Map<String, dynamic>> y = storage.history
+        .map((f) => {'date': f.date, 'goalIds': f.goalIds})
+        .toList();
+
+    Map<String, dynamic> map() => {'goals': x, 'history': y};
+    String result = jsonEncode(map());
+    return result;
   }
 
   static String goalsListToJson(List<Goal> goals) {
@@ -57,6 +89,18 @@ class Storage {
     Map<String, dynamic> map() => {'goals': x};
     String result = jsonEncode(map());
     return result;
+  }
+
+  // static saveGoals(goals) async {
+  //   final dir = await getApplicationDocumentsDirectory();
+  //   final goalsFile = File('${dir.path}/$goalsFileName');
+
+  //   String goalsString = goalsListToJson(goals);
+  //   write(goalsFile, goalsString);
+  // }
+
+  static write(File aFile, String aString) {
+    aFile.writeAsStringSync(aString);
   }
 
   static readStorageFile() async {
