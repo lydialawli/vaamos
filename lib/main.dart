@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/goalWidget.dart';
 // import 'package:vaamos/addGoalBox.dart';
+// import 'package:vaamos/localFileSystem.dart';
 import 'package:vaamos/localFileSystem.dart';
 // import 'package:vaamos/model/goal_model.dart';
 import 'package:vaamos/services/goal_services.dart';
 // import 'dart:convert';
 import 'package:date_format/date_format.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // var loadedGoals = loadGoals();
+  runApp(MyApp());
+  }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -38,6 +42,7 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    //  data  = loadedGoals,
     widget.storage.startStorage();
   }
 
@@ -51,6 +56,7 @@ class HomeState extends State<Home> {
 
   onSubmitGoal(String value) {
     print(value);
+
   }
 
   Widget dailyGoals(goals) {
@@ -129,8 +135,8 @@ class HomeState extends State<Home> {
                 builder: (context, goalsSnap) {
                   var goalsList = goalsSnap.data;
                   if (goalsSnap.connectionState == ConnectionState.none &&
-                      goalsSnap.hasData == null) {
-                    print('goalsSnap data is: ${goalsSnap.data}');
+                      goalsList == null) {
+                    print('goalsSnap data is: $goalsList');
                     return Container();
                   }
                   return Column(

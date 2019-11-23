@@ -55,9 +55,6 @@ class GoalInputState extends State<AddGoalBox> {
 
   void writeToFile(String value) {
     widget.onSubmitGoal(value);
-    setState(() {
-      longPressFlag = !longPressFlag;
-    });
     // print("Writing to file!");
     // Map<String, dynamic> content = {'name': value, 'number': 1};
     // if (fileExists) {

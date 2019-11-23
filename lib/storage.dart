@@ -5,9 +5,6 @@ import 'dart:io';
 import 'package:vaamos/model/goal_model.dart';
 import 'package:path_provider/path_provider.dart';
 
-// Future<String> _loadGoalsFolder() async {
-//   return await rootBundle.loadString('assets/goal.json');
-// }
 
 Future<String> readGoalsFile() async {
   String fileName = "test7.json";
@@ -26,20 +23,6 @@ Future<String> readGoalsFile() async {
 
 Future loadGoals() async {
   String jsonGoals = await readGoalsFile();
-  List<Goal> goals = ListGoals.fromJsonArray(jsonGoals);
-  // print("1st goal is " + goals[0].goalName + 'and is ' + goals[0].goalIsActive.toString());
-    
+  List<Goal> goals = ListGoals.fromJsonArray(jsonGoals);    
   return goals;
 }
-
-
-// Future<String> _loadPhotoAsset() async {
-//   return await rootBundle.loadString('assets/photo.json');
-// }
-
-// Future loadPhotos() async {
-//   String jsonPhotos = await _loadPhotoAsset();
-//   final jsonResponse = json.decode(jsonPhotos);
-//   PhotosList photosList = PhotosList.fromJson(jsonResponse);
-//   print("photos " + photosList.photos[0].title);
-// }
