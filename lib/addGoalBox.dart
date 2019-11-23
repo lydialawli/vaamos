@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'dart:convert';
+// import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 
 class AddGoalBox extends StatefulWidget {
   // AddGoalBox({this.storage});
   // final LocalFileSystem storage;
+  final Function(String) onSubmitGoal;
+
+  AddGoalBox(this.onSubmitGoal);
 
   @override
   GoalInputState createState() => GoalInputState();
@@ -44,25 +47,29 @@ class GoalInputState extends State<AddGoalBox> {
       dir = directory;
       jsonFile = new File(dir.path + "/" + fileName);
       fileExists = jsonFile.existsSync();
-       setState(() {
+      setState(() {
         lengthGoals = 1; //should be calculated, not hardcoded
       });
     });
   }
 
   void writeToFile(String value) {
-    print("Writing to file!");
-    Map<String, dynamic> content = {'name': value, 'number': 1};
-    if (fileExists) {
-      print("File exists");
-      Map<String, dynamic> jsonFileContent =
-          json.decode(jsonFile.readAsStringSync());
-      jsonFileContent.addAll(content);
-      jsonFile.writeAsStringSync(json.encode(jsonFileContent));
-      this.setState(
-          () => goalsContent = json.decode(jsonFile.readAsStringSync()));
-      print(goalsContent);
-    }
+    widget.onSubmitGoal(value);
+    setState(() {
+      longPressFlag = !longPressFlag;
+    });
+    // print("Writing to file!");
+    // Map<String, dynamic> content = {'name': value, 'number': 1};
+    // if (fileExists) {
+    //   print("File exists");
+    //   Map<String, dynamic> jsonFileContent =
+    //       json.decode(jsonFile.readAsStringSync());
+    //   jsonFileContent.addAll(content);
+    //   jsonFile.writeAsStringSync(json.encode(jsonFileContent));
+    //   this.setState(
+    //       () => goalsContent = json.decode(jsonFile.readAsStringSync()));
+    //   print(goalsContent);
+    // }
   }
 
   TextStyle buttonStyling() {

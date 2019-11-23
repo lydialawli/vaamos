@@ -49,6 +49,10 @@ class HomeState extends State<Home> {
     Colors.pink
   ];
 
+  onSubmitGoal(String value) {
+    print(value);
+  }
+
   Widget dailyGoals(goals) {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
@@ -134,7 +138,7 @@ class HomeState extends State<Home> {
                     children: [
                       Expanded(flex: 2, child: topContainer()),
                       Expanded(flex: 7, child: bottomContainer(goalsList)),
-                      Expanded(flex: 1, child: AddGoalBox())
+                      Expanded(flex: 1, child: AddGoalBox(onSubmitGoal))
                     ],
                   );
                 }),
