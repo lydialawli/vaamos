@@ -40,7 +40,7 @@ class LocalFileSystem {
 
     if (fileExists) {
       content = json.decode(jsonFile.readAsStringSync());
-      print('==> ' + content.toString());
+      print('storage started with ' + content.toString());
     } else {
       jsonFile.createSync();
 
@@ -50,11 +50,11 @@ class LocalFileSystem {
       List<Goal> goals = new List<Goal>();
       goals.add(initialGoal);
 
-      String listGoals = listToJson(goals);
+      String listGoals = goalsListToJson(goals);
       jsonFile.writeAsStringSync(listGoals);
 
       content = json.decode(jsonFile.readAsStringSync());
-      print('==> ' + content.toString());
+      print('storage initialised with ' + content.toString());
     }
   }
 
@@ -82,7 +82,7 @@ class LocalFileSystem {
   //   return goals;
   // }
 
-  static String listToJson(List<Goal> goals) {
+  static String goalsListToJson(List<Goal> goals) {
     List<Map<String, dynamic>> x = goals
         .map((f) =>
             {'name': f.goalName, 'id': f.goalId, 'isActive': f.goalIsActive})

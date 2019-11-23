@@ -42,7 +42,7 @@ class HomeState extends State<Home> {
   void initState() {
     super.initState();
     initGoals();
-    widget.storage.startStorage();
+    Storage.startStorage();
   }
 
   initGoals() async {
