@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vaamos/goalWidget.dart';
 import 'package:vaamos/addGoalBox.dart';
+import 'package:vaamos/goalWidget.dart';
+// import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/localFileSystem.dart';
-import 'package:vaamos/model/goal_model.dart';
+// import 'package:vaamos/model/goal_model.dart';
 import 'package:vaamos/services/goal_services.dart';
 // import 'dart:convert';
 import 'package:date_format/date_format.dart';
@@ -55,7 +56,7 @@ class HomeState extends State<Home> {
                     bgColor: colorCodes[index],
                     isDone: false),
               ],
-            ),
+            )
           ],
         );
       },
@@ -68,15 +69,15 @@ class HomeState extends State<Home> {
   //   List<Widget> goalsList = [];
 
   //   for (int i = 0; i < goals.length; i++) {
-  //     goalsList.add(GoalWidget(sentence: goals[i].goalName, bgColor: colorCodes[i],isDone: false));
+  //     goalsList.add(GoalWidget(sentence: goals[i].goalName, bgColor: colorCodes[i]));
   //   }
 
   //   if (goals.length != 5) {
-  //     goalsList.add(AddGoalBox());
+  //     goals.add(AddGoalBox());
   //   }
 
   //   return Column(
-  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: goalsList);
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: goals);
 
   // }
 
@@ -108,7 +109,7 @@ class HomeState extends State<Home> {
   }
 
   Widget bottomContainer(x) {
-    return Container(color: Colors.white, child: Center(child: dailyGoals(x)));
+    return Container(color: Colors.white, child: Container(child: Center(child: dailyGoals(x))));
   }
 
   @override
@@ -142,7 +143,7 @@ class HomeState extends State<Home> {
                     children: [
                       Expanded(flex: 2, child: topContainer()),
                       Expanded(flex: 7, child: bottomContainer(goalsList)),
-                      Expanded(flex: 1, child:  AddGoalBox())
+                      Expanded(flex: 1, child: AddGoalBox())
                     ],
                   );
                 }),
