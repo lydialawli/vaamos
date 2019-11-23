@@ -36,8 +36,9 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   List data;
-  List<Goal> loadedGoals;
+  List<Goal> loadedGoals = [];
   int goalsCount;
+  bool loadingData = true;
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class HomeState extends State<Home> {
     setState(() {
       loadedGoals = results;
       goalsCount = results.length;
+      loadingData = false;
     });
   }
 
@@ -147,7 +149,15 @@ class HomeState extends State<Home> {
   Widget bottomContainer(x) {
     return Container(
         color: Colors.white,
-        child: Container(child: Center(child: widgetGoals(x))));
+        child: Container(child: Center(child: loadingData ? spinner() : widgetGoals(x))));
+  }
+
+  Widget spinner() {
+    return CircularProgressIndicator(
+      value: null,
+      valueColor: AlwaysStoppedAnimation<Color>(Colors.cyan),
+    );
+   
   }
 
   @override
