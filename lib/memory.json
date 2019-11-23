@@ -2,21 +2,33 @@
     "goals": [
         {
             "name": "made my bed",
-            "id": 1,
+            "goalId": 1,
             "isActive": true
         }
     ],
     "history": [
         {
-            "day": 12,
-            "month": 11,
-            "year": 2019,
-            "goals": [
-                {
-                    "id": 1,
-                    "isDone": false
-                }
+            "date": "2019-11-23 18:34:33.748088",
+            "goalIds": [
+               1
             ]
+        }
+    ]
+}
+
+
+
+{
+    "id":1,
+    "name":"ProductName",
+    "images":[
+        {
+            "id":11,
+            "imageName":"xCh-rhy"
+        },
+        {
+            "id":31,
+            "imageName":"fjs-eun"
         }
     ]
 }

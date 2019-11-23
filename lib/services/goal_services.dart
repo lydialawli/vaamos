@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 //   return await rootBundle.loadString('assets/goal.json');
 // }
 
-Future<String> readGoalsFile() async {
+Future<String> readStorageFile() async {
   String fileName = "test7.json";
 
   try {
@@ -24,8 +24,9 @@ Future<String> readGoalsFile() async {
 
 
 
+
 Future loadGoalsOld() async {
-  String jsonGoals = await readGoalsFile();
+  String jsonGoals = await readStorageFile();
   List<Goal> goals = ListGoals.fromJsonArray(jsonGoals);
   // print("1st goal is " + goals[0].goalName + 'and is ' + goals[0].goalIsActive.toString());
     

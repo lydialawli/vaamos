@@ -1,4 +1,3 @@
-// import 'dart:convert';
 import 'dart:convert';
 
 class Goal {
@@ -14,14 +13,64 @@ class Goal {
         goalId: parsedJson['id'],
         goalIsActive: parsedJson['isActive']);
   }
+}
 
-  //  static String toJson(new GoalModel s,) {
-  //   Map<String, dynamic> map() =>
-  //       {'name': s.goalSentence, 'id': s.goalId, 'isActive': s.goalIsActive};
+class Instance {
+  String date;
+  List<int> goalIds;
 
-  //   String result = jsonEncode(map());
-  //   return result;
+  Instance({this.date, this.goalIds});
+
+  factory Instance.instanceFromJson(Map<String, dynamic> parsedJson) {
+    return Instance(
+        date: parsedJson['date'].toString(), goalIds: parsedJson['goalIds']);
+  }
+}
+
+class StorageModel {
+  final List<Goal> goals;
+  final List<Instance> history;
+
+  StorageModel({this.goals, this.history});
+
+  // factory StorageModel.fromJson(String parsedJson) {
+  //   var history = parsedJson['history'] as List;
+  //   print(history.runtimeType);
+  //   var goals = parsedJson['goals'] as List;
+  //   print(goals.runtimeType);
+
+  //   List<Goal> goalsList = history.map((i) => Goal.goalFromJson(i)).toList();
+  //   List<Instance> historyList =
+  //       history.map((i) => Instance.instanceFromJson(i)).toList();
+
+  //   return StorageModel(goals: goalsList, history: historyList);
   // }
+
+  static StorageModel fromJsonArray(String jsonString) {
+    Map<String, dynamic> decodedMap = jsonDecode(jsonString);
+    List<dynamic> goalsList = decodedMap['goals'];
+    List<dynamic> historyList = decodedMap['history'];
+
+    List<Goal> goals = new List<Goal>();
+    goalsList.forEach((f) {
+      Goal s = Goal.goalFromJson(f);
+      goals.add(s);
+    });
+
+    List<Goal> history = new List<Goal>();
+    historyList.forEach((f) {
+      Goal s = Goal.goalFromJson(f);
+      goals.add(s);
+    });
+    return StorageModel(goals: goalsList, history: historyList);
+  }
+  // static List<Goal> fromJson(List<dynamic> parsedJson) {
+  //   List<Goal> goals = new List<Goal>();
+  //   goals = parsedJson.map((i) => Goal.goalFromJson(i)).toList();
+
+  //   return goals;
+  // }
+
 }
 
 class ListGoals {
@@ -31,18 +80,12 @@ class ListGoals {
     this.goals,
   });
 
- static List<Goal> fromJson(List<dynamic> parsedJson) {
+  static List<Goal> fromJson(List<dynamic> parsedJson) {
     List<Goal> goals = new List<Goal>();
     goals = parsedJson.map((i) => Goal.goalFromJson(i)).toList();
 
     return goals;
   }
-  // factory ListGoals.fromJson(List<dynamic> parsedJson) {
-  //   List<Goal> goals = new List<Goal>();
-  //   goals = parsedJson.map((i) => Goal.fromJson(i)).toList();
-
-  //   return new ListGoals(goals: goals);
-  // }
 
   static List<Goal> fromJsonArray(String jsonString) {
     Map<String, dynamic> decodedMap = jsonDecode(jsonString);

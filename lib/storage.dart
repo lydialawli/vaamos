@@ -59,7 +59,7 @@ class Storage {
     return result;
   }
 
-  static readGoalsFile() async {
+  static readStorageFile() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final jsonFile = File('${directory.path}/$goalsFileName');
@@ -71,22 +71,28 @@ class Storage {
   }
 
   static loadGoals() async {
-    String jsonGoals = await readGoalsFile();
-    List<Goal> goals = ListGoals.fromJsonArray(jsonGoals);
-    return goals;
+    String storageJson = await readStorageFile();
+    StorageModel storage = StorageModel.fromJsonArray(storageJson);
+    print('storage ==> ' + storage.toString());
+    return storage;
   }
 
+  // static loadGoals() async {
+  //   String jsonGoals = await readStorageFile();
+  //   List<Goal> goals = ListGoals.fromJsonArray(jsonGoals);
+  //   return goals;
+  // }
 
-  static Goal fromJsonMap(Map<String, dynamic> parsedJson) {
-    return Goal(
-        goalId: parsedJson['id'],
-        goalName: parsedJson['name'],
-        goalIsActive: parsedJson['isActive']);
-  }
+  // static Goal fromJsonMap(Map<String, dynamic> parsedJson) {
+  //   return Goal(
+  //       goalId: parsedJson['id'],
+  //       goalName: parsedJson['name'],
+  //       goalIsActive: parsedJson['isActive']);
+  // }
 
-  static ListGoals fromJsonArray(List<dynamic> parsedJson) {
-    List<Goal> goals = new List<Goal>();
-    goals = parsedJson.map((i) => fromJsonMap(i)).toList();
-    return new ListGoals(goals: goals);
-  }
+  // static ListGoals fromJsonArray(List<dynamic> parsedJson) {
+  //   List<Goal> goals = new List<Goal>();
+  //   goals = parsedJson.map((i) => fromJsonMap(i)).toList();
+  //   return new ListGoals(goals: goals);
+  // }
 }

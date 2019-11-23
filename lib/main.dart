@@ -79,27 +79,7 @@ class HomeState extends State<Home> {
     });
   }
 
-  // Widget dailyGoals(goals) {
-  //   return ListView.builder(
-  //     itemBuilder: (BuildContext context, int index) {
-  //       return Column(
-  //         children: <Widget>[
-  //           Column(
-  //             crossAxisAlignment: CrossAxisAlignment.stretch,
-  //             children: <Widget>[
-  //               GoalWidget(
-  //                   sentence: goals[index].goalName,
-  //                   bgColor: colorCodes[index],
-  //                   isDone: false),
-  //             ],
-  //           )
-  //         ],
-  //       );
-  //     },
-  //     itemCount: goals == null ? 0 : goals.length,
-  //   );
-  // }
-
+ 
   Widget widgetGoals(goals) {
     List<Widget> goalsDisplay = [];
 
@@ -164,7 +144,7 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     var todayDate = DateTime.now();
     String today = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
-
+    print(todayDate.toString());
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
