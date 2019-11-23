@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/goalWidget.dart';
 // import 'package:vaamos/addGoalBox.dart';
-// import 'package:vaamos/localFileSystem.dart';
+import 'package:vaamos/storage.dart';
 import 'package:vaamos/localFileSystem.dart';
-// import 'package:vaamos/model/goal_model.dart';
+import 'package:vaamos/model/goal_model.dart';
 import 'package:vaamos/services/goal_services.dart';
 // import 'dart:convert';
 import 'package:date_format/date_format.dart';
 
 void main() {
-  // var loadedGoals = loadGoals();
   runApp(MyApp());
-  }
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,12 +36,21 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   List data;
+  List<Goal> loadedGoals;
 
   @override
   void initState() {
     super.initState();
-    //  data  = loadedGoals,
+    initGoals();
     widget.storage.startStorage();
+  }
+
+  initGoals() async {
+    var results = await Storage.loadGoals();
+    print('here is ==> ' + results[0].goalName);
+    setState(() {
+      loadedGoals = results;
+    });
   }
 
   final List<Color> colorCodes = <Color>[
@@ -56,7 +63,6 @@ class HomeState extends State<Home> {
 
   onSubmitGoal(String value) {
     print(value);
-
   }
 
   Widget dailyGoals(goals) {
@@ -131,7 +137,7 @@ class HomeState extends State<Home> {
         body: Container(
           child: Center(
             child: FutureBuilder(
-                future: loadGoals(),
+                future: loadGoalsOld(),
                 builder: (context, goalsSnap) {
                   var goalsList = goalsSnap.data;
                   if (goalsSnap.connectionState == ConnectionState.none &&

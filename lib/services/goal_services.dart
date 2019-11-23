@@ -24,7 +24,7 @@ Future<String> readGoalsFile() async {
 
 
 
-Future loadGoals() async {
+Future loadGoalsOld() async {
   String jsonGoals = await readGoalsFile();
   List<Goal> goals = ListGoals.fromJsonArray(jsonGoals);
   // print("1st goal is " + goals[0].goalName + 'and is ' + goals[0].goalIsActive.toString());
