@@ -40,12 +40,12 @@ class LocalFileSystem {
 
     if (fileExists) {
       content = json.decode(jsonFile.readAsStringSync());
-      return content;
+      print('==> ' + content.toString());
     } else {
       jsonFile.createSync();
 
-      Goal initialGoal = new Goal(
-          goalName: 'do my homework', goalId: 1, goalIsActive: true);
+      Goal initialGoal =
+          new Goal(goalName: 'make the bed', goalId: 1, goalIsActive: true);
 
       List<Goal> goals = new List<Goal>();
       goals.add(initialGoal);
@@ -54,7 +54,7 @@ class LocalFileSystem {
       jsonFile.writeAsStringSync(listGoals);
 
       content = json.decode(jsonFile.readAsStringSync());
-      return content;
+      print('==> ' + content.toString());
     }
   }
 
@@ -65,9 +65,9 @@ class LocalFileSystem {
         goalIsActive: parsedJson['isActive']);
   }
 
-  static ListGoals fromJsonArray(List<dynamic> parsedJson){
+  static ListGoals fromJsonArray(List<dynamic> parsedJson) {
     List<Goal> goals = new List<Goal>();
-    goals = parsedJson.map((i)=> fromJsonMap(i)).toList();
+    goals = parsedJson.map((i) => fromJsonMap(i)).toList();
     return new ListGoals(goals: goals);
   }
 
@@ -82,14 +82,10 @@ class LocalFileSystem {
   //   return goals;
   // }
 
-
   static String listToJson(List<Goal> goals) {
     List<Map<String, dynamic>> x = goals
-        .map((f) => {
-              'name': f.goalName,
-              'id': f.goalId,
-              'isActive': f.goalIsActive
-            })
+        .map((f) =>
+            {'name': f.goalName, 'id': f.goalId, 'isActive': f.goalIsActive})
         .toList();
 
     Map<String, dynamic> map() => {'goals': x};
@@ -97,7 +93,7 @@ class LocalFileSystem {
     return result;
   }
 
-  static String toJson(Goal s) {
+  static String goalToJson(Goal s) {
     Map<String, dynamic> map() =>
         {'name': s.goalName, 'id': s.goalId, 'isActive': s.goalIsActive};
 

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class GoalWidget extends StatefulWidget {
-  GoalWidget({this.sentence, this.bgColor, this.isDone});
   final String sentence;
   final Color bgColor;
   final bool isDone;
+
+  GoalWidget({this.sentence, this.bgColor, this.isDone});
 
   @override
   GoalWidgetState createState() => GoalWidgetState();

@@ -29,6 +29,7 @@ class AddGoalBox extends StatefulWidget {
 class GoalInputState extends State<AddGoalBox> {
   bool longPressFlag = false;
   String goalText = '';
+  int lengthGoals;
 
   File jsonFile;
   Directory dir;
@@ -43,16 +44,15 @@ class GoalInputState extends State<AddGoalBox> {
       dir = directory;
       jsonFile = new File(dir.path + "/" + fileName);
       fileExists = jsonFile.existsSync();
+       setState(() {
+        lengthGoals = 1; //should be calculated, not hardcoded
+      });
     });
   }
 
- 
   void writeToFile(String value) {
     print("Writing to file!");
-    Map<String, dynamic> content = {
-      'name': value,
-      'number': 1
-      };
+    Map<String, dynamic> content = {'name': value, 'number': 1};
     if (fileExists) {
       print("File exists");
       Map<String, dynamic> jsonFileContent =
@@ -69,7 +69,7 @@ class GoalInputState extends State<AddGoalBox> {
     return TextStyle(fontSize: 20, color: Colors.grey);
   }
 
-  Widget input() {
+  Widget inputButton() {
     return TextField(
       // onChanged: (text) {
       //   print("First text field: $text");
@@ -110,7 +110,7 @@ class GoalInputState extends State<AddGoalBox> {
             alignment: Alignment.center,
             height: 80,
             color: Colors.grey[100],
-            child: longPressFlag ? input() : longPressButton()),
+            child: longPressFlag ? inputButton() : longPressButton()),
       ),
     );
   }

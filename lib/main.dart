@@ -35,6 +35,12 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   List data;
 
+  @override
+  void initState() {
+    super.initState();
+    widget.storage.startStorage();
+  }
+
   final List<Color> colorCodes = <Color>[
     Colors.orange,
     Colors.cyan,
@@ -64,23 +70,6 @@ class HomeState extends State<Home> {
     );
   }
 
-  // Widget listGoals(goals) {
-
-  //   List<Widget> goalsList = [];
-
-  //   for (int i = 0; i < goals.length; i++) {
-  //     goalsList.add(GoalWidget(sentence: goals[i].goalName, bgColor: colorCodes[i]));
-  //   }
-
-  //   if (goals.length != 5) {
-  //     goals.add(AddGoalBox());
-  //   }
-
-  //   return Column(
-  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: goals);
-
-  // }
-
   Widget dateTitle() {
     return Column(children: [
       Text('TODAY',
@@ -109,7 +98,9 @@ class HomeState extends State<Home> {
   }
 
   Widget bottomContainer(x) {
-    return Container(color: Colors.white, child: Container(child: Center(child: dailyGoals(x))));
+    return Container(
+        color: Colors.white,
+        child: Container(child: Center(child: dailyGoals(x))));
   }
 
   @override
