@@ -24,7 +24,7 @@ class Storage {
       goalsFile.createSync();
 
       createFirstData(todayDate, goalsFile);
-      // initialiseFirstGoal();
+ 
       print('==>' + goalsFile.toString());
       content = json.decode(goalsFile.readAsStringSync());
       print('storage initialised with ' + content.toString());
@@ -49,14 +49,6 @@ class Storage {
     savetoStorageJson(storage, goalsFile);
   }
 
-  // static initialiseFirstGoal() {
-  //   Goal initialGoal =
-  //       new Goal(goalName: 'make the bed', goalId: 1, goalIsActive: true);
-  //   List<Goal> goals = new List<Goal>();
-  //   goals.add(initialGoal);
-
-  //   saveGoals(goals);
-  // }
 
   static savetoStorageJson(storage, goalsFile) async {
     String storageString = storageToJson(storage);
@@ -80,24 +72,6 @@ class Storage {
     return result;
   }
 
-  static String goalsListToJson(List<Goal> goals) {
-    List<Map<String, dynamic>> x = goals
-        .map((f) =>
-            {'name': f.goalName, 'id': f.goalId, 'isActive': f.goalIsActive})
-        .toList();
-
-    Map<String, dynamic> map() => {'goals': x};
-    String result = jsonEncode(map());
-    return result;
-  }
-
-  // static saveGoals(goals) async {
-  //   final dir = await getApplicationDocumentsDirectory();
-  //   final goalsFile = File('${dir.path}/$goalsFileName');
-
-  //   String goalsString = goalsListToJson(goals);
-  //   write(goalsFile, goalsString);
-  // }
 
   static write(File aFile, String aString) {
     aFile.writeAsStringSync(aString);
@@ -114,29 +88,11 @@ class Storage {
     }
   }
 
-  static loadGoals() async {
+  static loadStorage() async {
     String storageJson = await readStorageFile();
-    StorageModel storage = StorageModel.fromJsonArray(storageJson);
+    final jsonResponse = json.decode(storageJson);
+    StorageModel storage = StorageModel.fromJsonArray(jsonResponse);
     print('storage ==> ' + storage.toString());
     return storage;
   }
-
-  // static loadGoals() async {
-  //   String jsonGoals = await readStorageFile();
-  //   List<Goal> goals = ListGoals.fromJsonArray(jsonGoals);
-  //   return goals;
-  // }
-
-  // static Goal fromJsonMap(Map<String, dynamic> parsedJson) {
-  //   return Goal(
-  //       goalId: parsedJson['id'],
-  //       goalName: parsedJson['name'],
-  //       goalIsActive: parsedJson['isActive']);
-  // }
-
-  // static ListGoals fromJsonArray(List<dynamic> parsedJson) {
-  //   List<Goal> goals = new List<Goal>();
-  //   goals = parsedJson.map((i) => fromJsonMap(i)).toList();
-  //   return new ListGoals(goals: goals);
-  // }
 }

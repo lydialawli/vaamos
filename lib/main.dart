@@ -5,7 +5,7 @@ import 'package:vaamos/goalWidget.dart';
 import 'package:vaamos/storage.dart';
 import 'package:vaamos/localFileSystem.dart';
 import 'package:vaamos/model/goal_model.dart';
-import 'package:vaamos/services/goal_services.dart';
+// import 'package:vaamos/services/goal_services.dart';
 // import 'dart:convert';
 import 'package:date_format/date_format.dart';
 
@@ -47,16 +47,15 @@ class HomeState extends State<Home> {
   }
 
   initGoals() async {
-    // var results = await Storage.loadGoals();
+    var results = await Storage.loadStorage();
     var todayDate = DateTime.now();
 
     Storage.startStorage(todayDate);
-
-    // print('here is ==> ' + results.length.toString());
+    // print('here is history ==> ' + results.history[0].toString());
     setState(() {
-      // loadedGoals = results;
-      // goalsCount = results.length;
-      // loadingData = false;
+      loadedGoals = results.goals;
+      goalsCount = results.goals.length;
+      loadingData = false;
       todayDate = todayDate;
     });
   }

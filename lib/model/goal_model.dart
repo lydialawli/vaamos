@@ -17,7 +17,7 @@ class Goal {
 
 class Instance {
   String date;
-  List<int> goalIds;
+  List<dynamic> goalIds;
 
   Instance({this.date, this.goalIds});
 
@@ -33,44 +33,17 @@ class StorageModel {
 
   StorageModel({this.goals, this.history});
 
-  // factory StorageModel.fromJson(String parsedJson) {
-  //   var history = parsedJson['history'] as List;
-  //   print(history.runtimeType);
-  //   var goals = parsedJson['goals'] as List;
-  //   print(goals.runtimeType);
+  factory StorageModel.fromJsonArray(Map<String, dynamic> parsedJson) {
+    var historyL = parsedJson['history'] as List;
 
-  //   List<Goal> goalsList = history.map((i) => Goal.goalFromJson(i)).toList();
-  //   List<Instance> historyList =
-  //       history.map((i) => Instance.instanceFromJson(i)).toList();
+    var goals = parsedJson['goals'] as List;
 
-  //   return StorageModel(goals: goalsList, history: historyList);
-  // }
+    List<Goal> goalsList = goals.map((i) => Goal.goalFromJson(i)).toList();
+    List<Instance> historyList =
+        historyL.map((i) => Instance.instanceFromJson(i)).toList();
 
-  static StorageModel fromJsonArray(String jsonString) {
-    Map<String, dynamic> decodedMap = jsonDecode(jsonString);
-    List<dynamic> goalsList = decodedMap['goals'];
-    List<dynamic> historyList = decodedMap['history'];
-
-    List<Goal> listGoals = new List<Goal>();
-    goalsList.forEach((f) {
-      Goal s = Goal.goalFromJson(f);
-      listGoals.add(s);
-    });
-
-    List<Instance> listHistory = new List<Instance>();
-    historyList.forEach((f) {
-      Instance s = Instance.instanceFromJson(f);
-      listHistory.add(s);
-    });
-    return StorageModel(goals: listGoals, history: listHistory);
+    return StorageModel(goals: goalsList, history: historyList);
   }
-  // static List<Goal> fromJson(List<dynamic> parsedJson) {
-  //   List<Goal> goals = new List<Goal>();
-  //   goals = parsedJson.map((i) => Goal.goalFromJson(i)).toList();
-
-  //   return goals;
-  // }
-
 }
 
 class ListGoals {
