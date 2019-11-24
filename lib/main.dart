@@ -37,8 +37,10 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   List data;
   List<Goal> loadedGoals = [];
+  List<Instance> loadedHistory = [];
   int goalsCount;
   bool loadingData = true;
+  Instance todayInstance;
 
   @override
   void initState() {
@@ -47,16 +49,22 @@ class HomeState extends State<Home> {
   }
 
   initGoals() async {
-    var results = await Storage.loadStorage();
-    var todayDate = DateTime.now();
+    StorageModel results = await Storage.loadStorage();
+    DateTime todayDate = DateTime.now();
+    String today = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
 
     Storage.startStorage(todayDate);
-    // print('here is history ==> ' + results.history[0].toString());
+    List<Instance> history = results.history;
+    todayInstance = history.singleWhere((i) => formatDate(i.date, [dd, ' ', M, ' ', yyyy]).toString() == today,
+        orElse: () => null);
+    print('today instance is => ' + history[0].date.toString());
     setState(() {
       loadedGoals = results.goals;
       goalsCount = results.goals.length;
       loadingData = false;
       todayDate = todayDate;
+      loadedHistory = history;
+      todayInstance = todayInstance;
     });
   }
 

@@ -35,7 +35,7 @@ class Storage {
     Goal initialGoal =
         new Goal(goalName: 'make the bed', goalId: 1, goalIsActive: true);
     Instance firstInstance =
-        new Instance(date: todayDate.toString(), goalIds: [1]);
+        new Instance(date: todayDate, goalIds: [1]);
 
     List<Instance> listHistory = new List<Instance>();
     listHistory.add(firstInstance);

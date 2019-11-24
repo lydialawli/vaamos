@@ -16,14 +16,14 @@ class Goal {
 }
 
 class Instance {
-  String date;
+  DateTime date;
   List<dynamic> goalIds;
 
   Instance({this.date, this.goalIds});
 
   factory Instance.instanceFromJson(Map<String, dynamic> parsedJson) {
     return Instance(
-        date: parsedJson['date'].toString(), goalIds: parsedJson['goalIds']);
+        date: DateTime.parse(parsedJson['date']), goalIds: parsedJson['goalIds']);
   }
 }
 
