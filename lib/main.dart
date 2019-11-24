@@ -96,6 +96,13 @@ class HomeState extends State<Home> {
     });
   }
 
+  editGoalName(String value, int id) {
+    List<Goal> goals = loadedGoals;
+    int index = goals.indexWhere((g) => g.goalId == id);
+    goals[index].goalName = value;
+    updateStorage(goals, loadedHistory);
+  }
+
   onDone(int x) {
     int goalId = x;
     List ids = loadedHistory[indexView].goalIds;
@@ -158,9 +165,9 @@ class HomeState extends State<Home> {
       Goal goal = activeGoals[i];
 
       goalsStrings.add(GoalStrings(
-        sentence: goal.goalName,
-        goalId: goal.goalId,
-      ));
+          sentence: goal.goalName,
+          goalId: goal.goalId,
+          editGoalName: editGoalName));
       goalsStrings.add(Container(height: 10));
     }
 
@@ -209,9 +216,7 @@ class HomeState extends State<Home> {
                     : new Stack(
                         children: <Widget>[
                           goalBoxWidget(onDone),
-                          new Positioned.fill(
-          
-                             child: goalStringsWidget() )
+                          new Positioned.fill(child: goalStringsWidget())
                         ],
                       ))));
   }
