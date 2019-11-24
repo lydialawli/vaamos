@@ -4,8 +4,11 @@ class GoalWidget extends StatefulWidget {
   final String sentence;
   final Color bgColor;
   final bool isDone;
+  final int goalId;
+  final Function(int) onDone;
 
-  GoalWidget({this.sentence, this.bgColor, this.isDone});
+  GoalWidget(
+      {this.sentence, this.bgColor, this.isDone, this.onDone, this.goalId});
 
   @override
   GoalWidgetState createState() => GoalWidgetState();
@@ -22,6 +25,10 @@ class GoalWidgetState extends State<GoalWidget> {
     }
   }
 
+  void changeDone(int value) {
+    widget.onDone(value);
+  }
+
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
@@ -29,6 +36,7 @@ class GoalWidgetState extends State<GoalWidget> {
           setState(() {
             isDone = !isDone;
           });
+          changeDone(widget.goalId);
         },
         child: Container(
           alignment: Alignment.center,

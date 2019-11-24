@@ -103,7 +103,11 @@ class HomeState extends State<Home> {
     });
   }
 
-  Widget widgetGoals() {
+  onDone(x) {
+    print('goal marked as completed => ' + x.toString());
+  }
+
+  Widget widgetGoals(onDone) {
     List<Widget> goalsDisplay = [];
     List goalIds = todayInstance.goalIds;
     List<Goal> activeGoals = loadedGoals.where((g) => g.isActive).toList();
@@ -113,11 +117,14 @@ class HomeState extends State<Home> {
       //     orElse: () => null);
       Goal goal = activeGoals[i];
       bool isDone;
-     
-     isDone = goalIds.contains(goal.goalId);
+      isDone = goalIds.contains(goal.goalId);
 
       goalsDisplay.add(GoalWidget(
-          sentence: goal.goalName, bgColor: colorCodes[i], isDone: isDone));
+          sentence: goal.goalName,
+          goalId: goal.goalId,
+          bgColor: colorCodes[i],
+          isDone: isDone,
+          onDone: onDone));
       goalsDisplay.add(Container(height: 10));
     }
 
@@ -160,7 +167,8 @@ class HomeState extends State<Home> {
     return Container(
         color: Colors.white,
         child: Container(
-            child: Center(child: loadingData ? spinner() : widgetGoals())));
+            child:
+                Center(child: loadingData ? spinner() : widgetGoals(onDone))));
   }
 
   Widget spinner() {
