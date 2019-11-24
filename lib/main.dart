@@ -77,11 +77,11 @@ class HomeState extends State<Home> {
   }
 
   final List<Color> colorCodes = <Color>[
-    Colors.orange,
-    Colors.cyan,
-    Colors.purple,
-    Colors.lightGreen,
-    Colors.pink
+    Color(0xffb80DEEA),
+    Color(0xffbFFD78C),
+    Color(0xffbFF959D),
+    Color(0xffbF06292),
+    Color(0xffb72768A)
   ];
 
   onSubmitGoal(String value) {
