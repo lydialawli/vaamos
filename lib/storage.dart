@@ -7,35 +7,36 @@ import 'package:vaamos/model/goal_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Storage {
-  static String goalsFileName = "test14.json";
+  static String storageFileName = "test14.json";
 
   static startStorage(todayDate) async {
     final dir = await getApplicationDocumentsDirectory();
-    final goalsFile = File('${dir.path}/$goalsFileName');
+    final storageFile = File('${dir.path}/$storageFileName');
     bool fileExists = false;
-    fileExists = goalsFile.existsSync();
+    fileExists = storageFile.existsSync();
 
     Map<String, dynamic> content;
 
     if (fileExists) {
-      content = json.decode(goalsFile.readAsStringSync());
+      content = json.decode(storageFile.readAsStringSync());
       print('storage started with ' + content.toString());
+      return storageFile;
     } else {
-      goalsFile.createSync();
+      storageFile.createSync();
 
-      createFirstData(todayDate, goalsFile);
- 
-      print('==>' + goalsFile.toString());
-      content = json.decode(goalsFile.readAsStringSync());
+      createFirstData(todayDate, storageFile);
+
+      print('==>' + storageFile.toString());
+      content = json.decode(storageFile.readAsStringSync());
       print('storage initialised with ' + content.toString());
+      return storageFile;
     }
   }
 
   static createFirstData(todayDate, goalsFile) {
     Goal initialGoal =
         new Goal(goalName: 'make the bed', goalId: 1, isActive: true);
-    Instance firstInstance =
-        new Instance(date: todayDate, goalIds: [1]);
+    Instance firstInstance = new Instance(date: todayDate, goalIds: [1]);
 
     List<Instance> listHistory = new List<Instance>();
     listHistory.add(firstInstance);
@@ -49,19 +50,15 @@ class Storage {
     savetoStorageJson(storage, goalsFile);
   }
 
-
-  static savetoStorageJson(storage, goalsFile) async {
+  static savetoStorageJson(storage, storageFile) async {
     String storageString = storageToJson(storage);
-    write(goalsFile, storageString);
+    write(storageFile, storageString);
   }
 
   static String storageToJson(StorageModel storage) {
     List<Map<String, dynamic>> x = storage.goals
-        .map((f) => {
-              'name': f.goalName,
-              'goalId': f.goalId,
-              'isActive': f.isActive
-            })
+        .map((f) =>
+            {'name': f.goalName, 'goalId': f.goalId, 'isActive': f.isActive})
         .toList();
     List<Map<String, dynamic>> y = storage.history
         .map((f) => {'date': f.date.toString(), 'goalIds': f.goalIds})
@@ -72,7 +69,6 @@ class Storage {
     return result;
   }
 
-
   static write(File aFile, String aString) {
     aFile.writeAsStringSync(aString);
   }
@@ -80,7 +76,7 @@ class Storage {
   static readStorageFile() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final jsonFile = File('${directory.path}/$goalsFileName');
+      final jsonFile = File('${directory.path}/$storageFileName');
       String text = await jsonFile.readAsString();
       return text;
     } catch (e) {

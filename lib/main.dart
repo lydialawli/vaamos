@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/goalWidget.dart';
-// import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/storage.dart';
 // import 'package:vaamos/localFileSystem.dart';
 import 'package:vaamos/model/goal_model.dart';
 // import 'package:vaamos/services/goal_services.dart';
 // import 'dart:convert';
+import 'dart:io';
 import 'package:date_format/date_format.dart';
 
 void main() {
@@ -44,18 +44,19 @@ class HomeState extends State<Home> {
   int goalsCount;
   bool loadingData = true;
   Instance todayInstance;
+  int indexInstanceView = 0;
+  File storageFile;
 
   @override
   void initState() {
     super.initState();
-    initGoals();
+    initLoadStorage();
   }
 
-  initGoals() async {
+  initLoadStorage() async {
     DateTime todayDate = DateTime.now();
     String today = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
-    Storage.startStorage(todayDate);
-
+    Storage.startStorage(todayDate).then((result) => storageFile = result);
     StorageModel results = await Storage.loadStorage();
 
     List<Instance> history = results.history;
@@ -70,6 +71,7 @@ class HomeState extends State<Home> {
       todayDate = todayDate;
       loadedHistory = history;
       todayInstance = todayInstance;
+      storageFile = storageFile;
     });
   }
 
@@ -88,11 +90,18 @@ class HomeState extends State<Home> {
     List<Goal> goals = loadedGoals;
     goals.add(newGoal);
 
-    // Storage.saveGoals(goals);
-    // setState(() {
-    //   loadedGoals = goals;
-    //   goalsCount = newId;
-    // });
+    List<Instance> history = loadedHistory;
+    history[indexInstanceView].goalIds.add(newId);
+
+    StorageModel storage = new StorageModel(goals: goals, history: history);
+
+    Storage.savetoStorageJson(storage, storageFile);
+    Storage.readStorageFile().then((res) => print('new json is => ' + res));
+    setState(() {
+      loadedGoals = goals;
+      loadedHistory = history;
+      goalsCount = newId;
+    });
   }
 
   Widget widgetGoals() {
@@ -101,11 +110,15 @@ class HomeState extends State<Home> {
     List<Goal> activeGoals = loadedGoals.where((g) => g.isActive).toList();
 
     for (int i = 0; i < activeGoals.length; i++) {
-      Goal goal = activeGoals.singleWhere((g) => g.goalId == goalIds[i],
-          orElse: () => null);
+      // Goal goal = activeGoals.singleWhere((g) => g.goalId == goalIds[i],
+      //     orElse: () => null);
+      Goal goal = activeGoals[i];
+      bool isDone;
+     
+     isDone = goalIds.contains(goal.goalId);
 
       goalsDisplay.add(GoalWidget(
-          sentence: goal.goalName, bgColor: colorCodes[i], isDone: false));
+          sentence: goal.goalName, bgColor: colorCodes[i], isDone: isDone));
       goalsDisplay.add(Container(height: 10));
     }
 
@@ -116,24 +129,6 @@ class HomeState extends State<Home> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.start, children: goalsDisplay);
   }
-  // Widget widgetGoals(goals) {
-  //   List<Widget> goalsDisplay = [];
-
-  //   for (int i = 0; i < goals.length; i++) {
-  //     goalsDisplay.add(GoalWidget(
-  //         sentence: goals[i].goalName, bgColor: colorCodes[i], isDone: false));
-  //     goalsDisplay.add(Container(
-  //       height: 10,
-  //     ));
-  //   }
-
-  //   if (goals.length < 5) {
-  //     goalsDisplay.add(AddGoalBox(onSubmitGoal));
-  //   }
-
-  //   return Column(
-  //       mainAxisAlignment: MainAxisAlignment.start, children: goalsDisplay);
-  // }
 
   Widget dateTitle() {
     return Column(children: [
