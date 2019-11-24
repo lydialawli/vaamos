@@ -91,7 +91,6 @@ class HomeState extends State<Home> {
     goals.add(newGoal);
 
     List<Instance> history = loadedHistory;
-    history[indexInstanceView].goalIds.add(newId);
 
     StorageModel storage = new StorageModel(goals: goals, history: history);
 
