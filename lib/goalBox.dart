@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class GoalWidget extends StatefulWidget {
+class GoalBox extends StatefulWidget {
   final String sentence;
   final Color bgColor;
   final bool isDone;
   final int goalId;
   final Function(int) onDone;
 
-  GoalWidget(
+  GoalBox(
       {this.sentence, this.bgColor, this.isDone, this.onDone, this.goalId});
 
   @override
-  GoalWidgetState createState() => GoalWidgetState();
+  GoalBoxState createState() => GoalBoxState();
 }
 
-class GoalWidgetState extends State<GoalWidget> {
+class GoalBoxState extends State<GoalBox> {
   bool isDone = false;
   void initState() {
     super.initState();
@@ -42,11 +42,11 @@ class GoalWidgetState extends State<GoalWidget> {
           alignment: Alignment.center,
           height: 90,
           color: isDone ? widget.bgColor : Colors.grey[100],
-          child: new Text(widget.sentence,
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-              )),
+          // child: new Text(widget.sentence,
+          //     style: TextStyle(
+          //       fontSize: 20,
+          //       color: Colors.black,
+          //     )),
         ),
       ),
     );

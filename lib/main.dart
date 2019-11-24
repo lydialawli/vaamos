@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vaamos/addGoalBox.dart';
-import 'package:vaamos/goalWidget.dart';
+import 'package:vaamos/goalBox.dart';
+import 'package:vaamos/goalStrings.dart';
 import 'package:vaamos/storage.dart';
-// import 'package:vaamos/localFileSystem.dart';
 import 'package:vaamos/model/goal_model.dart';
-// import 'package:vaamos/services/goal_services.dart';
-// import 'dart:convert';
 import 'dart:io';
 import 'package:date_format/date_format.dart';
 
@@ -100,7 +98,7 @@ class HomeState extends State<Home> {
 
   onDone(int x) {
     int goalId = x;
-    List ids= loadedHistory[indexView].goalIds;
+    List ids = loadedHistory[indexView].goalIds;
 
     ids.contains(goalId)
         ? ids.removeWhere((id) => id == goalId)
@@ -123,7 +121,7 @@ class HomeState extends State<Home> {
     });
   }
 
-  Widget widgetGoals(onDone) {
+  Widget goalBoxWidget(onDone) {
     List<Widget> goalsDisplay = [];
     List goalIds = viewInstance.goalIds;
     List<Goal> activeGoals = loadedGoals.where((g) => g.isActive).toList();
@@ -135,7 +133,7 @@ class HomeState extends State<Home> {
       bool isDone;
       isDone = goalIds.contains(goal.goalId);
 
-      goalsDisplay.add(GoalWidget(
+      goalsDisplay.add(GoalBox(
           sentence: goal.goalName,
           goalId: goal.goalId,
           bgColor: colorCodes[i],
@@ -150,6 +148,28 @@ class HomeState extends State<Home> {
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.start, children: goalsDisplay);
+  }
+
+  Widget goalStringsWidget() {
+    List<Widget> goalsStrings = [];
+    List<Goal> activeGoals = loadedGoals.where((g) => g.isActive).toList();
+
+    for (int i = 0; i < activeGoals.length; i++) {
+      Goal goal = activeGoals[i];
+
+      goalsStrings.add(GoalStrings(
+        sentence: goal.goalName,
+        goalId: goal.goalId,
+      ));
+      goalsStrings.add(Container(height: 10));
+    }
+
+    if (activeGoals.length < 5) {
+      goalsStrings.add(Container(height: 90));
+    }
+
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start, children: goalsStrings);
   }
 
   Widget dateTitle() {
@@ -183,8 +203,17 @@ class HomeState extends State<Home> {
     return Container(
         color: Colors.white,
         child: Container(
-            child:
-                Center(child: loadingData ? spinner() : widgetGoals(onDone))));
+            child: Center(
+                child: loadingData
+                    ? spinner()
+                    : new Stack(
+                        children: <Widget>[
+                          goalBoxWidget(onDone),
+                          new Positioned.fill(
+          
+                             child: goalStringsWidget() )
+                        ],
+                      ))));
   }
 
   Widget spinner() {
