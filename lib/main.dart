@@ -43,8 +43,8 @@ class HomeState extends State<Home> {
   List<Instance> loadedHistory = [];
   int goalsCount;
   bool loadingData = true;
-  Instance todayInstance;
-  int indexInstanceView = 0;
+  Instance viewInstance;
+  int indexView = 0;
   File storageFile;
 
   @override
@@ -60,18 +60,19 @@ class HomeState extends State<Home> {
     StorageModel results = await Storage.loadStorage();
 
     List<Instance> history = results.history;
-    todayInstance = history.singleWhere(
-        (i) => formatDate(i.date, [dd, ' ', M, ' ', yyyy]).toString() == today,
-        orElse: () => null);
-    print('today instance is => ' + history[0].date.toString());
+
+    indexView = history.indexWhere(
+        (i) => formatDate(i.date, [dd, ' ', M, ' ', yyyy]).toString() == today);
+
     setState(() {
       loadedGoals = results.goals;
       goalsCount = results.goals.length;
       loadingData = false;
       todayDate = todayDate;
       loadedHistory = history;
-      todayInstance = todayInstance;
+      viewInstance = history[indexView];
       storageFile = storageFile;
+      indexView = indexView;
     });
   }
 
@@ -90,7 +91,27 @@ class HomeState extends State<Home> {
     List<Goal> goals = loadedGoals;
     goals.add(newGoal);
 
-    List<Instance> history = loadedHistory;
+    updateStorage(loadedGoals, loadedHistory);
+
+    setState(() {
+      goalsCount = newId;
+    });
+  }
+
+  onDone(int x) {
+    int goalId = x;
+    List ids= loadedHistory[indexView].goalIds;
+
+    ids.contains(goalId)
+        ? ids.removeWhere((id) => id == goalId)
+        : ids.add(goalId);
+
+    updateStorage(loadedGoals, loadedHistory);
+  }
+
+  updateStorage(g, h) {
+    List<Goal> goals = g;
+    List<Instance> history = h;
 
     StorageModel storage = new StorageModel(goals: goals, history: history);
 
@@ -99,17 +120,12 @@ class HomeState extends State<Home> {
     setState(() {
       loadedGoals = goals;
       loadedHistory = history;
-      goalsCount = newId;
     });
-  }
-
-  onDone(x) {
-    print('goal marked as completed => ' + x.toString());
   }
 
   Widget widgetGoals(onDone) {
     List<Widget> goalsDisplay = [];
-    List goalIds = todayInstance.goalIds;
+    List goalIds = viewInstance.goalIds;
     List<Goal> activeGoals = loadedGoals.where((g) => g.isActive).toList();
 
     for (int i = 0; i < activeGoals.length; i++) {
