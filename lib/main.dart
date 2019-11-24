@@ -3,7 +3,7 @@ import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/goalWidget.dart';
 // import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/storage.dart';
-import 'package:vaamos/localFileSystem.dart';
+// import 'package:vaamos/localFileSystem.dart';
 import 'package:vaamos/model/goal_model.dart';
 // import 'package:vaamos/services/goal_services.dart';
 // import 'dart:convert';
@@ -22,14 +22,17 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.pink,
         ),
-        home: Home(title: 'vaamos', storage: LocalFileSystem()));
+        home: Home(title: 'vaamos'));
   }
 }
 
 class Home extends StatefulWidget {
-  Home({Key key, this.title, this.storage}) : super(key: key);
+  Home({
+    Key key,
+    this.title,
+  }) : super(key: key);
   final String title;
-  final LocalFileSystem storage;
+
   @override
   HomeState createState() => HomeState();
 }
@@ -49,13 +52,15 @@ class HomeState extends State<Home> {
   }
 
   initGoals() async {
-    StorageModel results = await Storage.loadStorage();
     DateTime todayDate = DateTime.now();
     String today = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
-
     Storage.startStorage(todayDate);
+
+    StorageModel results = await Storage.loadStorage();
+
     List<Instance> history = results.history;
-    todayInstance = history.singleWhere((i) => formatDate(i.date, [dd, ' ', M, ' ', yyyy]).toString() == today,
+    todayInstance = history.singleWhere(
+        (i) => formatDate(i.date, [dd, ' ', M, ' ', yyyy]).toString() == today,
         orElse: () => null);
     print('today instance is => ' + history[0].date.toString());
     setState(() {
@@ -78,7 +83,7 @@ class HomeState extends State<Home> {
 
   onSubmitGoal(String value) {
     int newId = goalsCount + 1;
-    Goal newGoal = new Goal(goalName: value, goalId: newId, goalIsActive: true);
+    Goal newGoal = new Goal(goalName: value, goalId: newId, isActive: true);
 
     List<Goal> goals = loadedGoals;
     goals.add(newGoal);
@@ -90,24 +95,45 @@ class HomeState extends State<Home> {
     // });
   }
 
-  Widget widgetGoals(goals) {
+  Widget widgetGoals() {
     List<Widget> goalsDisplay = [];
+    List goalIds = todayInstance.goalIds;
+    List<Goal> activeGoals = loadedGoals.where((g) => g.isActive).toList();
 
-    for (int i = 0; i < goals.length; i++) {
+    for (int i = 0; i < activeGoals.length; i++) {
+      Goal goal = activeGoals.singleWhere((g) => g.goalId == goalIds[i],
+          orElse: () => null);
+
       goalsDisplay.add(GoalWidget(
-          sentence: goals[i].goalName, bgColor: colorCodes[i], isDone: false));
-      goalsDisplay.add(Container(
-        height: 10,
-      ));
+          sentence: goal.goalName, bgColor: colorCodes[i], isDone: false));
+      goalsDisplay.add(Container(height: 10));
     }
 
-    if (goals.length < 5) {
+    if (activeGoals.length < 5) {
       goalsDisplay.add(AddGoalBox(onSubmitGoal));
     }
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.start, children: goalsDisplay);
   }
+  // Widget widgetGoals(goals) {
+  //   List<Widget> goalsDisplay = [];
+
+  //   for (int i = 0; i < goals.length; i++) {
+  //     goalsDisplay.add(GoalWidget(
+  //         sentence: goals[i].goalName, bgColor: colorCodes[i], isDone: false));
+  //     goalsDisplay.add(Container(
+  //       height: 10,
+  //     ));
+  //   }
+
+  //   if (goals.length < 5) {
+  //     goalsDisplay.add(AddGoalBox(onSubmitGoal));
+  //   }
+
+  //   return Column(
+  //       mainAxisAlignment: MainAxisAlignment.start, children: goalsDisplay);
+  // }
 
   Widget dateTitle() {
     return Column(children: [
@@ -136,11 +162,11 @@ class HomeState extends State<Home> {
                 ]))));
   }
 
-  Widget bottomContainer(x) {
+  Widget bottomContainer() {
     return Container(
         color: Colors.white,
         child: Container(
-            child: Center(child: loadingData ? spinner() : widgetGoals(x))));
+            child: Center(child: loadingData ? spinner() : widgetGoals())));
   }
 
   Widget spinner() {
@@ -169,7 +195,7 @@ class HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Expanded(flex: 2, child: topContainer()),
-            Expanded(flex: 8, child: bottomContainer(loadedGoals)),
+            Expanded(flex: 8, child: bottomContainer()),
             // Expanded(flex: 1, child: AddGoalBox(onSubmitGoal))
           ],
         ));

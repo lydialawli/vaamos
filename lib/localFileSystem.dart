@@ -59,7 +59,7 @@ class LocalFileSystem {
 
   static String goalToJson(Goal s) {
     Map<String, dynamic> map() =>
-        {'name': s.goalName, 'id': s.goalId, 'isActive': s.goalIsActive};
+        {'name': s.goalName, 'id': s.goalId, 'isActive': s.isActive};
 
     String result = jsonEncode(map());
     return result;

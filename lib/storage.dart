@@ -7,7 +7,7 @@ import 'package:vaamos/model/goal_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Storage {
-  static String goalsFileName = "test12.json";
+  static String goalsFileName = "test14.json";
 
   static startStorage(todayDate) async {
     final dir = await getApplicationDocumentsDirectory();
@@ -33,7 +33,7 @@ class Storage {
 
   static createFirstData(todayDate, goalsFile) {
     Goal initialGoal =
-        new Goal(goalName: 'make the bed', goalId: 1, goalIsActive: true);
+        new Goal(goalName: 'make the bed', goalId: 1, isActive: true);
     Instance firstInstance =
         new Instance(date: todayDate, goalIds: [1]);
 
@@ -60,11 +60,11 @@ class Storage {
         .map((f) => {
               'name': f.goalName,
               'goalId': f.goalId,
-              'isActive': f.goalIsActive
+              'isActive': f.isActive
             })
         .toList();
     List<Map<String, dynamic>> y = storage.history
-        .map((f) => {'date': f.date, 'goalIds': f.goalIds})
+        .map((f) => {'date': f.date.toString(), 'goalIds': f.goalIds})
         .toList();
 
     Map<String, dynamic> map() => {'goals': x, 'history': y};
@@ -92,7 +92,6 @@ class Storage {
     String storageJson = await readStorageFile();
     final jsonResponse = json.decode(storageJson);
     StorageModel storage = StorageModel.fromJsonArray(jsonResponse);
-    print('storage ==> ' + storage.toString());
     return storage;
   }
 }

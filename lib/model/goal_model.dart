@@ -3,15 +3,15 @@ import 'dart:convert';
 class Goal {
   String goalName;
   int goalId;
-  bool goalIsActive;
+  bool isActive;
 
-  Goal({this.goalName, this.goalId, this.goalIsActive});
+  Goal({this.goalName, this.goalId, this.isActive});
 
   factory Goal.goalFromJson(Map<String, dynamic> parsedJson) {
     return Goal(
         goalName: parsedJson['name'].toString(),
-        goalId: parsedJson['id'],
-        goalIsActive: parsedJson['isActive']);
+        goalId: parsedJson['goalId'],
+        isActive: parsedJson['isActive']);
   }
 }
 

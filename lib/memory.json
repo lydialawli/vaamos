@@ -8,27 +8,10 @@
     ],
     "history": [
         {
-            "date": "2019-11-23 18:34:33.748088",
+            "date": "2019-11-23 18:34:33.748088", 
             "goalIds": [
                1
             ]
-        }
-    ]
-}
-
-
-
-{
-    "id":1,
-    "name":"ProductName",
-    "images":[
-        {
-            "id":11,
-            "imageName":"xCh-rhy"
-        },
-        {
-            "id":31,
-            "imageName":"fjs-eun"
         }
     ]
 }
