@@ -164,9 +164,9 @@ class HomeState extends State<Home> {
       goalsDisplay.add(Container(height: 10));
     }
 
-    if (activeGoals.length < 5) {
-      goalsDisplay.add(AddGoalBox(onSubmitGoal));
-    }
+    // if (activeGoals.length < 5) {
+    //   goalsDisplay.add(AddGoalBox(onSubmitGoal));
+    // }
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.start, children: goalsDisplay);
@@ -187,7 +187,7 @@ class HomeState extends State<Home> {
     }
 
     if (activeGoals.length < 5) {
-      goalsStrings.add(Container(height: 90));
+       goalsStrings.add(AddGoalBox(onSubmitGoal));
     }
 
     return Column(
