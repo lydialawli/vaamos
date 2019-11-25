@@ -23,7 +23,7 @@ class Storage {
       String today = formatDate(todayDate, [dd, mm, yyyy]);
       String yesterday = formatDate(
           storage.history[storage.history.length - 1].date, [dd, mm, yyyy]);
-          
+
       if (today != yesterday)
         createNewInstance(todayDate, storage, storageFile);
 

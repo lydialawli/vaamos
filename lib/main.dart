@@ -211,14 +211,7 @@ class HomeState extends State<Home> {
         color: Colors.white,
         child: Container(
             child: Center(
-                child: loadingData
-                    ? spinner()
-                    : new Stack(
-                        children: <Widget>[
-                          goalBoxWidget(onDone),
-                          new Positioned.fill(child: goalStringsWidget())
-                        ],
-                      ))));
+                child: loadingData ? spinner() : goalBoxWidget(onDone))));
   }
 
   Widget spinner() {
@@ -247,7 +240,14 @@ class HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Expanded(flex: 2, child: topContainer()),
-            Expanded(flex: 8, child: bottomContainer()),
+            Expanded(
+                flex: 8,
+                child: Stack(
+                  children: <Widget>[
+                    bottomContainer(),
+                    goalStringsWidget(),
+                  ],
+                )),
             // Expanded(flex: 1, child: AddGoalBox(onSubmitGoal))
           ],
         ));
