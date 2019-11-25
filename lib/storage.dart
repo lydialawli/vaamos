@@ -1,8 +1,6 @@
-// import 'dart:async' show Future;
-// import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'dart:io';
-// import 'package:flutter/widgets.dart';
+import 'package:date_format/date_format.dart';
 import 'package:vaamos/model/goal_model.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -18,6 +16,17 @@ class Storage {
     Map<String, dynamic> content;
 
     if (fileExists) {
+      String storageJson = await storageFile.readAsString();
+      final jsonResponse = json.decode(storageJson);
+      StorageModel storage = StorageModel.fromJsonArray(jsonResponse);
+
+      String today = formatDate(todayDate, [dd, mm, yyyy]);
+      String yesterday = formatDate(
+          storage.history[storage.history.length - 1].date, [dd, mm, yyyy]);
+          
+      if (today != yesterday)
+        createNewInstance(todayDate, storage, storageFile);
+
       content = json.decode(storageFile.readAsStringSync());
       print('storage started with ' + content.toString());
       return storageFile;
@@ -31,6 +40,16 @@ class Storage {
       print('storage initialised with ' + content.toString());
       return storageFile;
     }
+  }
+
+  static createNewInstance(todayDate, storageDart, goalsFile) {
+    StorageModel storage = storageDart;
+
+    Instance newInstance = new Instance(date: todayDate, goalIds: []);
+
+    storage.history.add(newInstance);
+
+    savetoStorageJson(storage, goalsFile);
   }
 
   static createFirstData(todayDate, goalsFile) {
