@@ -5,7 +5,7 @@ import 'package:vaamos/model/goal_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Storage {
-  static String storageFileName = "test14.json";
+  static String storageFileName = "test18.json";
 
   static startStorage(todayDate) async {
     final dir = await getApplicationDocumentsDirectory();
@@ -22,7 +22,7 @@ class Storage {
 
       String today = formatDate(todayDate, [dd, mm, yyyy]);
       String yesterday = formatDate(
-          storage.history[storage.history.length - 1].date, [dd, mm, yyyy]);
+          storage.history[0].date, [dd, mm, yyyy]);
 
       if (today != yesterday)
         createNewInstance(todayDate, storage, storageFile);
@@ -47,7 +47,7 @@ class Storage {
 
     Instance newInstance = new Instance(date: todayDate, goalIds: []);
 
-    storage.history.add(newInstance);
+    storage.history.insert(0,newInstance);
 
     savetoStorageJson(storage, goalsFile);
   }

@@ -41,10 +41,12 @@ class HomeState extends State<Home> {
   List<Instance> loadedHistory = [];
   int goalsCount;
   bool loadingData = true;
-  Instance viewInstance;
+  // Instance viewInstance;
   int indexView = 0;
   File storageFile;
   int totalInstances = 0;
+  DateTime dateToday;
+  String todayDateString;
 
   var scrollDirection = Axis.horizontal;
 
@@ -55,15 +57,17 @@ class HomeState extends State<Home> {
   }
 
   initLoadStorage() async {
-    DateTime todayDate = DateTime.now();
-    String today = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
+    // DateTime todayDate = DateTime.now();
+    DateTime todayDate = DateTime.parse('2019-11-20 12:36:56.270753');
+    todayDateString = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
     Storage.startStorage(todayDate).then((result) => storageFile = result);
     StorageModel results = await Storage.loadStorage();
 
     List<Instance> history = results.history;
 
-    indexView = history.indexWhere(
-        (i) => formatDate(i.date, [dd, ' ', M, ' ', yyyy]).toString() == today);
+    indexView = history.indexWhere((i) =>
+        formatDate(i.date, [dd, ' ', M, ' ', yyyy]).toString() ==
+        todayDateString);
 
     setState(() {
       loadedGoals = results.goals;
@@ -71,8 +75,9 @@ class HomeState extends State<Home> {
       loadingData = false;
       todayDate = todayDate;
       loadedHistory = history;
-      viewInstance = history[indexView];
+      // viewInstance = history[indexView];
       storageFile = storageFile;
+      dateToday = todayDate;
       indexView = indexView;
       totalInstances = history.length;
     });
@@ -99,6 +104,11 @@ class HomeState extends State<Home> {
       goalsCount = newId;
     });
   }
+
+  // deleteGoal(int goalId) {
+  //   List<Goal> goals = loadedGoals.removeWhere((g) => g.goalId == goalId);
+  //   updateStorage(goals, loadedHistory);
+  // }
 
   editGoalName(String value, int id) {
     List<Goal> goals = loadedGoals;
@@ -184,8 +194,16 @@ class HomeState extends State<Home> {
   }
 
   Widget dateTitle() {
+    String viewDate =
+        formatDate(loadedHistory[indexView].date, [dd, ' ', M, ' ', yyyy])
+            .toString();
+
+    if (viewDate == todayDateString) {
+      viewDate = 'TODAY';
+    }
+
     return Column(children: [
-      Text('TODAY',
+      Text(viewDate,
           style: TextStyle(
             fontSize: 30,
             color: Colors.black87,
@@ -226,13 +244,12 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var todayDate = DateTime.now();
-    String today = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
-    print(todayDate.toString());
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text('Today is ' + today,
+          title: Text(
+              'Today is ' +
+                  formatDate(dateToday, [dd, ' ', M, ' ', yyyy]).toString(),
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.grey,
@@ -251,7 +268,7 @@ class HomeState extends State<Home> {
                         children: <Widget>[
                           PageView.builder(
                             controller: PageController(
-                              initialPage: totalInstances-1,
+                              initialPage: 0,
                             ),
                             scrollDirection: scrollDirection,
                             onPageChanged: (index) {
