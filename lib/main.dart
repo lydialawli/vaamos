@@ -44,6 +44,9 @@ class HomeState extends State<Home> {
   Instance viewInstance;
   int indexView = 0;
   File storageFile;
+  int totalInstances = 0;
+
+  var scrollDirection = Axis.horizontal;
 
   @override
   void initState() {
@@ -71,6 +74,7 @@ class HomeState extends State<Home> {
       viewInstance = history[indexView];
       storageFile = storageFile;
       indexView = indexView;
+      totalInstances = history.length;
     });
   }
 
@@ -209,11 +213,8 @@ class HomeState extends State<Home> {
   Widget bottomContainer(instance) {
     return Container(
         color: Colors.white,
-        child: Container(
-            child: Center(
-                child: loadingData
-                    ? spinner()
-                    : goalBoxWidget(onDone, instance))));
+        child:
+            Container(child: Center(child: goalBoxWidget(onDone, instance))));
   }
 
   Widget spinner() {
@@ -244,17 +245,29 @@ class HomeState extends State<Home> {
             Expanded(flex: 2, child: topContainer()),
             Expanded(
                 flex: 8,
-                child: Stack(
-                  children: <Widget>[
-                    PageView.builder(
-                      itemBuilder: (context, index) {
-                        Instance instance = loadedHistory[index];
-                        return bottomContainer(instance);
-                      },
-                    ),
-                    goalStringsWidget(),
-                  ],
-                )),
+                child: loadingData
+                    ? spinner()
+                    : Stack(
+                        children: <Widget>[
+                          PageView.builder(
+                            controller: PageController(
+                              initialPage: totalInstances-1,
+                            ),
+                            scrollDirection: scrollDirection,
+                            onPageChanged: (index) {
+                              setState(() {
+                                indexView = index;
+                              });
+                              print('current page' + index.toString());
+                            },
+                            itemBuilder: (context, index) {
+                              Instance instance = loadedHistory[index];
+                              return bottomContainer(instance);
+                            },
+                          ),
+                          goalStringsWidget(),
+                        ],
+                      )),
           ],
         ));
   }
