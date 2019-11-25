@@ -55,7 +55,7 @@ class HomeState extends State<Home> {
     DateTime todayDate = DateTime.now();
     String today = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
     Storage.startStorage(todayDate).then((result) => storageFile = result);
-    StorageModel results = await Storage.loadStorage().then();
+    StorageModel results = await Storage.loadStorage();
 
     List<Instance> history = results.history;
 
