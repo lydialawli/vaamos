@@ -128,9 +128,9 @@ class HomeState extends State<Home> {
     });
   }
 
-  Widget goalBoxWidget(onDone) {
+  Widget goalBoxWidget(onDone, instance) {
     List<Widget> goalsDisplay = [];
-    List goalIds = viewInstance.goalIds;
+    List goalIds = instance.goalIds;
     List<Goal> activeGoals = loadedGoals.where((g) => g.isActive).toList();
 
     for (int i = 0; i < activeGoals.length; i++) {
@@ -206,12 +206,14 @@ class HomeState extends State<Home> {
                 ]))));
   }
 
-  Widget bottomContainer() {
+  Widget bottomContainer(instance) {
     return Container(
         color: Colors.white,
         child: Container(
             child: Center(
-                child: loadingData ? spinner() : goalBoxWidget(onDone))));
+                child: loadingData
+                    ? spinner()
+                    : goalBoxWidget(onDone, instance))));
   }
 
   Widget spinner() {
@@ -244,11 +246,15 @@ class HomeState extends State<Home> {
                 flex: 8,
                 child: Stack(
                   children: <Widget>[
-                    bottomContainer(),
+                    PageView.builder(
+                      itemBuilder: (context, index) {
+                        Instance instance = loadedHistory[index];
+                        return bottomContainer(instance);
+                      },
+                    ),
                     goalStringsWidget(),
                   ],
                 )),
-            // Expanded(flex: 1, child: AddGoalBox(onSubmitGoal))
           ],
         ));
   }
