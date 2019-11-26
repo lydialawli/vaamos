@@ -57,6 +57,7 @@ class GoalStringsState extends State<GoalStrings> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        
         return AlertDialog(
           title: new Text('Delete "' + widget.sentence + '" goal'),
           content: new Text(
@@ -66,6 +67,9 @@ class GoalStringsState extends State<GoalStrings> {
               child: new Text("Cancel"),
               onPressed: () {
                 Navigator.of(context).pop();
+                setState(() {
+                  longPressFlag = !longPressFlag;
+                });
               },
             ),
             new FlatButton(
