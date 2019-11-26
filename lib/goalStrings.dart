@@ -23,28 +23,48 @@ class GoalStringsState extends State<GoalStrings> {
     widget.deleteGoal(widget.goalId);
   }
 
+  IconButton iconDelete() {
+    return IconButton(
+      alignment: Alignment.bottomLeft,
+      icon: Icon(Icons.delete),
+      color: Colors.grey,
+      onPressed: () {
+        delete();
+      },
+    );
+  }
+
   textStyle() {
     return TextStyle(fontSize: 20, color: Colors.black);
   }
 
   Widget editGoal() {
-    return TextField(
-      textInputAction: TextInputAction.done,
-      onSubmitted: (text) {
-        edit(text);
-        setState(() {
-          longPressFlag = !longPressFlag;
-        });
-        // print(text);
-      },
-      textAlign: TextAlign.center,
-      // maxLength: 20,
-      style: textStyle(),
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        contentPadding: EdgeInsets.zero,
-        hintText: widget.sentence,
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        iconDelete(),
+
+        Expanded(
+            child: TextField(
+          textInputAction: TextInputAction.done,
+          onSubmitted: (text) {
+            edit(text);
+            setState(() {
+              longPressFlag = !longPressFlag;
+            });
+            // print(text);
+          },
+          textAlign: TextAlign.center,
+          // maxLength: 20,
+          style: textStyle(),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.all(1),
+            hintText: widget.sentence,
+            
+          ),
+        )),
+      ],
     );
   }
 
@@ -64,15 +84,6 @@ class GoalStringsState extends State<GoalStrings> {
             Padding(
                 padding: const EdgeInsets.all(33.0),
                 child: longPressFlag ? editGoal() : goalString()),
-            Visibility(
-              visible: longPressFlag,
-              child: IconButton(
-                icon: Icon(Icons.volume_up),
-                onPressed: () {
-                  delete();
-                },
-              ),
-            ),
           ],
         ));
   }
