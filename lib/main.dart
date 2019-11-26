@@ -279,16 +279,41 @@ class HomeState extends State<Home> {
     );
   }
 
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text('Tips'),
+          content: new Text(
+              "blablablabablablalbalbalblablalbalb balbalbal albla,abablalbalb"),
+          // actions: <Widget>[
+            
+          // ],
+        );
+      },
+    );
+  }
+
+  IconButton iconHelp() {
+    return IconButton(
+      alignment: Alignment.bottomLeft,
+      icon: Icon(Icons.help_outline,size: 25.0),
+      color: Colors.grey[300],
+      onPressed: () {
+        _showDialog();
+        // delete();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text('icon help goes here',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.grey,
-              )),
+          title: iconHelp(),
           backgroundColor: Colors.white,
         ),
         body: loadingData
