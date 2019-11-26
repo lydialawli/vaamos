@@ -239,15 +239,19 @@ class HomeState extends State<Home> {
     //   viewDate = 'TODAY';
     // }
 
-    return Column(children: [
-      Text(viewDate,
-          style: TextStyle(
-            fontSize: 30,
-            color: Colors.black87,
-          )),
+    return Column(
+      children: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: Text(viewDate,
+            style: TextStyle(
+              fontSize: 30,
+              color: Colors.black87,
+            )),
+      ),
       Text('wednesday',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 16,
             color: Colors.grey,
           ))
     ]);
@@ -258,7 +262,7 @@ class HomeState extends State<Home> {
         color: Colors.white,
         child: Center(
             child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(30),
                 child:
                     Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                   dateTitle(),
@@ -289,7 +293,7 @@ class HomeState extends State<Home> {
           content: new Text(
               "blablablabablablalbalbalblablalbalb balbalbal albla,abablalbalb"),
           // actions: <Widget>[
-            
+
           // ],
         );
       },
@@ -299,7 +303,7 @@ class HomeState extends State<Home> {
   IconButton iconHelp() {
     return IconButton(
       alignment: Alignment.bottomLeft,
-      icon: Icon(Icons.help_outline,size: 25.0),
+      icon: Icon(Icons.help_outline, size: 25.0),
       color: Colors.grey[300],
       onPressed: () {
         _showDialog();
