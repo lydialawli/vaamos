@@ -108,7 +108,7 @@ class HomeState extends State<Home> {
     updateStorage(loadedGoals, loadedHistory);
   }
 
-  deleteGoal(int goalId) {
+  disableGoal(int goalId) {
     List<Goal> goals = loadedGoals;
 
     // for (int i = 0; i < loadedGoals.length; i++) {
@@ -210,7 +210,7 @@ class HomeState extends State<Home> {
           sentence: goal.goalName,
           goalId: goal.goalId,
           editGoalName: editGoalName,
-          deleteGoal: deleteGoal));
+          disableGoal: disableGoal));
       goalsStrings.add(Container(height: 10));
     }
 

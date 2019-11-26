@@ -4,9 +4,9 @@ class GoalStrings extends StatefulWidget {
   final String sentence;
   final int goalId;
   final Function(String, int) editGoalName;
-  final Function(int) deleteGoal;
+  final Function(int) disableGoal;
 
-  GoalStrings({this.sentence, this.goalId, this.editGoalName, this.deleteGoal});
+  GoalStrings({this.sentence, this.goalId, this.editGoalName, this.disableGoal});
 
   @override
   GoalStringsState createState() => GoalStringsState();
@@ -21,7 +21,7 @@ class GoalStringsState extends State<GoalStrings> {
   }
 
   void delete() {
-    widget.deleteGoal(widget.goalId);
+    widget.disableGoal(widget.goalId);
   }
 
   IconButton iconDelete() {
