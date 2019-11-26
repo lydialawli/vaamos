@@ -86,7 +86,7 @@ class GoalStringsState extends State<GoalStrings> {
   }
 
   textStyle() {
-    return TextStyle(fontSize: 20, color: Colors.black);
+    return TextStyle(fontSize: 20, fontFamily: 'Rubik', color: Colors.black);
   }
 
   Widget editGoal() {

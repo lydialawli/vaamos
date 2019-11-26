@@ -239,21 +239,20 @@ class HomeState extends State<Home> {
     //   viewDate = 'TODAY';
     // }
 
-    return Column(
-      children: [
+    return Column(children: [
       Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: Text(viewDate,
             style: TextStyle(
-              fontSize: 30,
+              fontFamily: 'Rubik',
+              // fontWeight: w300,
+              fontSize: 33,
               color: Colors.black87,
             )),
       ),
       Text('wednesday',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ))
+          style:
+              TextStyle(fontFamily: 'Rubik', fontSize: 16, color: Colors.grey))
     ]);
   }
 
