@@ -30,7 +30,8 @@ class GoalStringsState extends State<GoalStrings> {
       icon: Icon(Icons.delete),
       color: Colors.grey,
       onPressed: () {
-        delete();
+        _showDialog();
+        // delete();
       },
     );
   }
@@ -47,6 +48,35 @@ class GoalStringsState extends State<GoalStrings> {
         setState(() {
           longPressFlag = !longPressFlag;
         });
+      },
+    );
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text('Delete "' + widget.sentence + '" goal'),
+          content: new Text(
+              "This action will delete everything related to the goal"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Delete"),
+              onPressed: () {
+                delete();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
       },
     );
   }

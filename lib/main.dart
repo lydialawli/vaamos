@@ -112,6 +112,10 @@ class HomeState extends State<Home> {
       instance.goalIds.removeWhere((g) => g == goalId);
     }
 
+    setState(() {
+      goalsCount = goals.length;
+    });
+
     loadedHistory.removeAt(loadedHistory.length - 1);
 
     updateStorage(goals, loadedHistory);
@@ -196,7 +200,7 @@ class HomeState extends State<Home> {
           sentence: goal.goalName,
           goalId: goal.goalId,
           editGoalName: editGoalName,
-          deleteGoal:deleteGoal));
+          deleteGoal: deleteGoal));
       goalsStrings.add(Container(height: 10));
     }
 

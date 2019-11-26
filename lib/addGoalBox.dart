@@ -14,8 +14,6 @@ class AddGoalBox extends StatefulWidget {
   GoalInputState createState() => GoalInputState();
 }
 
-
-
 class GoalInputState extends State<AddGoalBox> {
   bool longPressFlag = false;
   String goalText = '';
@@ -50,10 +48,9 @@ class GoalInputState extends State<AddGoalBox> {
 
   Widget inputButton() {
     return TextField(
-      // onChanged: (text) {
-      //   print("First text field: $text");
-      // },
+      autofocus: true,
       textInputAction: TextInputAction.done,
+      
       onSubmitted: (text) {
         writeToFile(text);
         setState(() {
