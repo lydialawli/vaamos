@@ -52,7 +52,8 @@ class HomeState extends State<Home> {
     'thursday',
     'friday',
     'saturday',
-    'sunday'
+    'sunday',
+    'monday'
   ];
 
   var scrollDirection = Axis.horizontal;
@@ -223,18 +224,20 @@ class HomeState extends State<Home> {
 
   Widget dateTitle() {
     String viewDate;
+
+    int weekNum = loadedHistory[indexView].date.weekday;
+    String day = daysOfTheWeek[weekNum - 1];
+
     if (indexView == todayIndex)
       viewDate = 'TODAY';
-    else if (indexView == todayIndex + 1)
+    else if (indexView == todayIndex + 1) {
       viewDate = 'TOMORROW';
-    else {
+      day = daysOfTheWeek[weekNum];
+    } else {
       viewDate =
           formatDate(loadedHistory[indexView].date, [dd, ' ', M, ' ', yyyy])
               .toString();
     }
-
-    int weekNum = loadedHistory[indexView].date.weekday;
-    String day = daysOfTheWeek[weekNum-1];
 
     return Column(children: [
       Padding(
