@@ -28,7 +28,7 @@ class GoalStringsState extends State<GoalStrings> {
     return IconButton(
       alignment: Alignment.bottomLeft,
       icon: Icon(Icons.delete),
-      color: Colors.grey,
+      color: Colors.grey[600],
       onPressed: () {
         _showDialog();
         // delete();
@@ -40,7 +40,7 @@ class GoalStringsState extends State<GoalStrings> {
     return IconButton(
       alignment: Alignment.bottomLeft,
       icon: Icon(Icons.done_outline),
-      color: Colors.grey,
+      color: Colors.grey[600],
       onPressed: () {
         if (textInput != null) {
           edit(textInput);
