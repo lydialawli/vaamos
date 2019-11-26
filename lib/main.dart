@@ -39,7 +39,6 @@ class HomeState extends State<Home> {
   List data;
   List<Goal> loadedGoals = [];
   List<Instance> loadedHistory = [];
-  int goalsCount;
   bool loadingData = true;
   int indexView = 0;
   File storageFile;
@@ -69,7 +68,6 @@ class HomeState extends State<Home> {
 
     setState(() {
       loadedGoals = results.goals;
-      goalsCount = results.goals.length;
       loadingData = false;
       todayDate = todayDate;
       loadedHistory = history;
@@ -89,32 +87,33 @@ class HomeState extends State<Home> {
   ];
 
   onSubmitGoal(String value) {
-    int newId = goalsCount + 1;
+    int newId = loadedGoals.length + 1;
     Goal newGoal = new Goal(goalName: value, goalId: newId, isActive: true);
 
     List<Goal> goals = loadedGoals;
     goals.add(newGoal);
 
+    loadedHistory.removeAt(loadedHistory.length - 1);
     updateStorage(loadedGoals, loadedHistory);
-
-    setState(() {
-      goalsCount = newId;
-    });
   }
 
   deleteGoal(int goalId) {
     List<Goal> goals = loadedGoals;
 
-    goals.removeWhere((g) => g.goalId == goalId);
+    // for (int i = 0; i < loadedGoals.length; i++) {
+    //   Goal goal = loadedGoals[i];
+    //   if (goal.goalId == goalId) {
+    //     goal.isActive = false;
+    //   }
+    // }
+    loadedGoals.forEach((g) => g.goalId == goalId ? g.isActive = false : null);
 
-    for (int i = 0; i < loadedHistory.length; i++) {
-      Instance instance = loadedHistory[i];
-      instance.goalIds.removeWhere((g) => g == goalId);
-    }
-
-    setState(() {
-      goalsCount = goals.length;
-    });
+    // to delete the goal and its history fully
+    // goals.removeWhere((g) => g.goalId == goalId);
+    // for (int i = 0; i < loadedHistory.length; i++) {
+    //   Instance instance = loadedHistory[i];
+    //   instance.goalIds.removeWhere((g) => g == goalId);
+    // }
 
     loadedHistory.removeAt(loadedHistory.length - 1);
 
