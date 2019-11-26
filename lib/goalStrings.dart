@@ -4,8 +4,9 @@ class GoalStrings extends StatefulWidget {
   final String sentence;
   final int goalId;
   final Function(String, int) editGoalName;
+  final Function(int) deleteGoal;
 
-  GoalStrings({this.sentence, this.goalId, this.editGoalName});
+  GoalStrings({this.sentence, this.goalId, this.editGoalName, this.deleteGoal});
 
   @override
   GoalStringsState createState() => GoalStringsState();
@@ -14,8 +15,12 @@ class GoalStrings extends StatefulWidget {
 class GoalStringsState extends State<GoalStrings> {
   bool longPressFlag = false;
 
-  void writeToFile(String value) {
+  void edit(String value) {
     widget.editGoalName(value, widget.goalId);
+  }
+
+  void delete() {
+    widget.deleteGoal(widget.goalId);
   }
 
   textStyle() {
@@ -26,7 +31,7 @@ class GoalStringsState extends State<GoalStrings> {
     return TextField(
       textInputAction: TextInputAction.done,
       onSubmitted: (text) {
-        writeToFile(text);
+        edit(text);
         setState(() {
           longPressFlag = !longPressFlag;
         });
@@ -43,8 +48,6 @@ class GoalStringsState extends State<GoalStrings> {
     );
   }
 
- 
-
   Widget goalString() {
     return Text(widget.sentence, style: textStyle());
   }
@@ -56,8 +59,21 @@ class GoalStringsState extends State<GoalStrings> {
             longPressFlag = !longPressFlag;
           });
         },
-        child: Padding(
-            padding: const EdgeInsets.all(33.0),
-            child: longPressFlag ? editGoal() : goalString()));
+        child: Stack(
+          children: <Widget>[
+            Padding(
+                padding: const EdgeInsets.all(33.0),
+                child: longPressFlag ? editGoal() : goalString()),
+            Visibility(
+              visible: longPressFlag,
+              child: IconButton(
+                icon: Icon(Icons.volume_up),
+                onPressed: () {
+                  delete();
+                },
+              ),
+            ),
+          ],
+        ));
   }
 }

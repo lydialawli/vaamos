@@ -102,10 +102,20 @@ class HomeState extends State<Home> {
     });
   }
 
-  // deleteGoal(int goalId) {
-  //   List<Goal> goals = loadedGoals.removeWhere((g) => g.goalId == goalId);
-  //   updateStorage(goals, loadedHistory);
-  // }
+  deleteGoal(int goalId) {
+    List<Goal> goals = loadedGoals;
+
+    goals.removeWhere((g) => g.goalId == goalId);
+
+    for (int i = 0; i < loadedHistory.length; i++) {
+      Instance instance = loadedHistory[i];
+      instance.goalIds.removeWhere((g) => g == goalId);
+    }
+
+    loadedHistory.removeAt(loadedHistory.length - 1);
+
+    updateStorage(goals, loadedHistory);
+  }
 
   editGoalName(String value, int id) {
     List<Goal> goals = loadedGoals;
@@ -185,7 +195,8 @@ class HomeState extends State<Home> {
       goalsStrings.add(GoalStrings(
           sentence: goal.goalName,
           goalId: goal.goalId,
-          editGoalName: editGoalName));
+          editGoalName: editGoalName,
+          deleteGoal:deleteGoal));
       goalsStrings.add(Container(height: 10));
     }
 
@@ -199,7 +210,8 @@ class HomeState extends State<Home> {
 
   Widget dateTitle() {
     String viewDate;
-    if (indexView == todayIndex) viewDate = 'TODAY';
+    if (indexView == todayIndex)
+      viewDate = 'TODAY';
     else if (indexView == todayIndex + 1)
       viewDate = 'TOMORROW';
     else {
