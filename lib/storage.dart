@@ -20,12 +20,12 @@ class Storage {
       final jsonResponse = json.decode(storageJson);
       StorageModel storage = StorageModel.fromJsonArray(jsonResponse);
 
-      // String today = formatDate(todayDate, [dd, mm, yyyy]);
-      // String yesterday = formatDate(
-      //     storage.history[storage.history.length - 1].date, [dd, mm, yyyy]);
+      String today = formatDate(todayDate, [dd, mm, yyyy]);
+      String yesterday = formatDate(
+          storage.history[storage.history.length - 1].date, [dd, mm, yyyy]);
 
-      // if (today != yesterday)
-      //   createNewInstance(todayDate, storage, storageFile);
+      if (today != yesterday)
+        createNewInstance(todayDate, storage, storageFile);
 
       content = json.decode(storageFile.readAsStringSync());
       print('storage started with ' + content.toString());

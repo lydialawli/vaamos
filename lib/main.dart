@@ -55,8 +55,8 @@ class HomeState extends State<Home> {
   }
 
   initLoadStorage() async {
-    // DateTime todayDate = DateTime.now();
-    DateTime todayDate = DateTime.parse('2019-11-25 12:36:56.270753');
+    DateTime todayDate = DateTime.now();
+    // DateTime todayDate = DateTime.parse('2019-11-25 12:36:56.270753');
     todayDateString = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
     Storage.startStorage(todayDate).then((result) => storageFile = result);
     StorageModel results = await Storage.loadStorage();
