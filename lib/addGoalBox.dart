@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-// import 'dart:convert';
-import 'package:path_provider/path_provider.dart';
 
 class AddGoalBox extends StatefulWidget {
   // AddGoalBox({this.storage});
@@ -16,56 +13,85 @@ class AddGoalBox extends StatefulWidget {
 
 class GoalInputState extends State<AddGoalBox> {
   bool longPressFlag = false;
-  String goalText = '';
-  int lengthGoals;
-
-  File jsonFile;
-  Directory dir;
-  String fileName = "test2.json";
-  bool fileExists = true;
-  Map<String, String> goalsContent;
-
-  @override
-  void initState() {
-    super.initState();
-    getApplicationDocumentsDirectory().then((Directory directory) {
-      dir = directory;
-      jsonFile = new File(dir.path + "/" + fileName);
-      fileExists = jsonFile.existsSync();
-      setState(() {
-        lengthGoals = 1; //should be calculated, not hardcoded
-      });
-    });
-  }
+  String goalText;
 
   void writeToFile(String value) {
     widget.onSubmitGoal(value);
   }
 
   TextStyle buttonStyling() {
-    return TextStyle(fontSize: 15, color: Colors.grey[400], fontFamily: 'Rubik');
+    return TextStyle(
+        fontSize: 15, color: Colors.grey[400], fontFamily: 'Rubik');
+  }
+
+  IconButton iconCancel() {
+    return IconButton(
+      alignment: Alignment.bottomLeft,
+      icon: Icon(Icons.delete),
+      color: Colors.grey[500],
+      onPressed: () {
+        setState(() {
+          longPressFlag = !longPressFlag;
+          goalText = '';
+        });
+        // delete();
+      },
+    );
+  }
+
+  IconButton cancelOrSubmit() {
+    return IconButton(
+      alignment: Alignment.bottomLeft,
+      icon: Icon(Icons.done_outline),
+      color: Colors.grey[500],
+      onPressed: () {
+        if (goalText != null) {
+          writeToFile(goalText);
+        }
+        setState(() {
+          longPressFlag = !longPressFlag;
+        });
+      },
+    );
+  }
+
+  textStyle() {
+    return TextStyle(fontSize: 20, fontFamily: 'Rubik', color: Colors.grey[500]);
   }
 
   Widget inputButton() {
-    return TextField(
-      autofocus: true,
-      textInputAction: TextInputAction.done,
-      
-      onSubmitted: (text) {
-        writeToFile(text);
-        setState(() {
-          goalText = text;
-          longPressFlag = !longPressFlag;
-        });
-        // print(text);
-      },
-      textAlign: TextAlign.center,
-      maxLength: 30,
-      style: buttonStyling(),
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        hintText: 'What is your goal?',
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        iconCancel(),
+        Expanded(
+            child: TextField(
+          autofocus: true,
+          textInputAction: TextInputAction.done,
+          onSubmitted: (text) {
+            writeToFile(text);
+            setState(() {
+              goalText = text;
+              longPressFlag = !longPressFlag;
+            });
+            // print(text);
+          },
+          onChanged: (text) {
+            setState(() {
+              goalText = text;
+            });
+          },
+          textAlign: TextAlign.center,
+          maxLength: 30,
+          style: textStyle(),
+          decoration: InputDecoration(
+            focusColor: Colors.grey,
+            border: InputBorder.none,
+            hintText: 'What is your goal?',
+          ),
+        )),
+        cancelOrSubmit()
+      ],
     );
   }
 
@@ -74,7 +100,7 @@ class GoalInputState extends State<AddGoalBox> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Icon(Icons.add,color: Colors.grey[400]),
+        Icon(Icons.add, color: Colors.grey[400]),
         Text('long press', style: buttonStyling()),
       ],
     );
