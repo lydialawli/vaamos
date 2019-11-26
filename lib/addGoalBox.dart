@@ -43,7 +43,7 @@ class GoalInputState extends State<AddGoalBox> {
   }
 
   TextStyle buttonStyling() {
-    return TextStyle(fontSize: 20, color: Colors.grey);
+    return TextStyle(fontSize: 15, color: Colors.grey[400], fontFamily: 'Rubik');
   }
 
   Widget inputButton() {
@@ -69,8 +69,15 @@ class GoalInputState extends State<AddGoalBox> {
     );
   }
 
+
   Widget longPressButton() {
-    return Text('long press to add', style: buttonStyling());
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(Icons.add,color: Colors.grey[400]),
+        Text('long press', style: buttonStyling()),
+      ],
+    );
   }
 
   @override
