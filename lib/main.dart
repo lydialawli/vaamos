@@ -245,14 +245,17 @@ class HomeState extends State<Home> {
         child: Text(viewDate,
             style: TextStyle(
               fontFamily: 'Rubik',
-              // fontWeight: w300,
-              fontSize: 33,
+              fontWeight: FontWeight.w300,
+              fontSize: 35,
               color: Colors.black87,
             )),
       ),
       Text('wednesday',
-          style:
-              TextStyle(fontFamily: 'Rubik', fontSize: 16, color: Colors.grey))
+          style: TextStyle(
+              fontFamily: 'Rubik',
+              fontWeight: FontWeight.w300,
+              fontSize: 16,
+              color: Colors.grey))
     ]);
   }
 
