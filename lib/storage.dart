@@ -107,7 +107,9 @@ class Storage {
     String storageJson = await readStorageFile();
     final jsonResponse = json.decode(storageJson);
     StorageModel storage = StorageModel.fromJsonArray(jsonResponse);
-    // storage.history.removeAt(storage.history.length-1);
+
+    // storage.history.removeAt(storage.history.length - 1);
+
     return storage;
   }
 }
