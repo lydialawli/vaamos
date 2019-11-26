@@ -77,6 +77,7 @@ class HomeState extends State<Home> {
       todayDate = todayDate;
       loadedHistory = history;
       // viewInstance = history[indexView];
+      indexView = history.length - 1;
       storageFile = storageFile;
       dateToday = todayDate;
       totalInstances = history.length;
@@ -187,7 +188,7 @@ class HomeState extends State<Home> {
     }
 
     if (activeGoals.length < 5) {
-       goalsStrings.add(AddGoalBox(onSubmitGoal));
+      goalsStrings.add(AddGoalBox(onSubmitGoal));
     }
 
     return Column(
@@ -253,22 +254,22 @@ class HomeState extends State<Home> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text('Today is ' + todayDateString,
+          title: Text('icon help goes here',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.grey,
               )),
           backgroundColor: Colors.white,
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Expanded(flex: 2, child: topContainer()),
-            Expanded(
-                flex: 8,
-                child: loadingData
-                    ? spinner()
-                    : Stack(
+        body: loadingData
+            ? spinner()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(flex: 2, child: topContainer()),
+                  Expanded(
+                      flex: 8,
+                      child: Stack(
                         children: <Widget>[
                           PageView.builder(
                             controller: PageController(
@@ -289,7 +290,7 @@ class HomeState extends State<Home> {
                           goalStringsWidget(),
                         ],
                       )),
-          ],
-        ));
+                ],
+              ));
   }
 }
