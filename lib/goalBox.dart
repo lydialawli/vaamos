@@ -4,10 +4,11 @@ class GoalBox extends StatefulWidget {
   final String sentence;
   final Color bgColor;
   final bool isDone;
+  final int index;
   final int goalId;
-  final Function(int) onDone;
+  final Function(int, int) onDone;
 
-  GoalBox({this.sentence, this.bgColor, this.isDone, this.onDone, this.goalId});
+  GoalBox({this.sentence, this.bgColor, this.isDone, this.onDone, this.goalId, this.index});
 
   @override
   GoalBoxState createState() => GoalBoxState();
@@ -25,7 +26,7 @@ class GoalBoxState extends State<GoalBox> {
   }
 
   void changeDone(int value) {
-    widget.onDone(value);
+    widget.onDone(value, widget.index);
   }
 
   Widget build(BuildContext context) {

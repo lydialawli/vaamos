@@ -139,9 +139,9 @@ class HomeState extends State<Home> {
     updateStorage(goals, loadedHistory);
   }
 
-  onDone(int x) {
+  onDone(int x, int index) {
     int goalId = x;
-    List ids = loadedHistory[indexView].goalIds;
+    List ids = loadedHistory[index].goalIds;
 
     ids.contains(goalId)
         ? ids.removeWhere((id) => id == goalId)
@@ -170,14 +170,12 @@ class HomeState extends State<Home> {
     });
   }
 
-  Widget goalBoxWidget(onDone, instance) {
+  Widget goalBoxWidget(onDone, instance, index) {
     List<Widget> goalsDisplay = [];
     List goalIds = instance.goalIds;
     List<Goal> activeGoals = loadedGoals.where((g) => g.isActive).toList();
 
     for (int i = 0; i < activeGoals.length; i++) {
-      // Goal goal = activeGoals.singleWhere((g) => g.goalId == goalIds[i],
-      //     orElse: () => null);
       Goal goal = activeGoals[i];
       bool isDone;
       isDone = goalIds.contains(goal.goalId);
@@ -185,6 +183,7 @@ class HomeState extends State<Home> {
       goalsDisplay.add(GoalBox(
           sentence: goal.goalName,
           goalId: goal.goalId,
+          index: index,
           bgColor: colorCodes[i],
           isDone: isDone,
           onDone: onDone));
@@ -271,11 +270,11 @@ class HomeState extends State<Home> {
                 ]))));
   }
 
-  Widget bottomContainer(instance) {
+  Widget bottomContainer(instance, index) {
     return Container(
         color: Colors.white,
-        child:
-            Container(child: Center(child: goalBoxWidget(onDone, instance))));
+        child: Container(
+            child: Center(child: goalBoxWidget(onDone, instance, index))));
   }
 
   Widget spinner() {
@@ -346,7 +345,7 @@ class HomeState extends State<Home> {
                               },
                               itemBuilder: (context, index) {
                                 Instance instance = loadedHistory[index];
-                                return bottomContainer(instance);
+                                return bottomContainer(instance, index);
                               },
                               itemCount: loadedHistory.length),
                           goalStringsWidget(),
