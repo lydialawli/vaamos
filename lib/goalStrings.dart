@@ -14,6 +14,7 @@ class GoalStrings extends StatefulWidget {
 
 class GoalStringsState extends State<GoalStrings> {
   bool longPressFlag = false;
+  String textInput;
 
   void edit(String value) {
     widget.editGoalName(value, widget.goalId);
@@ -34,18 +35,34 @@ class GoalStringsState extends State<GoalStrings> {
     );
   }
 
+  IconButton cancelOrSubmit() {
+    return IconButton(
+      alignment: Alignment.bottomLeft,
+      icon: Icon(Icons.done_outline),
+      color: Colors.grey,
+      onPressed: () {
+        if (textInput != null) {
+          edit(textInput);
+        }
+        setState(() {
+          longPressFlag = !longPressFlag;
+        });
+      },
+    );
+  }
+
   textStyle() {
     return TextStyle(fontSize: 20, color: Colors.black);
   }
 
   Widget editGoal() {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         iconDelete(),
-
         Expanded(
             child: TextField(
+          autofocus: true,
           textInputAction: TextInputAction.done,
           onSubmitted: (text) {
             edit(text);
@@ -54,16 +71,20 @@ class GoalStringsState extends State<GoalStrings> {
             });
             // print(text);
           },
+          onChanged: (text) {
+            setState(() {
+              textInput = text;
+            });
+          },
           textAlign: TextAlign.center,
           // maxLength: 20,
           style: textStyle(),
           decoration: InputDecoration(
             border: InputBorder.none,
-            contentPadding: EdgeInsets.all(1),
             hintText: widget.sentence,
-            
           ),
         )),
+        cancelOrSubmit()
       ],
     );
   }
