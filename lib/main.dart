@@ -45,6 +45,15 @@ class HomeState extends State<Home> {
   DateTime dateToday;
   String todayDateString = 'today';
   int todayIndex;
+  List<String> daysOfTheWeek = [
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday'
+  ];
 
   var scrollDirection = Axis.horizontal;
 
@@ -65,6 +74,7 @@ class HomeState extends State<Home> {
     Instance tommorrow = new Instance(date: DateTime.now(), goalIds: []);
 
     history.add(tommorrow);
+    print(' this is ittt => ' + todayDate.weekday.toString());
 
     setState(() {
       loadedGoals = results.goals;
@@ -223,21 +233,8 @@ class HomeState extends State<Home> {
               .toString();
     }
 
-// for later versions, when things get more complex
-    // String viewDate =
-    //     formatDate(loadedHistory[indexView].date, [dd, ' ', M, ' ', yyyy])
-    //         .toString();
-    // String tomorrow =
-    //     formatDate(loadedHistory[todayIndex + 1].date, [dd, ' ', M, ' ', yyyy])
-    //         .toString();
-
-    // if (viewDate == tomorrow) {
-    //   viewDate = 'TOMORROW';
-    // }
-
-    // if (viewDate == todayDateString) {
-    //   viewDate = 'TODAY';
-    // }
+    int weekNum = loadedHistory[indexView].date.weekday;
+    String day = daysOfTheWeek[weekNum-1];
 
     return Column(children: [
       Padding(
@@ -250,7 +247,7 @@ class HomeState extends State<Home> {
               color: Colors.black87,
             )),
       ),
-      Text('wednesday',
+      Text(day,
           style: TextStyle(
               fontFamily: 'Rubik',
               fontWeight: FontWeight.w300,
