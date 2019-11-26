@@ -41,10 +41,8 @@ class HomeState extends State<Home> {
   List<Instance> loadedHistory = [];
   int goalsCount;
   bool loadingData = true;
-  // Instance viewInstance;
   int indexView = 0;
   File storageFile;
-  int totalInstances = 0;
   DateTime dateToday;
   String todayDateString = 'today';
   int todayIndex;
@@ -65,10 +63,9 @@ class HomeState extends State<Home> {
     StorageModel results = await Storage.loadStorage();
 
     List<Instance> history = results.history;
+    Instance tommorrow = new Instance(date: DateTime.now(), goalIds: []);
 
-    // indexView = history.indexWhere((i) =>
-    //     formatDate(i.date, [dd, ' ', M, ' ', yyyy]).toString() ==
-    //     todayDateString);
+    history.add(tommorrow);
 
     setState(() {
       loadedGoals = results.goals;
@@ -76,12 +73,10 @@ class HomeState extends State<Home> {
       loadingData = false;
       todayDate = todayDate;
       loadedHistory = history;
-      // viewInstance = history[indexView];
-      indexView = history.length - 1;
+      indexView = history.length - 2;
       storageFile = storageFile;
       dateToday = todayDate;
-      totalInstances = history.length;
-      todayIndex = history.length - 1;
+      todayIndex = history.length - 2;
     });
   }
 
@@ -116,6 +111,7 @@ class HomeState extends State<Home> {
     List<Goal> goals = loadedGoals;
     int index = goals.indexWhere((g) => g.goalId == id);
     goals[index].goalName = value;
+    loadedHistory.removeAt(loadedHistory.length - 1);
     updateStorage(goals, loadedHistory);
   }
 
@@ -126,6 +122,8 @@ class HomeState extends State<Home> {
     ids.contains(goalId)
         ? ids.removeWhere((id) => id == goalId)
         : ids.add(goalId);
+
+    loadedHistory.removeAt(loadedHistory.length - 1);
 
     updateStorage(loadedGoals, loadedHistory);
   }
@@ -138,6 +136,10 @@ class HomeState extends State<Home> {
 
     Storage.savetoStorageJson(storage, storageFile);
     Storage.readStorageFile().then((res) => print('new json is => ' + res));
+
+    Instance tommorrow = new Instance(date: DateTime.now(), goalIds: []);
+    loadedHistory.add(tommorrow);
+
     setState(() {
       loadedGoals = goals;
       loadedHistory = history;
@@ -197,13 +199,26 @@ class HomeState extends State<Home> {
 
   Widget dateTitle() {
     String viewDate;
-    if (indexView == todayIndex)
-      viewDate = 'TODAY';
+    if (indexView == todayIndex) viewDate = 'TODAY';
+    else if (indexView == todayIndex + 1)
+      viewDate = 'TOMORROW';
     else {
       viewDate =
           formatDate(loadedHistory[indexView].date, [dd, ' ', M, ' ', yyyy])
               .toString();
     }
+
+// for later versions, when things get more complex
+    // String viewDate =
+    //     formatDate(loadedHistory[indexView].date, [dd, ' ', M, ' ', yyyy])
+    //         .toString();
+    // String tomorrow =
+    //     formatDate(loadedHistory[todayIndex + 1].date, [dd, ' ', M, ' ', yyyy])
+    //         .toString();
+
+    // if (viewDate == tomorrow) {
+    //   viewDate = 'TOMORROW';
+    // }
 
     // if (viewDate == todayDateString) {
     //   viewDate = 'TODAY';
@@ -272,21 +287,22 @@ class HomeState extends State<Home> {
                       child: Stack(
                         children: <Widget>[
                           PageView.builder(
-                            controller: PageController(
-                              initialPage: todayIndex,
-                            ),
-                            scrollDirection: scrollDirection,
-                            onPageChanged: (index) {
-                              setState(() {
-                                indexView = index;
-                              });
-                              print('current page' + index.toString());
-                            },
-                            itemBuilder: (context, index) {
-                              Instance instance = loadedHistory[index];
-                              return bottomContainer(instance);
-                            },
-                          ),
+                              controller: PageController(
+                                initialPage: todayIndex,
+                                viewportFraction: 0.9,
+                              ),
+                              scrollDirection: scrollDirection,
+                              onPageChanged: (index) {
+                                setState(() {
+                                  indexView = index;
+                                });
+                                print('current page... ' + index.toString());
+                              },
+                              itemBuilder: (context, index) {
+                                Instance instance = loadedHistory[index];
+                                return bottomContainer(instance);
+                              },
+                              itemCount: loadedHistory.length),
                           goalStringsWidget(),
                         ],
                       )),

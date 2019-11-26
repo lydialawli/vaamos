@@ -7,8 +7,7 @@ class GoalBox extends StatefulWidget {
   final int goalId;
   final Function(int) onDone;
 
-  GoalBox(
-      {this.sentence, this.bgColor, this.isDone, this.onDone, this.goalId});
+  GoalBox({this.sentence, this.bgColor, this.isDone, this.onDone, this.goalId});
 
   @override
   GoalBoxState createState() => GoalBoxState();
@@ -30,6 +29,8 @@ class GoalBoxState extends State<GoalBox> {
   }
 
   Widget build(BuildContext context) {
+    Color boxColor = isDone ? widget.bgColor : Colors.grey[100];
+
     return Material(
       child: InkWell(
         onTap: () {
@@ -39,9 +40,12 @@ class GoalBoxState extends State<GoalBox> {
           changeDone(widget.goalId);
         },
         child: Container(
+          decoration: BoxDecoration(
+            color: boxColor,
+          ),
           alignment: Alignment.center,
           height: 90,
-          color: isDone ? widget.bgColor : Colors.grey[100],
+
           // child: new Text(widget.sentence,
           //     style: TextStyle(
           //       fontSize: 20,
