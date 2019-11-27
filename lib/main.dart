@@ -84,7 +84,7 @@ class HomeState extends State<Home> {
     StorageModel results = await Storage.loadStorage();
 
     List<Instance> history = results.history;
-    // createEmptyInstances(history);
+    createEmptyInstances(history);
 
     Instance tommorrow = new Instance(date: DateTime.now(), goalIds: []);
 
@@ -106,36 +106,43 @@ class HomeState extends State<Home> {
 
   // }
 
-  // createEmptyInstances(history) {
-  //   DateTime firstDate = history[0].date;
+  createEmptyInstances(history) {
+    DateTime firstDate = history[0].date;
+    String my = formatDate(firstDate, [mm, ' ', yyyy]);
+    List monthYear = my.split(' ');
+    int day = dateUtility.daysInMonth(
+        int.parse(monthYear[0]), int.parse(monthYear[1]));
+    print('day -->' + monthYear.toString());
+    dateUtility.printMonthCalendar(11, 2019);
+    // List list = [];
+    // List theList = [];
+    // for (int i = 0; i < history.length; i++) {
+    //   Instance instance = history[i];
+    //   String my = formatDate(instance.date, [mm, ' ', yyyy]); // 11 2019
+    //   list.add(my);
+    // }
+    // List removedReapetedDates = list.toSet().toList();
 
-  //   List list = [];
-  //   List theList = [];
-  //   for (int i = 0; i < history.length; i++) {
-  //     Instance instance = history[i];
-  //     String my = formatDate(instance.date, [mm, ' ', yyyy]); // 11 2019
-  //     list.add(my);
-  //   }
-  //   List removedReapetedDates = list.toSet().toList();
+    // for (int i = 0; i < removedReapetedDates.length; i++) {
+    //   // [11,2019]
+    //   List monthYear = removedReapetedDates[i].split(' ');
+    //   int days = dateUtility.daysInMonth(
+    //       int.parse(monthYear[0]), int.parse(monthYear[1]));
+    //   theList.add(days);
+    // }
 
-  //   for (int i = 0; i < removedReapetedDates.length; i++) {
-  //     // [11,2019]
-  //     List monthYear = removedReapetedDates[i].split(' ');
-  //     int days = dateUtility.daysInMonth(
-  //         int.parse(monthYear[0]), int.parse(monthYear[1]));
-  //     theList.add(days);
-  //   }
+    // print('the list --> ' + theList.toString());
 
-  //   for (int i = 0; i < theList.length; i++) {
-  //     List monthYear = removedReapetedDates[i].split(' ');
+    // for (int i = 0; i < theList.length; i++) {
+    //   List monthYear = removedReapetedDates[i].split(' ');
 
-  //     for (int b = 1; i <= theList[i]; b++) {
-  //       DateTime day = new DateTime.utc(monthYear[1], monthYear[0], b, 0, 0, 0);
+    //   for (int b = 1; i <= theList[i]; b++) {
+    //     DateTime day = new DateTime.utc(monthYear[1], monthYear[0], b, 0, 0, 0);
 
-  //       Instance newInstance = new Instance(date: day, goalIds: []);
-  //     }
-  //   }
-  // }
+    //     Instance newInstance = new Instance(date: day, goalIds: []);
+    //   }
+    // }
+  }
 
   final List<Color> colorCodes = <Color>[
     Color(0xffb80DEEA),
@@ -324,7 +331,7 @@ class HomeState extends State<Home> {
       day = daysOfTheWeek[weekNum];
     } else {
       viewDate =
-          formatDate(loadedHistory[indexView].date, [dd, ' ', M, ' ', yyyy])
+          formatDate(loadedHistory[indexView].date, [dd, ' ', M])
               .toString();
     }
 
@@ -420,63 +427,74 @@ class HomeState extends State<Home> {
     );
   }
 
-  IconButton iconHelp() {
-    return IconButton(
-      alignment: Alignment.bottomLeft,
-      icon: Icon(Icons.help_outline, size: 25.0),
-      color: Colors.grey[300],
-      onPressed: () {
-        _showDialog();
-        // delete();
-      },
+  Widget iconHelp() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        IconButton(
+          alignment: Alignment.bottomLeft,
+          icon: Icon(Icons.help_outline, size: 25.0),
+          color: Colors.grey[300],
+          onPressed: () {
+            _showDialog();
+            // delete();
+          },
+        ),
+        Text(formatDate(loadedHistory[indexView].date, [ MM, ' ', yyyy]),
+            style: TextStyle(
+                fontFamily: 'Rubik',
+                fontWeight: FontWeight.w300,
+                fontSize: 16,
+                color: Colors.grey))
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          title: iconHelp(),
-          backgroundColor: Colors.white,
-        ),
-        body: loadingData
-            ? spinner()
-            : Stack(
-                children: <Widget>[
-                  PageView.builder(
-                      controller: PageController(
-                        initialPage: indexView,
-                        viewportFraction: dailyView ? 0.9 : 0.15,
-                      ),
-                      scrollDirection: scrollDirection,
-                      onPageChanged: (index) {
-                        setState(() {
-                          indexView = index;
-                        });
-                        print('current page... ' + index.toString());
-                      },
-                      itemBuilder: (context, index) {
-                        Instance instance = loadedHistory[index];
-                        return Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Expanded(flex: 2, child: weeklyView(index)),
-                              Expanded(
-                                  flex: 8,
-                                  child: bottomContainer(instance, index))
-                            ]);
-                      },
-                      itemCount: loadedHistory.length),
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(flex: 2, child: dailyViewDate()),
-                        Expanded(flex: 8, child: goalStringsWidget()),
-                      ],
+    return loadingData
+        ? spinner()
+        : Scaffold(
+            appBar: AppBar(
+              elevation: 0.0,
+              title: iconHelp(),
+              backgroundColor: Colors.white,
+            ),
+            body: Stack(
+              children: <Widget>[
+                PageView.builder(
+                    controller: PageController(
+                      initialPage: indexView,
+                      viewportFraction: dailyView ? 0.9 : 0.15,
                     ),
+                    scrollDirection: scrollDirection,
+                    onPageChanged: (index) {
+                      setState(() {
+                        indexView = index;
+                      });
+                      print('current page... ' + index.toString());
+                    },
+                    itemBuilder: (context, index) {
+                      Instance instance = loadedHistory[index];
+                      return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(flex: 2, child: weeklyView(index)),
+                            Expanded(
+                                flex: 8,
+                                child: bottomContainer(instance, index))
+                          ]);
+                    },
+                    itemCount: loadedHistory.length),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(flex: 2, child: dailyViewDate()),
+                      Expanded(flex: 8, child: goalStringsWidget()),
+                    ],
                   ),
-                ],
-              ));
+                ),
+              ],
+            ));
   }
 }
