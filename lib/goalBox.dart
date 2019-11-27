@@ -8,7 +8,13 @@ class GoalBox extends StatefulWidget {
   final int goalId;
   final Function(int, int) onDone;
 
-  GoalBox({this.sentence, this.bgColor, this.isDone, this.onDone, this.goalId, this.index});
+  GoalBox(
+      {this.sentence,
+      this.bgColor,
+      this.isDone,
+      this.onDone,
+      this.goalId,
+      this.index});
 
   @override
   GoalBoxState createState() => GoalBoxState();
@@ -41,18 +47,12 @@ class GoalBoxState extends State<GoalBox> {
           changeDone(widget.goalId);
         },
         child: Container(
-          decoration: BoxDecoration(
-            color: boxColor,
-          ),
-          alignment: Alignment.center,
-          height: 90,
-
-          // child: new Text(widget.sentence,
-          //     style: TextStyle(
-          //       fontSize: 20,
-          //       color: Colors.black,
-          //     )),
-        ),
+            decoration: BoxDecoration(
+              color: boxColor,
+            ),
+            child: Text(widget.index.toString()),
+            alignment: Alignment.center,
+            height: 90),
       ),
     );
   }
