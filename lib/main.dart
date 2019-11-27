@@ -6,6 +6,7 @@ import 'package:vaamos/storage.dart';
 import 'package:vaamos/model/goal_model.dart';
 import 'dart:io';
 import 'package:date_format/date_format.dart';
+import 'package:date_util/date_util.dart';
 
 void main() {
   runApp(MyApp());
@@ -63,6 +64,7 @@ class HomeState extends State<Home> {
   void initState() {
     super.initState();
     print('today is =>' + DateTime.now().weekday.toString());
+    // print(dateUtility.printMonthCalendar(monthNumber, year));
     print('utc is =>' + DateTime.utc(2019, 11, 27, 0, 0, 0).toString());
     initLoadStorage();
   }
@@ -72,9 +74,9 @@ class HomeState extends State<Home> {
     int year = int.parse(formatDate(now, [yyyy]));
     int month = int.parse(formatDate(now, [mm]));
     int day = int.parse(formatDate(now, [dd]));
-    // DateTime todayDate = DateTime.parse('2019-11-25 12:36:56.270753');
     DateTime todayDate = DateTime.utc(year, month, day, 0, 0, 0);
     todayDateString = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]);
+    // DateTime todayDate = DateTime.parse('2019-11-25 12:36:56.270753');
 
     Storage.startStorage(todayDate).then((result) => storageFile = result);
     StorageModel results = await Storage.loadStorage();

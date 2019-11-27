@@ -50,7 +50,7 @@ class GoalBoxState extends State<GoalBox> {
             decoration: BoxDecoration(
               color: boxColor,
             ),
-            child: Text(widget.index.toString()),
+            // child: Text(widget.index.toString()),
             alignment: Alignment.center,
             height: 90),
       ),
