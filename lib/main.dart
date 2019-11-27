@@ -289,27 +289,42 @@ class HomeState extends State<Home> {
 
   Widget dailyViewDate() {
     return Visibility(
-      visible: dailyView ? true : false,
-      child: Container(
-          color: Colors.white,
-          child: Center(
-              child: Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [dailyTitle()])))),
-    );
+        visible: dailyView ? true : false,
+        child: Material(
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                dailyView = false;
+              });
+            },
+            child: Container(
+                color: Colors.white,
+                child: Center(
+                    child: Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [dailyTitle()])))),
+          ),
+        ));
   }
 
   Widget weeklyView(index) {
-    return Container(
-        color: Colors.white,
-        child: Center(
-            child: Padding(
-                padding: const EdgeInsets.all(30),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [weeklyTitle(index)]))));
+    return Material(
+        child: InkWell(
+            onTap: () {
+              setState(() {
+                dailyView = true;
+              });
+            },
+            child: Container(
+                color: Colors.white,
+                child: Center(
+                    child: Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [weeklyTitle(index)]))))));
   }
 
   Widget bottomContainer(instance, index) {
