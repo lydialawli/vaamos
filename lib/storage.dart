@@ -5,7 +5,7 @@ import 'package:vaamos/model/goal_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Storage {
-  static String storageFileName = "test20.json";
+  static String storageFileName = "test21.json";
 
   static startStorage(todayDate) async {
     final dir = await getApplicationDocumentsDirectory();
@@ -33,6 +33,7 @@ class Storage {
     } else {
       storageFile.createSync();
 
+      // createTestData(todayDate, storageFile);
       createFirstData(todayDate, storageFile);
 
       print('==>' + storageFile.toString());
@@ -51,6 +52,51 @@ class Storage {
 
     savetoStorageJson(storage, goalsFile);
   }
+
+  // static createTestData(todayDate, goalsFile) {
+  //   Goal initialGoal =
+  //       new Goal(goalName: 'make the bed', goalId: 1, isActive: true);
+
+  //   Instance a = new Instance(
+  //       date: DateTime.parse('2019-11-10 12:36:56.270753'), goalIds: [1]);
+  //   Instance b = new Instance(
+  //       date: DateTime.parse('2019-11-11 12:36:56.270753'), goalIds: [1]);
+  //   Instance c = new Instance(
+  //       date: DateTime.parse('2019-11-12 12:36:56.270753'), goalIds: [1]);
+  //   Instance d = new Instance(
+  //       date: DateTime.parse('2019-11-15 12:36:56.270753'), goalIds: [1]);
+  //   Instance e = new Instance(
+  //       date: DateTime.parse('2019-11-16 12:36:56.270753'), goalIds: [1]);
+  //   Instance f = new Instance(
+  //       date: DateTime.parse('2019-11-22 12:36:56.270753'), goalIds: [1]);
+  //   Instance g = new Instance(
+  //       date: DateTime.parse('2019-11-23 12:36:56.270753'), goalIds: [1]);
+  //   Instance h = new Instance(
+  //       date: DateTime.parse('2019-11-24 12:36:56.270753'), goalIds: [1]);
+  //   Instance i = new Instance(
+  //       date: DateTime.parse('2019-11-26 12:36:56.270753'), goalIds: [1]);
+  //   Instance j = new Instance(date: todayDate, goalIds: [1]);
+
+  //   List<Instance> listHistory = new List<Instance>();
+  //   listHistory.add(a);
+  //   listHistory.add(b);
+  //   listHistory.add(c);
+  //   listHistory.add(d);
+  //   listHistory.add(e);
+  //   listHistory.add(f);
+  //   listHistory.add(g);
+  //   listHistory.add(h);
+  //   listHistory.add(i);
+  //   listHistory.add(j);
+
+  //   List<Goal> listGoals = new List<Goal>();
+  //   listGoals.add(initialGoal);
+
+  //   StorageModel storage =
+  //       new StorageModel(goals: listGoals, history: listHistory);
+
+  //   savetoStorageJson(storage, goalsFile);
+  // }
 
   static createFirstData(todayDate, goalsFile) {
     Goal initialGoal =
