@@ -225,26 +225,39 @@ class HomeState extends State<Home> {
     String day = daysOfTheWeek[weekNum - 1].substring(0, 1);
 
     viewDate = formatDate(loadedHistory[index].date, [dd]).toString();
+    String t = formatDate(loadedHistory[index].date, [dd, ' ', M, ' ', yyyy]).toString();
 
+    var circleBorder = new BoxDecoration(
+        borderRadius: new BorderRadius.circular(25.0),
+        border: new Border.all(
+          width: 1.0,
+          color: Colors.black,
+        ));
 
     return Visibility(
       visible: dailyView ? false : true,
       child: Column(children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
-          child: Text(viewDate,
-              style: TextStyle(
-                fontFamily: 'Rubik',
-                fontWeight: FontWeight.w300,
-                fontSize: 22,
-                color: Colors.black87,
-              )),
+          child: Container(
+            decoration: t == todayDateString ? circleBorder : null,
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Text(viewDate,
+                  style: TextStyle(
+                    fontFamily: 'Rubik',
+                    fontWeight: FontWeight.w300,
+                    fontSize: 25,
+                    color: Colors.black87,
+                  )),
+            ),
+          ),
         ),
         Text(day,
             style: TextStyle(
                 fontFamily: 'Rubik',
                 fontWeight: FontWeight.w300,
-                fontSize: 13,
+                fontSize: 15,
                 color: Colors.grey))
       ]),
     );
@@ -320,7 +333,12 @@ class HomeState extends State<Home> {
             },
             child: Container(
                 color: Colors.white,
-                child: Center(child: Padding(padding: const EdgeInsets.only(bottom:30),child: Column( mainAxisAlignment: MainAxisAlignment.end, children: [weeklyTitle(index)]))))));
+                child: Center(
+                    child: Padding(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [weeklyTitle(index)]))))));
   }
 
   Widget bottomContainer(instance, index) {
