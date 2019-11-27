@@ -226,10 +226,10 @@ class HomeState extends State<Home> {
 
     viewDate = formatDate(loadedHistory[index].date, [dd]).toString();
 
-    return Container(
+    return Visibility(
       // color: Colors.grey,
-      child: Column( 
-      children: [
+      visible: false,
+      child: Column(children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
           child: Text(viewDate,
@@ -378,7 +378,14 @@ class HomeState extends State<Home> {
                             ]);
                       },
                       itemCount: loadedHistory.length),
-                  // goalStringsWidget(),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(flex: 2, child: Container()),
+                        Expanded(flex: 8, child: goalStringsWidget()),
+                      ],
+                    ),
+                  ),
                 ],
               ));
   }
