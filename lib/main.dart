@@ -226,8 +226,8 @@ class HomeState extends State<Home> {
 
     viewDate = formatDate(loadedHistory[index].date, [dd]).toString();
 
+
     return Visibility(
-      // color: Colors.grey,
       visible: dailyView ? false : true,
       child: Column(children: [
         Padding(
@@ -320,12 +320,7 @@ class HomeState extends State<Home> {
             },
             child: Container(
                 color: Colors.white,
-                child: Center(
-                    child: Padding(
-                        padding: const EdgeInsets.all(30),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [weeklyTitle(index)]))))));
+                child: Center(child: Padding(padding: const EdgeInsets.only(bottom:30),child: Column( mainAxisAlignment: MainAxisAlignment.end, children: [weeklyTitle(index)]))))));
   }
 
   Widget bottomContainer(instance, index) {
