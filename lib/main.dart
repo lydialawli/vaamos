@@ -45,7 +45,7 @@ class HomeState extends State<Home> {
   DateTime dateToday;
   String todayDateString = 'today';
   int todayIndex;
-  bool dailyView = false;
+  bool dailyView = true;
   List<String> daysOfTheWeek = [
     'monday',
     'tuesday',
@@ -228,7 +228,7 @@ class HomeState extends State<Home> {
 
     return Visibility(
       // color: Colors.grey,
-      visible: false,
+      visible: dailyView ? false : true,
       child: Column(children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
@@ -287,16 +287,29 @@ class HomeState extends State<Home> {
     ]);
   }
 
-  Widget topContainer(index) {
+  Widget dailyViewDate() {
+    return Visibility(
+      visible: dailyView ? true : false,
+      child: Container(
+          color: Colors.white,
+          child: Center(
+              child: Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [dailyTitle()])))),
+    );
+  }
+
+  Widget weeklyView(index) {
     return Container(
         color: Colors.white,
         child: Center(
             child: Padding(
                 padding: const EdgeInsets.all(30),
-                child:
-                    Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  dailyView ? dailyTitle() : weeklyTitle(index),
-                ]))));
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [weeklyTitle(index)]))));
   }
 
   Widget bottomContainer(instance, index) {
@@ -371,7 +384,7 @@ class HomeState extends State<Home> {
                         return Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Expanded(flex: 2, child: topContainer(index)),
+                              Expanded(flex: 2, child: weeklyView(index)),
                               Expanded(
                                   flex: 8,
                                   child: bottomContainer(instance, index))
@@ -381,7 +394,7 @@ class HomeState extends State<Home> {
                   Container(
                     child: Column(
                       children: <Widget>[
-                        Expanded(flex: 2, child: Container()),
+                        Expanded(flex: 2, child: dailyViewDate()),
                         Expanded(flex: 8, child: goalStringsWidget()),
                       ],
                     ),
@@ -389,48 +402,4 @@ class HomeState extends State<Home> {
                 ],
               ));
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //       appBar: AppBar(
-  //         elevation: 0.0,
-  //         title: iconHelp(),
-  //         backgroundColor: Colors.white,
-  //       ),
-  //       body: loadingData
-  //           ? spinner()
-  //           : Column(
-  //               mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //               children: [
-  //                 Expanded(flex: 2, child: topContainer()),
-  //                 Expanded(
-  //                     flex: 8,
-  //                     child: Stack(
-  //                       children: <Widget>[
-  //                         PageView.builder(
-  //                             controller: PageController(
-  //                               initialPage: 4,
-  //                               viewportFraction: dailyView ? 0.9 : 0.15,
-  //                             ),
-  //                             scrollDirection: scrollDirection,
-  //                             onPageChanged: (index) {
-  //                               setState(() {
-  //                                 indexView = index;
-  //                               });
-  //                               print('current page... ' + index.toString());
-  //                             },
-  //                             itemBuilder: (context, index) {
-
-  //                               Instance instance = loadedHistory[index];
-
-  //                               return bottomContainer(instance, index);
-  //                             },
-  //                             itemCount: loadedHistory.length),
-  //                         goalStringsWidget(),
-  //                       ],
-  //                     )),
-  //               ],
-  //             ));
-  // }
 }
