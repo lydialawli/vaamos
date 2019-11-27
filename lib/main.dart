@@ -41,6 +41,7 @@ class HomeState extends State<Home> {
   List data;
   List<Goal> loadedGoals = [];
   List<Instance> loadedHistory = [];
+  List<Instance> allInstances = [];
   bool loadingData = true;
   int indexView = 0;
   File storageFile;
@@ -84,7 +85,7 @@ class HomeState extends State<Home> {
     StorageModel results = await Storage.loadStorage();
 
     List<Instance> history = results.history;
-    createEmptyInstances(history);
+    List<Instance> allInstances = createEmptyInstances(history);
 
     Instance tommorrow = new Instance(date: DateTime.now(), goalIds: []);
 
@@ -95,6 +96,7 @@ class HomeState extends State<Home> {
       loadingData = false;
       todayDate = todayDate;
       loadedHistory = history;
+      allInstances = allInstances;
       indexView = history.length - 2;
       storageFile = storageFile;
       dateToday = todayDate;
@@ -139,7 +141,7 @@ class HomeState extends State<Home> {
         }
       }
     }
-    print('all instances ==> ' + allInstances.toString());
+    return allInstances;
   }
 
   final List<Color> colorCodes = <Color>[
