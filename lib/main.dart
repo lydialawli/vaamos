@@ -78,7 +78,7 @@ class HomeState extends State<Home> {
     todayDateString = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]);
     // DateTime todayDate = DateTime.parse('2019-11-25 12:36:56.270753');
 
-    // print('dateutil => ' + dateUtility.daysInMonth(2, year).toString());
+    print('dateutil => ' + todayDate.toString());
 
     Storage.startStorage(todayDate).then((result) => storageFile = result);
     StorageModel results = await Storage.loadStorage();
@@ -102,46 +102,44 @@ class HomeState extends State<Home> {
     });
   }
 
-  // Widget dates(){
-
-  // }
-
   createEmptyInstances(history) {
-    DateTime firstDate = history[0].date;
-    String my = formatDate(firstDate, [mm, ' ', yyyy]);
-    List monthYear = my.split(' ');
-    int day = dateUtility.daysInMonth(
-        int.parse(monthYear[0]), int.parse(monthYear[1]));
-    print('day -->' + monthYear.toString());
-    dateUtility.printMonthCalendar(11, 2019);
-    // List list = [];
-    // List theList = [];
-    // for (int i = 0; i < history.length; i++) {
-    //   Instance instance = history[i];
-    //   String my = formatDate(instance.date, [mm, ' ', yyyy]); // 11 2019
-    //   list.add(my);
-    // }
-    // List removedReapetedDates = list.toSet().toList();
+    List years = [];
+    List<Instance> allInstances = [];
+    Instance thisDay;
 
-    // for (int i = 0; i < removedReapetedDates.length; i++) {
-    //   // [11,2019]
-    //   List monthYear = removedReapetedDates[i].split(' ');
-    //   int days = dateUtility.daysInMonth(
-    //       int.parse(monthYear[0]), int.parse(monthYear[1]));
-    //   theList.add(days);
-    // }
+    for (int i = 0; i < history.length; i++) {
+      Instance instance = history[i];
+      int y = int.parse(formatDate(instance.date, [yyyy]));
+      years.add(y);
+    }
+    List yearsFiltered = years.toSet().toList();
 
-    // print('the list --> ' + theList.toString());
+    print('years are ===> ' + yearsFiltered.toString());
 
-    // for (int i = 0; i < theList.length; i++) {
-    //   List monthYear = removedReapetedDates[i].split(' ');
+    for (int i = 0; i < yearsFiltered.length; i++) {
+      int thisYear = yearsFiltered[i];
 
-    //   for (int b = 1; i <= theList[i]; b++) {
-    //     DateTime day = new DateTime.utc(monthYear[1], monthYear[0], b, 0, 0, 0);
+      for (int f = 1; f <= 12; f++) {
+        int month = f;
+        int totalDays = dateUtility.daysInMonth(month, thisYear);
+        for (int q = 1; q <= totalDays; q++) {
+          DateTime thisDate = DateTime.utc(thisYear, month, q, 0, 0, 0);
+          thisDay = new Instance(date: thisDate, goalIds: []);
+          for (int k = 0; k < history.length; k++) {
+            String historyDate =
+                formatDate(history[k].date, [dd, ' ', M, ' ', yyyy]);
+            String instanceDate =
+                formatDate(thisDay.date, [dd, ' ', M, ' ', yyyy]);
 
-    //     Instance newInstance = new Instance(date: day, goalIds: []);
-    //   }
-    // }
+            if (historyDate == instanceDate) {
+              thisDay = history[k];
+            }
+          }
+          allInstances.add(thisDay);
+        }
+      }
+    }
+    print('all instances ==> ' + allInstances.toString());
   }
 
   final List<Color> colorCodes = <Color>[
@@ -331,8 +329,7 @@ class HomeState extends State<Home> {
       day = daysOfTheWeek[weekNum];
     } else {
       viewDate =
-          formatDate(loadedHistory[indexView].date, [dd, ' ', M])
-              .toString();
+          formatDate(loadedHistory[indexView].date, [dd, ' ', M]).toString();
     }
 
     return Column(children: [
@@ -440,7 +437,7 @@ class HomeState extends State<Home> {
             // delete();
           },
         ),
-        Text(formatDate(loadedHistory[indexView].date, [ MM, ' ', yyyy]),
+        Text(formatDate(loadedHistory[indexView].date, [MM, ' ', yyyy]),
             style: TextStyle(
                 fontFamily: 'Rubik',
                 fontWeight: FontWeight.w300,
