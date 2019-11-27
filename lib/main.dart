@@ -315,6 +315,7 @@ class HomeState extends State<Home> {
             onTap: () {
               setState(() {
                 dailyView = true;
+                indexView = index;
               });
             },
             child: Container(
@@ -384,7 +385,7 @@ class HomeState extends State<Home> {
                 children: <Widget>[
                   PageView.builder(
                       controller: PageController(
-                        initialPage: 4,
+                        initialPage: indexView,
                         viewportFraction: dailyView ? 0.9 : 0.15,
                       ),
                       scrollDirection: scrollDirection,
