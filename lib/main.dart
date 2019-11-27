@@ -62,13 +62,20 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    print('today is =>' + DateTime.now().weekday.toString());
+    print('utc is =>' + DateTime.utc(2019, 11, 27, 0, 0, 0).toString());
     initLoadStorage();
   }
 
   initLoadStorage() async {
-    DateTime todayDate = DateTime.now();
+    DateTime now = DateTime.now();
+    int year = int.parse(formatDate(now, [yyyy]));
+    int month = int.parse(formatDate(now, [mm]));
+    int day = int.parse(formatDate(now, [dd]));
     // DateTime todayDate = DateTime.parse('2019-11-25 12:36:56.270753');
-    todayDateString = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]).toString();
+    DateTime todayDate = DateTime.utc(year, month, day, 0, 0, 0);
+    todayDateString = formatDate(todayDate, [dd, ' ', M, ' ', yyyy]);
+
     Storage.startStorage(todayDate).then((result) => storageFile = result);
     StorageModel results = await Storage.loadStorage();
 
@@ -76,7 +83,6 @@ class HomeState extends State<Home> {
     Instance tommorrow = new Instance(date: DateTime.now(), goalIds: []);
 
     history.add(tommorrow);
-    print(' this is ittt => ' + todayDate.weekday.toString());
 
     setState(() {
       loadedGoals = results.goals;
@@ -225,7 +231,8 @@ class HomeState extends State<Home> {
     String day = daysOfTheWeek[weekNum - 1].substring(0, 1);
 
     viewDate = formatDate(loadedHistory[index].date, [dd]).toString();
-    String t = formatDate(loadedHistory[index].date, [dd, ' ', M, ' ', yyyy]).toString();
+    String t = formatDate(loadedHistory[index].date, [dd, ' ', M, ' ', yyyy])
+        .toString();
 
     var circleBorder = new BoxDecoration(
         borderRadius: new BorderRadius.circular(25.0),
