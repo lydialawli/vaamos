@@ -4,7 +4,7 @@ A Flutter app to help keep track of daily achievements.
 
 ## MVP
 
-Features:
+### Features
 
 - **Add** new goals (maximum of 5 for now)
 - **Delete** an **edit** goal
