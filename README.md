@@ -6,9 +6,12 @@ A Flutter app to help keep track of daily achievements.
 
 Features:
 
-- add a maximum of 5 goals
-- delete goal option
-- mark "today" goals as complete one by one
+- **Add** new goals (maximum of 5 for now)
+- **Delete** an **edit** goal
+- **Mark** everyday goals as **complete** by just tapping
+- **View** by **daily** or **weekly**
+
+![vaamos_ui_design](assets/vaamos.png)
 
 ## Tasks
 
