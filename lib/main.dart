@@ -49,6 +49,7 @@ class HomeState extends State<Home> {
   String todayDateString = 'today';
   int todayIndex;
   bool dailyView = true;
+  PageController pageController;
   List<String> daysOfTheWeek = [
     'monday',
     'tuesday',
@@ -463,6 +464,7 @@ class HomeState extends State<Home> {
               children: <Widget>[
                 PageView.builder(
                     controller: PageController(
+                      
                       initialPage: indexView,
                       viewportFraction: dailyView ? 0.9 : 0.15,
                     ),

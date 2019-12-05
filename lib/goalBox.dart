@@ -46,13 +46,16 @@ class GoalBoxState extends State<GoalBox> {
           });
           changeDone(widget.goalId);
         },
-        child: Container(
-            decoration: BoxDecoration(
-              color: boxColor,
-            ),
-            // child: Text(widget.index.toString()),
-            alignment: Alignment.center,
-            height: 90),
+        child: Padding(
+          padding: const EdgeInsets.all(1),
+          child: Container(
+              decoration: BoxDecoration(
+                color: boxColor,
+              ),
+              // child: Text(widget.index.toString()),
+              alignment: Alignment.center,
+              height: 90),
+        ),
       ),
     );
   }

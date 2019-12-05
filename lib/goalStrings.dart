@@ -6,7 +6,8 @@ class GoalStrings extends StatefulWidget {
   final Function(String, int) editGoalName;
   final Function(int) disableGoal;
 
-  GoalStrings({this.sentence, this.goalId, this.editGoalName, this.disableGoal});
+  GoalStrings(
+      {this.sentence, this.goalId, this.editGoalName, this.disableGoal});
 
   @override
   GoalStringsState createState() => GoalStringsState();
@@ -27,7 +28,8 @@ class GoalStringsState extends State<GoalStrings> {
   IconButton iconDelete() {
     return IconButton(
       alignment: Alignment.bottomLeft,
-      icon: Icon(Icons.delete),
+      icon: Icon(Icons.cancel),
+      iconSize: 30,
       color: Colors.grey[600],
       onPressed: () {
         _showDialog();
@@ -39,7 +41,8 @@ class GoalStringsState extends State<GoalStrings> {
   IconButton cancelOrSubmit() {
     return IconButton(
       alignment: Alignment.bottomLeft,
-      icon: Icon(Icons.done_outline),
+      icon: Icon(Icons.check_circle_outline),
+      iconSize: 30,
       color: Colors.grey[600],
       onPressed: () {
         if (textInput != null) {
@@ -57,7 +60,6 @@ class GoalStringsState extends State<GoalStrings> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        
         return AlertDialog(
           title: new Text('Delete "' + widget.sentence + '" goal'),
           content: new Text(
