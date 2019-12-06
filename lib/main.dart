@@ -49,7 +49,10 @@ class HomeState extends State<Home> {
   String todayDateString = 'today';
   int todayIndex;
   bool dailyView = true;
+  bool inputPosible = false;
+  bool floatingButton;
   PageController pageController;
+  List<Goal> activeGoals;
   List<String> daysOfTheWeek = [
     'monday',
     'tuesday',
@@ -88,6 +91,8 @@ class HomeState extends State<Home> {
     List<Instance> history = results.history;
     List<Instance> allInstances = createEmptyInstances(history);
 
+    List<Goal> activeG = results.goals.where((g) => g.isActive).toList();
+
     Instance tommorrow = new Instance(date: DateTime.now(), goalIds: []);
 
     history.add(tommorrow);
@@ -102,6 +107,8 @@ class HomeState extends State<Home> {
       storageFile = storageFile;
       dateToday = todayDate;
       todayIndex = history.length - 2;
+      floatingButton = activeG.length < 5 ? true : false;
+      activeGoals = activeG;
     });
   }
 
@@ -160,6 +167,14 @@ class HomeState extends State<Home> {
     List<Goal> goals = loadedGoals;
     goals.add(newGoal);
 
+    if (loadedGoals.length < 5) {
+      inputIsVisible();
+    } else {
+      setState(() {
+        inputPosible = false;
+      });
+    }
+
     loadedHistory.removeAt(loadedHistory.length - 1);
     updateStorage(loadedGoals, loadedHistory);
   }
@@ -211,6 +226,8 @@ class HomeState extends State<Home> {
   updateStorage(g, h) {
     List<Goal> goals = g;
     List<Instance> history = h;
+    List<Goal> activeG = goals.where((g) => g.isActive).toList();
+
 
     StorageModel storage = new StorageModel(goals: goals, history: history);
 
@@ -223,6 +240,8 @@ class HomeState extends State<Home> {
     setState(() {
       loadedGoals = goals;
       loadedHistory = history;
+      activeGoals = activeG;
+      floatingButton = activeG.length < 5 ? true : false;
     });
   }
 
@@ -252,7 +271,6 @@ class HomeState extends State<Home> {
 
   Widget goalStringsWidget() {
     List<Widget> goalsStrings = [];
-    List<Goal> activeGoals = loadedGoals.where((g) => g.isActive).toList();
 
     for (int i = 0; i < activeGoals.length; i++) {
       Goal goal = activeGoals[i];
@@ -265,9 +283,9 @@ class HomeState extends State<Home> {
       goalsStrings.add(Container(height: 10));
     }
 
-    if (activeGoals.length < 5) {
-      goalsStrings.add(AddGoalBox(onSubmitGoal));
-    }
+    // if (activeGoals.length < 5) {
+    //   goalsStrings.add(AddGoalBox(onSubmitGoal));
+    // }
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.start, children: goalsStrings);
@@ -450,6 +468,13 @@ class HomeState extends State<Home> {
     );
   }
 
+  inputIsVisible() {
+    setState(() {
+      inputPosible = !inputPosible;
+      floatingButton = !floatingButton;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return loadingData
@@ -460,11 +485,20 @@ class HomeState extends State<Home> {
               title: iconHelp(),
               backgroundColor: Colors.white,
             ),
+            floatingActionButton: Visibility(
+              visible: floatingButton,
+              child: FloatingActionButton(
+                onPressed: () {
+                  inputIsVisible();
+                },
+                child: Icon(Icons.add),
+                // backgroundColor: Colors.green,
+              ),
+            ),
             body: Stack(
               children: <Widget>[
                 PageView.builder(
                     controller: PageController(
-                      
                       initialPage: indexView,
                       viewportFraction: dailyView ? 0.9 : 0.15,
                     ),
@@ -495,6 +529,12 @@ class HomeState extends State<Home> {
                     ],
                   ),
                 ),
+                Container(
+                    alignment: Alignment.bottomLeft,
+                    child: AddGoalBox(
+                        onSubmitGoal: onSubmitGoal,
+                        inputPosible: inputPosible,
+                        inputIsVisible: inputIsVisible))
               ],
             ));
   }
