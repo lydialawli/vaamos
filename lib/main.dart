@@ -51,7 +51,7 @@ class HomeState extends State<Home> {
   bool dailyView = true;
   bool inputPosible = false;
   bool floatingButton;
-  PageController pageController;
+  PageController _pageController;
   List<Goal> activeGoals;
   List<String> daysOfTheWeek = [
     'monday',
@@ -109,6 +109,10 @@ class HomeState extends State<Home> {
       todayIndex = history.length - 2;
       floatingButton = activeG.length < 5 ? true : false;
       activeGoals = activeG;
+      _pageController = PageController(
+        initialPage: history.length - 2,
+        viewportFraction: 0.9,
+      );
     });
   }
 
@@ -228,7 +232,6 @@ class HomeState extends State<Home> {
     List<Instance> history = h;
     List<Goal> activeG = goals.where((g) => g.isActive).toList();
 
-
     StorageModel storage = new StorageModel(goals: goals, history: history);
 
     Storage.savetoStorageJson(storage, storageFile);
@@ -337,6 +340,15 @@ class HomeState extends State<Home> {
     );
   }
 
+  switchView() {
+    setState(() {
+      _pageController = PageController(
+        viewportFraction: dailyView ? 0.9 : 0.15,
+      );
+    });
+    // _pageController.jumpToPage(indexView);
+  }
+
   Widget dailyTitle() {
     String viewDate;
 
@@ -382,6 +394,7 @@ class HomeState extends State<Home> {
               setState(() {
                 dailyView = false;
               });
+              switchView();
             },
             child: Container(
                 color: Colors.white,
@@ -403,6 +416,7 @@ class HomeState extends State<Home> {
                 dailyView = true;
                 indexView = index;
               });
+              switchView();
             },
             child: Container(
                 color: Colors.white,
@@ -438,7 +452,6 @@ class HomeState extends State<Home> {
           content: new Text(
               "blablablabablablalbalbalblablalbalb balbalbal albla,abablalbalb"),
           // actions: <Widget>[
-
           // ],
         );
       },
@@ -475,6 +488,11 @@ class HomeState extends State<Home> {
     });
   }
 
+  //  _pageController = PageController(
+  //     initialPage: indexView,
+  //     viewportFraction: dailyView ? 0.9 : 0.15,
+  //   );
+
   @override
   Widget build(BuildContext context) {
     return loadingData
@@ -498,10 +516,7 @@ class HomeState extends State<Home> {
             body: Stack(
               children: <Widget>[
                 PageView.builder(
-                    controller: PageController(
-                      initialPage: indexView,
-                      viewportFraction: dailyView ? 0.9 : 0.15,
-                    ),
+                    controller: _pageController,
                     scrollDirection: scrollDirection,
                     onPageChanged: (index) {
                       setState(() {
