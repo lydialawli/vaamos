@@ -48,7 +48,7 @@ class HomeState extends State<Home> {
   DateTime dateToday;
   String todayDateString = 'today';
   int todayIndex;
-  bool dailyView = true;
+  bool isDailyView = true;
   bool inputPosible = false;
   bool floatingButton;
   PageController _pageController;
@@ -294,7 +294,74 @@ class HomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.start, children: goalsStrings);
   }
 
-  Widget weeklyTitle(index) {
+  switchView(index) {
+    setState(() {
+      _pageController.jumpToPage(index);
+      _pageController = PageController(
+        viewportFraction: isDailyView ? 0.9 : 0.15,
+      );
+    });
+  }
+
+  Widget dailyDate(index) {
+    String viewDate;
+
+    int weekNum = loadedHistory[index].date.weekday;
+    String day = daysOfTheWeek[weekNum - 1];
+
+    if (index == todayIndex)
+      viewDate = 'TODAY';
+    else if (index == todayIndex + 1) {
+      viewDate = 'TOMORROW';
+      day = daysOfTheWeek[weekNum];
+    } else {
+      viewDate = formatDate(loadedHistory[index].date, [dd, ' ', M]).toString();
+    }
+
+    return Material(
+        child: InkWell(
+            onTap: () {
+              setState(() {
+                isDailyView = false;
+              });
+              switchView(index);
+            },
+            child: Container(
+                color: Colors.white,
+                child: Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: Text(viewDate,
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          fontWeight: FontWeight.w300,
+                          fontSize: 35,
+                          color: Colors.black87,
+                        )),
+                  ),
+                  Text(day,
+                      style: TextStyle(
+                          fontFamily: 'Rubik',
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16,
+                          color: Colors.grey))
+                ]))));
+  }
+
+  Widget topContainer(index) {
+    return Container(
+        color: Colors.white,
+        child: Center(
+            child: Padding(
+                padding: const EdgeInsets.only(bottom: 30),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      isDailyView ? dailyDate(index) : weeklyDate(index)
+                    ]))));
+  }
+
+  Widget weeklyDate(index) {
     String viewDate;
 
     int weekNum = loadedHistory[index].date.weekday;
@@ -311,121 +378,40 @@ class HomeState extends State<Home> {
           color: Colors.black,
         ));
 
-    return Visibility(
-      visible: dailyView ? false : true,
-      child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: Container(
-            decoration: t == todayDateString ? circleBorder : null,
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Text(viewDate,
-                  style: TextStyle(
-                    fontFamily: 'Rubik',
-                    fontWeight: FontWeight.w300,
-                    fontSize: 25,
-                    color: Colors.black87,
-                  )),
-            ),
-          ),
-        ),
-        Text(day,
-            style: TextStyle(
-                fontFamily: 'Rubik',
-                fontWeight: FontWeight.w300,
-                fontSize: 15,
-                color: Colors.grey))
-      ]),
-    );
-  }
-
-  switchView() {
-    setState(() {
-      _pageController = PageController(
-        viewportFraction: dailyView ? 0.9 : 0.15,
-      );
-    });
-    // _pageController.jumpToPage(indexView);
-  }
-
-  Widget dailyTitle() {
-    String viewDate;
-
-    int weekNum = loadedHistory[indexView].date.weekday;
-    String day = daysOfTheWeek[weekNum - 1];
-
-    if (indexView == todayIndex)
-      viewDate = 'TODAY';
-    else if (indexView == todayIndex + 1) {
-      viewDate = 'TOMORROW';
-      day = daysOfTheWeek[weekNum];
-    } else {
-      viewDate =
-          formatDate(loadedHistory[indexView].date, [dd, ' ', M]).toString();
-    }
-
-    return Column(children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
-        child: Text(viewDate,
-            style: TextStyle(
-              fontFamily: 'Rubik',
-              fontWeight: FontWeight.w300,
-              fontSize: 35,
-              color: Colors.black87,
-            )),
-      ),
-      Text(day,
-          style: TextStyle(
-              fontFamily: 'Rubik',
-              fontWeight: FontWeight.w300,
-              fontSize: 16,
-              color: Colors.grey))
-    ]);
-  }
-
-  Widget dailyViewDate() {
-    return Visibility(
-        visible: dailyView ? true : false,
-        child: Material(
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                dailyView = false;
-              });
-              switchView();
-            },
-            child: Container(
-                color: Colors.white,
-                child: Center(
-                    child: Padding(
-                        padding: const EdgeInsets.all(30),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [dailyTitle()])))),
-          ),
-        ));
-  }
-
-  Widget weeklyView(index) {
     return Material(
         child: InkWell(
             onTap: () {
               setState(() {
-                dailyView = true;
-                indexView = index;
+                isDailyView = true;
               });
-              switchView();
+              switchView(index);
             },
             child: Container(
                 color: Colors.white,
-                child: Center(
-                    child: Padding(
-                        padding: const EdgeInsets.only(bottom: 30),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [weeklyTitle(index)]))))));
+                child: Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: Container(
+                      decoration: t == todayDateString ? circleBorder : null,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(viewDate,
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              fontWeight: FontWeight.w300,
+                              fontSize: 25,
+                              color: Colors.black87,
+                            )),
+                      ),
+                    ),
+                  ),
+                  Text(day,
+                      style: TextStyle(
+                          fontFamily: 'Rubik',
+                          fontWeight: FontWeight.w300,
+                          fontSize: 15,
+                          color: Colors.grey))
+                ]))));
   }
 
   Widget bottomContainer(instance, index) {
@@ -488,11 +474,6 @@ class HomeState extends State<Home> {
     });
   }
 
-  //  _pageController = PageController(
-  //     initialPage: indexView,
-  //     viewportFraction: dailyView ? 0.9 : 0.15,
-  //   );
-
   @override
   Widget build(BuildContext context) {
     return loadingData
@@ -529,7 +510,7 @@ class HomeState extends State<Home> {
                       return Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Expanded(flex: 2, child: weeklyView(index)),
+                            Expanded(flex: 2, child: topContainer(index)),
                             Expanded(
                                 flex: 8,
                                 child: bottomContainer(instance, index))
@@ -539,7 +520,7 @@ class HomeState extends State<Home> {
                 Container(
                   child: Column(
                     children: <Widget>[
-                      Expanded(flex: 2, child: dailyViewDate()),
+                      Expanded(flex: 2, child: Container()),
                       Expanded(flex: 8, child: goalStringsWidget()),
                     ],
                   ),
