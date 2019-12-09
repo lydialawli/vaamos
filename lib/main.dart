@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vaamos/addGoalBox.dart';
 import 'package:vaamos/goalBox.dart';
-import 'package:vaamos/goalStrings.dart';
+import 'package:vaamos/goalString.dart';
 import 'package:vaamos/storage.dart';
 import 'package:vaamos/model/goal_model.dart';
 import 'dart:io';
@@ -278,7 +278,7 @@ class HomeState extends State<Home> {
     for (int i = 0; i < activeGoals.length; i++) {
       Goal goal = activeGoals[i];
 
-      goalsStrings.add(GoalStrings(
+      goalsStrings.add(GoalString(
           sentence: goal.goalName,
           goalId: goal.goalId,
           editGoalName: editGoalName,
@@ -348,7 +348,36 @@ class HomeState extends State<Home> {
                 ]))));
   }
 
+  // Widget topContainer(index) {
+  //   return Container(
+  //       color: Colors.white,
+  //       child: Center(
+  //           child: Padding(
+  //               padding: const EdgeInsets.only(bottom: 30),
+  //               child:
+  //                   Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+  //                 // AnimatedSwitcher(
+  //                 //     duration: const Duration(milliseconds: 500),
+  //                 //     transitionBuilder:
+  //                 //         (Widget child, Animation<double> animation) {
+  //                 //       return ScaleTransition(child: child, scale: animation);
+  //                 //     },
+  //                 //     child: isDailyView ? dailyDate(index) : weeklyDate(index),
+  //                 //     key: ValueKey<bool>(isDailyView)),
+
+  //                 AnimatedCrossFade(
+  //                   duration: const Duration(milliseconds: 500),
+  //                   firstChild: dailyDate(index),
+  //                   secondChild: weeklyDate(index),
+  //                   crossFadeState: isDailyView
+  //                       ? CrossFadeState.showFirst
+  //                       : CrossFadeState.showSecond,
+  //                 )
+  //               ]))));
+  // }
+
   Widget topContainer(index) {
+
     return Container(
         color: Colors.white,
         child: Center(

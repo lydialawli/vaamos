@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class GoalStrings extends StatefulWidget {
+class GoalString extends StatefulWidget {
   final String sentence;
   final int goalId;
   final Function(String, int) editGoalName;
   final Function(int) disableGoal;
 
-  GoalStrings(
+  GoalString(
       {this.sentence, this.goalId, this.editGoalName, this.disableGoal});
 
   @override
-  GoalStringsState createState() => GoalStringsState();
+  GoalStringState createState() => GoalStringState();
 }
 
-class GoalStringsState extends State<GoalStrings> {
+class GoalStringState extends State<GoalString> {
   bool longPressFlag = false;
   String textInput;
 
