@@ -290,8 +290,10 @@ class HomeState extends State<Home> {
     //   goalsStrings.add(AddGoalBox(onSubmitGoal));
     // }
 
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start, children: goalsStrings);
+    return Padding(
+      padding: const EdgeInsets.only(top:35),
+      child: Column(children: goalsStrings),
+    );
   }
 
   switchView(index) {
@@ -377,7 +379,6 @@ class HomeState extends State<Home> {
   // }
 
   Widget topContainer(index) {
-
     return Container(
         color: Colors.white,
         child: Center(

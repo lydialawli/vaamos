@@ -6,8 +6,7 @@ class GoalString extends StatefulWidget {
   final Function(String, int) editGoalName;
   final Function(int) disableGoal;
 
-  GoalString(
-      {this.sentence, this.goalId, this.editGoalName, this.disableGoal});
+  GoalString({this.sentence, this.goalId, this.editGoalName, this.disableGoal});
 
   @override
   GoalStringState createState() => GoalStringState();
@@ -131,17 +130,13 @@ class GoalStringState extends State<GoalString> {
 
   Widget build(BuildContext context) {
     return InkWell(
-        onLongPress: () {
-          setState(() {
-            longPressFlag = !longPressFlag;
-          });
-        },
-        child: Stack(
-          children: <Widget>[
-            Padding(
-                padding: const EdgeInsets.all(33.0),
-                child: longPressFlag ? editGoal() : goalString()),
-          ],
-        ));
+      onLongPress: () {
+        setState(() {
+          longPressFlag = !longPressFlag;
+        });
+      },
+      child: Container(
+          height: 90, child: longPressFlag ? editGoal() : goalString()),
+    );
   }
 }
