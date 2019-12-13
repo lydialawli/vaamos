@@ -116,40 +116,45 @@ class HomeState extends State<Home> {
     });
   }
 
+  // -------- to create an instance of all the days that exists since the initial opening of the app
   createEmptyInstances(history) {
     List years = [];
     List<Instance> allInstances = [];
-    Instance thisDay;
+    Instance aDay;
 
+    // -------- extract year of every instance
     for (int i = 0; i < history.length; i++) {
       Instance instance = history[i];
       int y = int.parse(formatDate(instance.date, [yyyy]));
       years.add(y);
     }
+
+    // -------- filter out so there aren't repeated years
     List yearsFiltered = years.toSet().toList();
 
-    print('years are ===> ' + yearsFiltered.toString());
-
+    // -------- the goal is to end up with all the days in instances
     for (int i = 0; i < yearsFiltered.length; i++) {
       int thisYear = yearsFiltered[i];
 
-      for (int f = 1; f <= 12; f++) {
-        int month = f;
+      for (int m = 1; m <= 12; m++) {
+        int month = m;
         int totalDays = dateUtility.daysInMonth(month, thisYear);
-        for (int q = 1; q <= totalDays; q++) {
-          DateTime thisDate = DateTime.utc(thisYear, month, q, 0, 0, 0);
-          thisDay = new Instance(date: thisDate, goalIds: []);
+
+        for (int d = 1; d <= totalDays; d++) {
+          DateTime thisDate = DateTime.utc(thisYear, month, d, 0, 0, 0);
+          aDay = new Instance(date: thisDate, goalIds: []);
+
           for (int k = 0; k < history.length; k++) {
             String historyDate =
                 formatDate(history[k].date, [dd, ' ', M, ' ', yyyy]);
             String instanceDate =
-                formatDate(thisDay.date, [dd, ' ', M, ' ', yyyy]);
+                formatDate(aDay.date, [dd, ' ', M, ' ', yyyy]);
 
             if (historyDate == instanceDate) {
-              thisDay = history[k];
+              aDay = history[k];
             }
           }
-          allInstances.add(thisDay);
+          allInstances.add(aDay);
         }
       }
     }
@@ -291,7 +296,7 @@ class HomeState extends State<Home> {
     // }
 
     return Padding(
-      padding: const EdgeInsets.only(top:35),
+      padding: const EdgeInsets.only(top: 35),
       child: Column(children: goalsStrings),
     );
   }
