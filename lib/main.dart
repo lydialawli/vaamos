@@ -555,9 +555,9 @@ class HomeState extends State<Home> {
                 // ),
                 GestureDetector(
                   onDoubleTap: _switchView,
-                  
-                  // onScaleStart: (scaleDetails) =>
-                  //     print('scale details: ' + scaleDetails.toString()),
+                  onScaleStart: (scaleDetails) =>
+                      print('---' + scaleDetails.toString()),
+                  onScaleEnd: (x) => print('---' + x.toString()),
                   onScaleUpdate: (ScaleUpdateDetails scaleDetails) {
                     double scale = scaleDetails.scale;
 
