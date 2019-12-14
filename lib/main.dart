@@ -89,7 +89,7 @@ class HomeState extends State<Home> {
     StorageModel results = await Storage.loadStorage();
 
     List<Instance> history = results.history;
-    List<Instance> allInstances = createEmptyInstances(history);
+    List<Instance> newList = createEmptyInstances(history);
 
     List<Goal> activeG = results.goals.where((g) => g.isActive).toList();
 
@@ -97,22 +97,25 @@ class HomeState extends State<Home> {
 
     history.add(tommorrow);
 
+    // print('test ===>' + allInstances[710].goalIds.toString());
+
     setState(() {
       loadedGoals = results.goals;
-      loadingData = false;
       todayDate = todayDate;
       loadedHistory = history;
-      allInstances = allInstances;
-      indexView = history.length - 2;
+      allInstances = newList;
+      indexView = allInstances.length - 2;
       storageFile = storageFile;
       dateToday = todayDate;
       todayIndex = history.length - 2;
       floatingButton = activeG.length < 5 ? true : false;
       activeGoals = activeG;
       _pageController = PageController(
-        initialPage: history.length - 2,
+        // initialPage: 1,
+        initialPage: allInstances.length - 2,
         viewportFraction: 0.9,
       );
+      loadingData = false;
     });
   }
 
@@ -154,6 +157,7 @@ class HomeState extends State<Home> {
               aDay = history[k];
             }
           }
+
           allInstances.add(aDay);
         }
       }
@@ -184,73 +188,48 @@ class HomeState extends State<Home> {
       });
     }
 
-    loadedHistory.removeAt(loadedHistory.length - 1);
-    updateStorage(loadedGoals, loadedHistory);
+    updateStorage(loadedGoals, allInstances);
   }
 
   disableGoal(int goalId) {
     List<Goal> goals = loadedGoals;
-
-    // for (int i = 0; i < loadedGoals.length; i++) {
-    //   Goal goal = loadedGoals[i];
-    //   if (goal.goalId == goalId) {
-    //     goal.isActive = false;
-    //   }
-    // }
     loadedGoals.forEach((g) => g.goalId == goalId ? g.isActive = false : null);
 
-    // to delete the goal and its history fully
-    // goals.removeWhere((g) => g.goalId == goalId);
-    // for (int i = 0; i < loadedHistory.length; i++) {
-    //   Instance instance = loadedHistory[i];
-    //   instance.goalIds.removeWhere((g) => g == goalId);
-    // }
-
-    loadedHistory.removeAt(loadedHistory.length - 1);
-
-    updateStorage(goals, loadedHistory);
+    updateStorage(goals, allInstances);
   }
 
   editGoalName(String value, int id) {
     List<Goal> goals = loadedGoals;
     int index = goals.indexWhere((g) => g.goalId == id);
     goals[index].goalName = value;
-    loadedHistory.removeAt(loadedHistory.length - 1);
-    updateStorage(goals, loadedHistory);
+    updateStorage(goals, allInstances);
   }
 
   onDone(int x, int index) {
     int goalId = x;
-    List ids = loadedHistory[index].goalIds;
+    List<Instance> allInsts = allInstances;
+    List ids = allInsts[index].goalIds;
 
     ids.contains(goalId)
         ? ids.removeWhere((id) => id == goalId)
         : ids.add(goalId);
 
-    loadedHistory.removeAt(loadedHistory.length - 1);
+    updateStorage(loadedGoals, allInsts);
+  }
 
-    updateStorage(loadedGoals, loadedHistory);
+  filterInstances(allInsts) {
+    allInsts.removeWhere((i) => i.goalIds.length == 0);
+    return allInsts;
   }
 
   updateStorage(g, h) {
     List<Goal> goals = g;
-    List<Instance> history = h;
-    List<Goal> activeG = goals.where((g) => g.isActive).toList();
+    List<Instance> history = filterInstances(h);
 
     StorageModel storage = new StorageModel(goals: goals, history: history);
 
     Storage.savetoStorageJson(storage, storageFile);
-    Storage.readStorageFile().then((res) => print('new json is => ' + res));
-
-    Instance tommorrow = new Instance(date: DateTime.now(), goalIds: []);
-    loadedHistory.add(tommorrow);
-
-    setState(() {
-      loadedGoals = goals;
-      loadedHistory = history;
-      activeGoals = activeG;
-      floatingButton = activeG.length < 5 ? true : false;
-    });
+    initLoadStorage();
   }
 
   Widget goalBoxWidget(onDone, instance, index) {
@@ -313,7 +292,7 @@ class HomeState extends State<Home> {
   Widget dailyDate(index) {
     String viewDate;
 
-    int weekNum = loadedHistory[index].date.weekday;
+    int weekNum = allInstances[index].date.weekday;
     String day = daysOfTheWeek[weekNum - 1];
 
     if (index == todayIndex)
@@ -322,7 +301,7 @@ class HomeState extends State<Home> {
       viewDate = 'TOMORROW';
       day = daysOfTheWeek[weekNum];
     } else {
-      viewDate = formatDate(loadedHistory[index].date, [dd, ' ', M]).toString();
+      viewDate = formatDate(allInstances[index].date, [dd, ' ', M]).toString();
     }
 
     return Material(
@@ -383,7 +362,7 @@ class HomeState extends State<Home> {
   //               ]))));
   // }
 
-  Widget topContainer(index) {
+  Widget topContainer(index, array) {
     return Container(
         color: Colors.white,
         child: Center(
@@ -392,19 +371,19 @@ class HomeState extends State<Home> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      isDailyView ? dailyDate(index) : weeklyDate(index)
+                      isDailyView ? dailyDate(index) : weeklyDate(index, array)
                     ]))));
   }
 
-  Widget weeklyDate(index) {
+  Widget weeklyDate(index, array) {
     String viewDate;
 
-    int weekNum = loadedHistory[index].date.weekday;
+    int weekNum = array[index].date.weekday;
     String day = daysOfTheWeek[weekNum - 1].substring(0, 1);
 
-    viewDate = formatDate(loadedHistory[index].date, [dd]).toString();
-    String t = formatDate(loadedHistory[index].date, [dd, ' ', M, ' ', yyyy])
-        .toString();
+    viewDate = formatDate(array[index].date, [dd]).toString();
+    String t =
+        formatDate(array[index].date, [dd, ' ', M, ' ', yyyy]).toString();
 
     var circleBorder = new BoxDecoration(
         borderRadius: new BorderRadius.circular(25.0),
@@ -463,44 +442,44 @@ class HomeState extends State<Home> {
     );
   }
 
-  void _showDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text('Tips'),
-          content: new Text(
-              "blablablabablablalbalbalblablalbalb balbalbal albla,abablalbalb"),
-          // actions: <Widget>[
-          // ],
-        );
-      },
-    );
-  }
+  // void _showDialog() {
+  //   // flutter defined function
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: new Text('Tips'),
+  //         content: new Text(
+  //             "blablablabablablalbalbalblablalbalb balbalbal albla,abablalbalb"),
+  //         // actions: <Widget>[
+  //         // ],
+  //       );
+  //     },
+  //   );
+  // }
 
-  Widget iconHelp() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        IconButton(
-          alignment: Alignment.bottomLeft,
-          icon: Icon(Icons.help_outline, size: 25.0),
-          color: Colors.grey[300],
-          onPressed: () {
-            _showDialog();
-            // delete();
-          },
-        ),
-        Text(formatDate(loadedHistory[indexView].date, [MM, ' ', yyyy]),
-            style: TextStyle(
-                fontFamily: 'Rubik',
-                fontWeight: FontWeight.w300,
-                fontSize: 16,
-                color: Colors.grey))
-      ],
-    );
-  }
+  // Widget iconHelp() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: <Widget>[
+  //       IconButton(
+  //         alignment: Alignment.bottomLeft,
+  //         icon: Icon(Icons.help_outline, size: 25.0),
+  //         color: Colors.grey[300],
+  //         onPressed: () {
+  //           _showDialog();
+  //           // delete();
+  //         },
+  //       ),
+  //       Text(formatDate(allInstances[indexView].date, [MM, ' ', yyyy]),
+  //           style: TextStyle(
+  //               fontFamily: 'Rubik',
+  //               fontWeight: FontWeight.w300,
+  //               fontSize: 16,
+  //               color: Colors.grey))
+  //     ],
+  //   );
+  // }
 
   inputIsVisible() {
     setState(() {
@@ -516,7 +495,7 @@ class HomeState extends State<Home> {
         : Scaffold(
             appBar: AppBar(
               elevation: 0.0,
-              title: iconHelp(),
+              // title: iconHelp(),
               backgroundColor: Colors.white,
             ),
             floatingActionButton: Visibility(
@@ -541,17 +520,20 @@ class HomeState extends State<Home> {
                       print('current page... ' + index.toString());
                     },
                     itemBuilder: (context, index) {
-                      Instance instance = loadedHistory[index];
+                      Instance instance = allInstances[index];
+                      // print(' '+ index.toString() + ': ' + instance.toString());
                       return Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Expanded(flex: 2, child: topContainer(index)),
+                            Expanded(
+                                flex: 2,
+                                child: topContainer(index, allInstances)),
                             Expanded(
                                 flex: 8,
                                 child: bottomContainer(instance, index))
                           ]);
                     },
-                    itemCount: loadedHistory.length),
+                    itemCount: allInstances.length),
                 Container(
                   child: Column(
                     children: <Widget>[
