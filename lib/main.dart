@@ -248,7 +248,8 @@ class HomeState extends State<Home> {
           index: index,
           bgColor: colorCodes[i],
           isDone: isDone,
-          onDone: onDone));
+          onDone: onDone,
+          isDailyView: isDailyView));
       goalsDisplay.add(Container(height: 10));
     }
 

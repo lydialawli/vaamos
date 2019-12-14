@@ -7,6 +7,7 @@ class GoalBox extends StatefulWidget {
   final int index;
   final int goalId;
   final Function(int, int) onDone;
+  final bool isDailyView;
 
   GoalBox(
       {this.sentence,
@@ -14,7 +15,8 @@ class GoalBox extends StatefulWidget {
       this.isDone,
       this.onDone,
       this.goalId,
-      this.index});
+      this.index, 
+      this.isDailyView});
 
   @override
   GoalBoxState createState() => GoalBoxState();
@@ -41,10 +43,10 @@ class GoalBoxState extends State<GoalBox> {
     return Material(
       child: InkWell(
         onTap: () {
-          setState(() {
+          if(widget.isDailyView) {setState(() {
             isDone = !isDone;
           });
-          changeDone(widget.goalId);
+          changeDone(widget.goalId);}
         },
         child: Padding(
           padding: const EdgeInsets.all(1),

@@ -99,15 +99,11 @@ class GoalInputState extends State<AddGoalBox> {
   Widget build(BuildContext context) {
     return Visibility(
       visible: widget.inputPosible,
-      child: Material(
-        child: InkWell(
-          child: Container(
-              alignment: Alignment.center,
-              height: 90,
-              color: Colors.grey[100],
-              child: inputButton()),
-        ),
-      ),
+      child: Container(
+          alignment: Alignment.center,
+          height: 90,
+          color: Colors.grey[100],
+          child: inputButton()),
     );
   }
 }
