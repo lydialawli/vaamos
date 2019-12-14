@@ -53,6 +53,7 @@ class HomeState extends State<Home> {
   bool inputPosible = false;
   bool floatingButton;
   PageController _pageController;
+  double _zoom = 0.0;
   List<Goal> activeGoals;
   List<String> daysOfTheWeek = [
     'monday',
@@ -96,7 +97,7 @@ class HomeState extends State<Home> {
 
     Instance todayInst = newList.singleWhere(
         (i) => formatDate(i.date, [dd, ' ', M, ' ', yyyy]) == todayDateString);
-    
+
     // print('test ===>' + allInstances[710].goalIds.toString());
 
     setState(() {
@@ -369,11 +370,12 @@ class HomeState extends State<Home> {
         child: Center(
             child: Padding(
                 padding: const EdgeInsets.only(bottom: 30),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      isDailyView ? dailyDate(index) : weeklyDate(index, array)
-                    ]))));
+                child:
+                    Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  _pageController.viewportFraction > 0.5
+                      ? dailyDate(index)
+                      : weeklyDate(index, array)
+                ]))));
   }
 
   Widget weeklyDate(index, array) {
@@ -489,6 +491,15 @@ class HomeState extends State<Home> {
     });
   }
 
+  _switchView() {
+    setState(() {
+      isDailyView = !isDailyView;
+      _pageController = PageController(
+        viewportFraction: isDailyView ? 0.9 : 0.15,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return loadingData
@@ -511,30 +522,80 @@ class HomeState extends State<Home> {
             ),
             body: Stack(
               children: <Widget>[
-                PageView.builder(
-                    controller: _pageController,
-                    scrollDirection: scrollDirection,
-                    onPageChanged: (index) {
-                      setState(() {
-                        indexView = index;
-                      });
-                      // print('current page... ' + index.toString());
-                    },
-                    itemBuilder: (context, index) {
-                      Instance instance = allInstances[index];
-                      // print(' '+ index.toString() + ': ' + instance.toString());
-                      return Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                                flex: 2,
-                                child: topContainer(index, allInstances)),
-                            Expanded(
-                                flex: 8,
-                                child: bottomContainer(instance, index))
-                          ]);
-                    },
-                    itemCount: todayIndex + 2),
+                // Opacity(
+                //   opacity: 0.0,
+                //   child: Zoom(
+                //       width: 1800,
+                //       height: 1800,
+                //       initZoom: 0.9,
+                //       canvasColor: Colors.grey,
+                //       centerOnScale: true,
+                //       enableScroll: false,
+                //       doubleTapZoom: true,
+                //       backgroundColor: Colors.orange,
+                //       zoomSensibility: 1,
+                //       onScaleUpdate: (double scale, double zoom) {
+                //         double z = zoom;
+
+                //         if (zoom < 0.15) z = 0.15;
+
+                //         if (zoom > 0.9) z = 0.9;
+                //         setState(() {
+                //           _pageController = PageController(
+                //             viewportFraction: z,
+                //           );
+                //         });
+                //         print(scale.toStringAsFixed(2) +
+                //             ' ' +
+                //             z.toStringAsFixed(2));
+                //       },
+                //       child: Center(
+                //         child: Text("Happy zoom!!"),
+                //       )),
+                // ),
+                GestureDetector(
+                  onDoubleTap: _switchView,
+                  
+                  // onScaleStart: (scaleDetails) =>
+                  //     print('scale details: ' + scaleDetails.toString()),
+                  onScaleUpdate: (ScaleUpdateDetails scaleDetails) {
+                    double scale = scaleDetails.scale;
+
+                    if (scale < 0.15) scale = 0.15;
+
+                    if (scale > 0.9) scale = 0.9;
+                    setState(() {
+                      _pageController = PageController(
+                        viewportFraction: scale,
+                      );
+                    });
+                    print('scale details: ' + scaleDetails.toString());
+                  },
+                  child: PageView.builder(
+                      controller: _pageController,
+                      scrollDirection: scrollDirection,
+                      onPageChanged: (index) {
+                        setState(() {
+                          indexView = index;
+                        });
+                        // print('current page... ' + index.toString());
+                      },
+                      itemBuilder: (context, index) {
+                        Instance instance = allInstances[index];
+                        // print(' '+ index.toString() + ': ' + instance.toString());
+                        return Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                  flex: 2,
+                                  child: topContainer(index, allInstances)),
+                              Expanded(
+                                  flex: 8,
+                                  child: bottomContainer(instance, index))
+                            ]);
+                      },
+                      itemCount: todayIndex + 2),
+                ),
                 Container(
                   child: Column(
                     children: <Widget>[
@@ -548,7 +609,7 @@ class HomeState extends State<Home> {
                     child: AddGoalBox(
                         onSubmitGoal: onSubmitGoal,
                         inputPosible: inputPosible,
-                        inputIsVisible: inputIsVisible))
+                        inputIsVisible: inputIsVisible)),
               ],
             ));
   }
