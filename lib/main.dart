@@ -445,44 +445,69 @@ class HomeState extends State<Home> {
     );
   }
 
-  // void _showDialog() {
-  //   // flutter defined function
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: new Text('Tips'),
-  //         content: new Text(
-  //             "blablablabablablalbalbalblablalbalb balbalbal albla,abablalbalb"),
-  //         // actions: <Widget>[
-  //         // ],
-  //       );
-  //     },
-  //   );
-  // }
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text('Tips'),
+          content: new Text(
+              "blablablabablablalbalbalblablalbalb balbalbal albla,abablalbalb"),
+          // actions: <Widget>[
+          // ],
+        );
+      },
+    );
+  }
 
-  // Widget iconHelp() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: <Widget>[
-  //       IconButton(
-  //         alignment: Alignment.bottomLeft,
-  //         icon: Icon(Icons.help_outline, size: 25.0),
-  //         color: Colors.grey[300],
-  //         onPressed: () {
-  //           _showDialog();
-  //           // delete();
-  //         },
-  //       ),
-  //       Text(formatDate(allInstances[indexView].date, [MM, ' ', yyyy]),
-  //           style: TextStyle(
-  //               fontFamily: 'Rubik',
-  //               fontWeight: FontWeight.w300,
-  //               fontSize: 16,
-  //               color: Colors.grey))
-  //     ],
-  //   );
-  // }
+  Widget todayButton() {
+    return Visibility(
+      visible: todayIndex != indexView ? true : false,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            _pageController.jumpToPage(todayIndex);
+          });
+        },
+        child: Container(
+            padding: EdgeInsets.all(4.0),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            child: Text('TODAY',
+                style: TextStyle(
+                    fontFamily: 'Rubik',
+                    fontWeight: FontWeight.w300,
+                    fontSize: 16,
+                    color: Colors.grey))),
+      ),
+    );
+  }
+
+  Widget iconHelp() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        IconButton(
+          alignment: Alignment.bottomLeft,
+          icon: Icon(Icons.help_outline, size: 25.0),
+          color: Colors.grey[300],
+          onPressed: () {
+            _showDialog();
+            // delete();
+          },
+        ),
+        todayButton(),
+        Text(formatDate(allInstances[indexView].date, [MM, ' ', yyyy]),
+            style: TextStyle(
+                fontFamily: 'Rubik',
+                fontWeight: FontWeight.w300,
+                fontSize: 16,
+                color: Colors.grey))
+      ],
+    );
+  }
 
   inputIsVisible() {
     setState(() {
@@ -507,7 +532,7 @@ class HomeState extends State<Home> {
         : Scaffold(
             appBar: AppBar(
               elevation: 0.0,
-              // title: iconHelp(),
+              title: iconHelp(),
               backgroundColor: Colors.white,
             ),
             floatingActionButton: Visibility(
