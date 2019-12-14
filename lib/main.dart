@@ -94,10 +94,9 @@ class HomeState extends State<Home> {
 
     List<Goal> activeG = results.goals.where((g) => g.isActive).toList();
 
-    Instance tommorrow = new Instance(date: DateTime.now(), goalIds: []);
-
-    history.add(tommorrow);
-
+    Instance todayInst = newList.singleWhere(
+        (i) => formatDate(i.date, [dd, ' ', M, ' ', yyyy]) == todayDateString);
+    
     // print('test ===>' + allInstances[710].goalIds.toString());
 
     setState(() {
@@ -105,15 +104,15 @@ class HomeState extends State<Home> {
       todayDate = todayDate;
       loadedHistory = history;
       allInstances = newList;
-      indexView = allInstances.length - 2;
+      indexView = newList.indexOf(todayInst);
       storageFile = storageFile;
       dateToday = todayDate;
-      todayIndex = history.length - 2;
+      todayIndex = newList.indexOf(todayInst);
       floatingButton = activeG.length < 5 ? true : false;
       activeGoals = activeG;
       _pageController = PageController(
         // initialPage: 1,
-        initialPage: allInstances.length - 2,
+        initialPage: newList.indexOf(todayInst),
         viewportFraction: 0.9,
       );
       loadingData = false;
@@ -286,8 +285,8 @@ class HomeState extends State<Home> {
     setState(() {
       _pageController.jumpToPage(index);
       _pageController = PageController(
-          viewportFraction: isDailyView ? 0.9 : 0.15,
-          );
+        viewportFraction: isDailyView ? 0.9 : 0.15,
+      );
     });
   }
 
@@ -535,7 +534,7 @@ class HomeState extends State<Home> {
                                 child: bottomContainer(instance, index))
                           ]);
                     },
-                    itemCount: allInstances.length),
+                    itemCount: todayIndex + 2),
                 Container(
                   child: Column(
                     children: <Widget>[
