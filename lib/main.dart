@@ -7,6 +7,7 @@ import 'package:vaamos/model/goal_model.dart';
 import 'dart:io';
 import 'package:date_format/date_format.dart';
 import 'package:date_util/date_util.dart';
+import 'package:zoom_widget/zoom_widget.dart';
 
 void main() {
   runApp(MyApp());
@@ -285,8 +286,8 @@ class HomeState extends State<Home> {
     setState(() {
       _pageController.jumpToPage(index);
       _pageController = PageController(
-        viewportFraction: isDailyView ? 0.9 : 0.15,
-      );
+          viewportFraction: isDailyView ? 0.9 : 0.15,
+          );
     });
   }
 
@@ -518,7 +519,7 @@ class HomeState extends State<Home> {
                       setState(() {
                         indexView = index;
                       });
-                      print('current page... ' + index.toString());
+                      // print('current page... ' + index.toString());
                     },
                     itemBuilder: (context, index) {
                       Instance instance = allInstances[index];
