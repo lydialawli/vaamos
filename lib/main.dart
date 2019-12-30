@@ -547,80 +547,28 @@ class HomeState extends State<Home> {
             ),
             body: Stack(
               children: <Widget>[
-                // Opacity(
-                //   opacity: 0.0,
-                //   child: Zoom(
-                //       width: 1800,
-                //       height: 1800,
-                //       initZoom: 0.9,
-                //       canvasColor: Colors.grey,
-                //       centerOnScale: true,
-                //       enableScroll: false,
-                //       doubleTapZoom: true,
-                //       backgroundColor: Colors.orange,
-                //       zoomSensibility: 1,
-                //       onScaleUpdate: (double scale, double zoom) {
-                //         double z = zoom;
-
-                //         if (zoom < 0.15) z = 0.15;
-
-                //         if (zoom > 0.9) z = 0.9;
-                //         setState(() {
-                //           _pageController = PageController(
-                //             viewportFraction: z,
-                //           );
-                //         });
-                //         print(scale.toStringAsFixed(2) +
-                //             ' ' +
-                //             z.toStringAsFixed(2));
-                //       },
-                //       child: Center(
-                //         child: Text("Happy zoom!!"),
-                //       )),
-                // ),
-                GestureDetector(
-                  onDoubleTap: _switchView,
-                  onScaleStart: (scaleDetails) =>
-                      print('---' + scaleDetails.toString()),
-                  onScaleEnd: (x) => print('---' + x.toString()),
-                  onScaleUpdate: (ScaleUpdateDetails scaleDetails) {
-                    double scale = scaleDetails.scale;
-
-                    if (scale < 0.15) scale = 0.15;
-
-                    if (scale > 0.9) scale = 0.9;
-                    setState(() {
-                      _pageController = PageController(
-                        viewportFraction: scale,
-                      );
-                    });
-                    print('scale details: ' + scaleDetails.toString());
-                  },
-                  child: PageView.builder(
-                      controller: _pageController,
-                      scrollDirection: scrollDirection,
-                      onPageChanged: (index) {
-                        setState(() {
-                          indexView = index;
-                        });
-                        // print('current page... ' + index.toString());
-                      },
-                      itemBuilder: (context, index) {
-                        Instance instance = allInstances[index];
-                        // print(' '+ index.toString() + ': ' + instance.toString());
-                        return Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: topContainer(index, allInstances)),
-                              Expanded(
-                                  flex: 8,
-                                  child: bottomContainer(instance, index))
-                            ]);
-                      },
-                      itemCount: todayIndex + 2),
-                ),
+                PageView.builder(
+                    controller: _pageController,
+                    scrollDirection: scrollDirection,
+                    onPageChanged: (index) {
+                      setState(() {
+                        indexView = index;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      Instance instance = allInstances[index];
+                      return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
+                                flex: 2,
+                                child: topContainer(index, allInstances)),
+                            Expanded(
+                                flex: 8,
+                                child: bottomContainer(instance, index))
+                          ]);
+                    },
+                    itemCount: todayIndex + 2),
                 Container(
                   child: Column(
                     children: <Widget>[
