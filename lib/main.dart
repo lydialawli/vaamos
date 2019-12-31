@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vaamos/UI_widgets/addGoalBox.dart';
 import 'package:vaamos/UI_widgets/goalBox.dart';
 import 'package:vaamos/UI_widgets/goalString.dart';
-import 'package:vaamos/UI_widgets/spinner.dart';
+import 'package:vaamos/UI_widgets/smallWidgets.dart';
 import 'package:vaamos/storage.dart';
 import 'package:vaamos/model/goal_model.dart';
 import 'dart:io';
@@ -125,7 +125,7 @@ class HomeState extends State<Home> {
     int numOfYears = thisYear - firstYear + 2;
 
     for (int i = 0; i < numOfYears; i++) {
-      years.add(firstYear+i);
+      years.add(firstYear + i);
     }
     return years;
   }
@@ -136,7 +136,6 @@ class HomeState extends State<Home> {
     List years = getAllYears(firstYear);
     List<Instance> allInstances = [];
     Instance aDay;
-
 
     // -------- the goal is to end up with all the days in instances
     for (int i = 0; i < years.length; i++) {
@@ -336,7 +335,6 @@ class HomeState extends State<Home> {
                 ]))));
   }
 
-
   Widget topContainer(index, array) {
     return Container(
         color: Colors.white,
@@ -407,7 +405,6 @@ class HomeState extends State<Home> {
             child: Center(child: goalBoxWidget(onDone, instance, index))));
   }
 
-
   void _showDialog() {
     // flutter defined function
     showDialog(
@@ -415,60 +412,11 @@ class HomeState extends State<Home> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: new Text('Tips'),
-          content: new Text(
-              "blabla"),
+          content: new Text("blabla"),
           // actions: <Widget>[
           // ],
         );
       },
-    );
-  }
-
-  Widget todayButton() {
-    return Visibility(
-      visible: todayIndex != indexView ? true : false,
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            _pageController.jumpToPage(todayIndex);
-          });
-        },
-        child: Container(
-            padding: EdgeInsets.all(4.0),
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            child: Text('TODAY',
-                style: TextStyle(
-                    fontFamily: 'Rubik',
-                    fontWeight: FontWeight.w300,
-                    fontSize: 16,
-                    color: Colors.grey))),
-      ),
-    );
-  }
-
-  Widget iconHelp() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        IconButton(
-          alignment: Alignment.bottomLeft,
-          icon: Icon(Icons.help_outline, size: 25.0),
-          color: Colors.grey[300],
-          onPressed: () {
-            _showDialog();
-            // delete();
-          },
-        ),
-        todayButton(),
-        Text(formatDate(allInstances[indexView].date, [MM, ' ', yyyy]),
-            style: TextStyle(
-                fontFamily: 'Rubik',
-                fontWeight: FontWeight.w300,
-                fontSize: 16,
-                color: Colors.grey))
-      ],
     );
   }
 
@@ -479,16 +427,39 @@ class HomeState extends State<Home> {
     });
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return loadingData
         ? Spinner()
         : Scaffold(
             appBar: AppBar(
-              elevation: 0.0,
-              title: iconHelp(),
-              backgroundColor: Colors.white,
-            ),
+                elevation: 0.0,
+                leading: IconButton(
+                  alignment: Alignment.bottomLeft,
+                  icon: Icon(Icons.help_outline, size: 25.0),
+                  color: Colors.grey[300],
+                  onPressed: () {
+                    _showDialog();
+                    // delete();
+                  },
+                ),
+                title: Text(formatDate(allInstances[indexView].date, [yyyy]),
+                    style: TextStyle(color: Colors.grey)),
+                centerTitle: true,
+                backgroundColor: Colors.white,
+                actions: <Widget>[
+                  Visibility(
+                    visible: todayIndex != indexView ? true : false,
+                    child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _pageController.jumpToPage(todayIndex);
+                          });
+                        },
+                        child: TodayButton()),
+                  )
+                ]),
             floatingActionButton: Visibility(
               visible: floatingButton,
               child: FloatingActionButton(
