@@ -7,7 +7,6 @@ import 'package:vaamos/model/goal_model.dart';
 import 'dart:io';
 import 'package:date_format/date_format.dart';
 import 'package:date_util/date_util.dart';
-import 'package:zoom_widget/zoom_widget.dart';
 
 void main() {
   runApp(MyApp());
@@ -53,7 +52,6 @@ class HomeState extends State<Home> {
   bool inputPosible = false;
   bool floatingButton;
   PageController _pageController;
-  double _zoom = 0.0;
   List<Goal> activeGoals;
   List<String> daysOfTheWeek = [
     'monday',
@@ -120,25 +118,28 @@ class HomeState extends State<Home> {
     });
   }
 
+  getAllYears(firstYear) {
+    int thisYear = int.parse(formatDate(DateTime.now(), [yyyy]));
+    List years = [];
+    int numOfYears = thisYear - firstYear + 2;
+
+    for (int i = 0; i < numOfYears; i++) {
+      years.add(firstYear+i);
+    }
+    return years;
+  }
+
   // -------- to create an instance of all the days that exists since the initial opening of the app
   createEmptyInstances(history) {
-    List years = [];
+    int firstYear = int.parse(formatDate(history[0].date, [yyyy]));
+    List years = getAllYears(firstYear);
     List<Instance> allInstances = [];
     Instance aDay;
 
-    // -------- extract year of every instance
-    for (int i = 0; i < history.length; i++) {
-      Instance instance = history[i];
-      int y = int.parse(formatDate(instance.date, [yyyy]));
-      years.add(y);
-    }
-
-    // -------- filter out so there aren't repeated years
-    List yearsFiltered = years.toSet().toList();
 
     // -------- the goal is to end up with all the days in instances
-    for (int i = 0; i < yearsFiltered.length; i++) {
-      int thisYear = yearsFiltered[i];
+    for (int i = 0; i < years.length; i++) {
+      int thisYear = years[i];
 
       for (int m = 1; m <= 12; m++) {
         int month = m;
@@ -284,6 +285,7 @@ class HomeState extends State<Home> {
 
   switchView(index) {
     setState(() {
+      isDailyView = !isDailyView;
       _pageController.jumpToPage(index);
       _pageController = PageController(
         viewportFraction: isDailyView ? 0.9 : 0.15,
@@ -309,9 +311,6 @@ class HomeState extends State<Home> {
     return Material(
         child: InkWell(
             onTap: () {
-              setState(() {
-                isDailyView = false;
-              });
               switchView(index);
             },
             child: Container(
@@ -370,12 +369,11 @@ class HomeState extends State<Home> {
         child: Center(
             child: Padding(
                 padding: const EdgeInsets.only(bottom: 30),
-                child:
-                    Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  _pageController.viewportFraction > 0.5
-                      ? dailyDate(index)
-                      : weeklyDate(index, array)
-                ]))));
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      isDailyView ? dailyDate(index) : weeklyDate(index, array)
+                    ]))));
   }
 
   Widget weeklyDate(index, array) {
@@ -398,9 +396,6 @@ class HomeState extends State<Home> {
     return Material(
         child: InkWell(
             onTap: () {
-              setState(() {
-                isDailyView = true;
-              });
               switchView(index);
             },
             child: Container(
@@ -513,15 +508,6 @@ class HomeState extends State<Home> {
     setState(() {
       inputPosible = !inputPosible;
       floatingButton = !floatingButton;
-    });
-  }
-
-  _switchView() {
-    setState(() {
-      isDailyView = !isDailyView;
-      _pageController = PageController(
-        viewportFraction: isDailyView ? 0.9 : 0.15,
-      );
     });
   }
 
