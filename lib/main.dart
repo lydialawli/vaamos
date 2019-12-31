@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vaamos/addGoalBox.dart';
-import 'package:vaamos/goalBox.dart';
-import 'package:vaamos/goalString.dart';
+import 'package:vaamos/UI_widgets/addGoalBox.dart';
+import 'package:vaamos/UI_widgets/goalBox.dart';
+import 'package:vaamos/UI_widgets/goalString.dart';
+import 'package:vaamos/UI_widgets/spinner.dart';
 import 'package:vaamos/storage.dart';
 import 'package:vaamos/model/goal_model.dart';
 import 'dart:io';
@@ -335,33 +336,6 @@ class HomeState extends State<Home> {
                 ]))));
   }
 
-  // Widget topContainer(index) {
-  //   return Container(
-  //       color: Colors.white,
-  //       child: Center(
-  //           child: Padding(
-  //               padding: const EdgeInsets.only(bottom: 30),
-  //               child:
-  //                   Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-  //                 // AnimatedSwitcher(
-  //                 //     duration: const Duration(milliseconds: 500),
-  //                 //     transitionBuilder:
-  //                 //         (Widget child, Animation<double> animation) {
-  //                 //       return ScaleTransition(child: child, scale: animation);
-  //                 //     },
-  //                 //     child: isDailyView ? dailyDate(index) : weeklyDate(index),
-  //                 //     key: ValueKey<bool>(isDailyView)),
-
-  //                 AnimatedCrossFade(
-  //                   duration: const Duration(milliseconds: 500),
-  //                   firstChild: dailyDate(index),
-  //                   secondChild: weeklyDate(index),
-  //                   crossFadeState: isDailyView
-  //                       ? CrossFadeState.showFirst
-  //                       : CrossFadeState.showSecond,
-  //                 )
-  //               ]))));
-  // }
 
   Widget topContainer(index, array) {
     return Container(
@@ -433,12 +407,6 @@ class HomeState extends State<Home> {
             child: Center(child: goalBoxWidget(onDone, instance, index))));
   }
 
-  Widget spinner() {
-    return CircularProgressIndicator(
-      value: null,
-      valueColor: AlwaysStoppedAnimation<Color>(Colors.cyan),
-    );
-  }
 
   void _showDialog() {
     // flutter defined function
@@ -448,7 +416,7 @@ class HomeState extends State<Home> {
         return AlertDialog(
           title: new Text('Tips'),
           content: new Text(
-              "blablablabablablalbalbalblablalbalb balbalbal albla,abablalbalb"),
+              "blabla"),
           // actions: <Widget>[
           // ],
         );
@@ -514,7 +482,7 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return loadingData
-        ? spinner()
+        ? Spinner()
         : Scaffold(
             appBar: AppBar(
               elevation: 0.0,
