@@ -8,47 +8,27 @@ class Spinner extends StatelessWidget {
   }
 }
 
-class TodayButton extends StatelessWidget {
+
+class NowButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  NowButton({this.onPressed});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-            // color: Colors.red,
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        child: Center(
-          child: Text('TODAY',
-              style: TextStyle(
-                  fontFamily: 'Rubik',
-                  fontWeight: FontWeight.w300,
-                  fontSize: 16,
-                  color: Colors.grey)),
-        ));
+    return Padding(
+      padding: const EdgeInsets.only(right:20.0),
+      child: IconButton(
+        splashColor: Colors.blueAccent,
+        onPressed: onPressed
+        ,
+        icon: Text('now',
+            style: TextStyle(
+                fontFamily: 'Rubik',
+                fontWeight: FontWeight.w300,
+                fontSize: 16,
+                color: Colors.grey)),
+      ),
+    );
   }
 }
-
-// class TodayButton extends StatelessWidget {
-//   // final VoidCallback onPressed;
-//   final Function() onPressed;
-
-//   TodayButton(this.onPressed);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return OutlineButton(
-//       // color: Colors.blue,
-//       // textColor: Colors.grey,
-//       disabledTextColor: Colors.black,
-//       padding: EdgeInsets.all(8.0),
-//       splashColor: Colors.blueAccent,
-//       onPressed: onPressed
-//       ,
-//       child: Text("Today",
-//           style: TextStyle(
-//               fontFamily: 'Rubik',
-//               fontWeight: FontWeight.w300,
-//               fontSize: 16,
-//               color: Colors.grey)),
-//     );
-//   }
-// }

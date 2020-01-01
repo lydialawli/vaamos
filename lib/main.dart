@@ -427,7 +427,12 @@ class HomeState extends State<Home> {
     });
   }
 
-  
+  goToToday() {
+    setState(() {
+      _pageController.jumpToPage(todayIndex);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return loadingData
@@ -445,20 +450,17 @@ class HomeState extends State<Home> {
                   },
                 ),
                 title: Text(formatDate(allInstances[indexView].date, [yyyy]),
-                    style: TextStyle(color: Colors.grey)),
+                    style: TextStyle(
+                        fontFamily: 'Rubik',
+                        fontWeight: FontWeight.w300,
+                        fontSize: 16,
+                        color: Colors.grey)),
                 centerTitle: true,
                 backgroundColor: Colors.white,
                 actions: <Widget>[
                   Visibility(
-                    visible: todayIndex != indexView ? true : false,
-                    child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            _pageController.jumpToPage(todayIndex);
-                          });
-                        },
-                        child: TodayButton()),
-                  )
+                      visible: todayIndex != indexView ? true : false,
+                      child: NowButton(onPressed: goToToday))
                 ]),
             floatingActionButton: Visibility(
               visible: floatingButton,
