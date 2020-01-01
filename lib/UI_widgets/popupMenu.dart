@@ -23,19 +23,21 @@ class PopupMenu extends StatefulWidget {
 }
 
 class PopupMenuState extends State<PopupMenu> {
+  void _select(CustomPopupMenu choice) {
+     widget.onSelected();
+  }
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<CustomPopupMenu>(
       elevation: 3.2,
-      initialValue: widget.isDaily ? choices[0]: choices[1],
+      initialValue: widget.isDaily ? choices[0] : choices[1],
       icon: Icon(
         FeatherIcons.moreVertical,
         color: Colors.grey,
       ),
-
       tooltip: 'choose view',
-      onSelected: widget.onSelected,
+      onSelected:_select,
       itemBuilder: (BuildContext context) {
         return choices.map((CustomPopupMenu choice) {
           return PopupMenuItem<CustomPopupMenu>(

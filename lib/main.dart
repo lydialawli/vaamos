@@ -285,13 +285,18 @@ class HomeState extends State<Home> {
     );
   }
 
-  switchView(index) {
+  switchView() {
     setState(() {
       isDailyView = !isDailyView;
-      _pageController.jumpToPage(index);
       _pageController = PageController(
         viewportFraction: isDailyView ? 0.9 : 0.15,
       );
+    });
+  }
+
+  jumptToPage(index) {
+    setState(() {
+      _pageController.jumpToPage(index);
     });
   }
 
@@ -313,7 +318,8 @@ class HomeState extends State<Home> {
     return Material(
         child: InkWell(
             onTap: () {
-              switchView(index);
+              jumptToPage(index);
+              switchView();
             },
             child: Container(
                 color: Colors.white,
@@ -370,7 +376,8 @@ class HomeState extends State<Home> {
     return Material(
         child: InkWell(
             onTap: () {
-              switchView(index);
+              jumptToPage(index);
+              switchView();
             },
             child: Container(
                 color: Colors.white,
