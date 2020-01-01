@@ -8,7 +8,6 @@ class Spinner extends StatelessWidget {
   }
 }
 
-
 class NowButton extends StatelessWidget {
   final VoidCallback onPressed;
 
@@ -17,11 +16,10 @@ class NowButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right:20.0),
+      padding: const EdgeInsets.only(right: 20.0),
       child: IconButton(
         splashColor: Colors.blueAccent,
-        onPressed: onPressed
-        ,
+        onPressed: onPressed,
         icon: Text('now',
             style: TextStyle(
                 fontFamily: 'Rubik',
@@ -32,3 +30,4 @@ class NowButton extends StatelessWidget {
     );
   }
 }
+

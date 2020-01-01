@@ -3,6 +3,7 @@ import 'package:vaamos/UI_widgets/addGoalBox.dart';
 import 'package:vaamos/UI_widgets/goalBox.dart';
 import 'package:vaamos/UI_widgets/goalString.dart';
 import 'package:vaamos/UI_widgets/smallWidgets.dart';
+import 'package:vaamos/UI_widgets/popupMenu.dart';
 import 'package:vaamos/storage.dart';
 import 'package:vaamos/model/goal_model.dart';
 import 'dart:io';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.pink,
         ),
@@ -460,7 +462,8 @@ class HomeState extends State<Home> {
                 actions: <Widget>[
                   Visibility(
                       visible: todayIndex != indexView ? true : false,
-                      child: NowButton(onPressed: goToToday))
+                      child: NowButton(onPressed: goToToday)),
+                  PopupMenu(onSelected: switchView)
                 ]),
             floatingActionButton: Visibility(
               visible: floatingButton,
