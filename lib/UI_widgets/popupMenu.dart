@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 
 class CustomPopupMenu {
   CustomPopupMenu({this.title, this.icon});
@@ -13,8 +14,9 @@ List<CustomPopupMenu> choices = <CustomPopupMenu>[
 
 class PopupMenu extends StatefulWidget {
   final Function onSelected;
+  final bool isDaily;
 
-  PopupMenu({this.onSelected});
+  PopupMenu({this.onSelected, this.isDaily});
 
   @override
   PopupMenuState createState() => PopupMenuState();
@@ -26,10 +28,12 @@ class PopupMenuState extends State<PopupMenu> {
   Widget build(BuildContext context) {
     return PopupMenuButton<CustomPopupMenu>(
       elevation: 3.2,
-      initialValue: choices[1],
-      onCanceled: () {
-        print('You have not chossed anything');
-      },
+      initialValue: widget.isDaily ? choices[0]: choices[1],
+      icon: Icon(
+        FeatherIcons.moreVertical,
+        color: Colors.grey,
+      ),
+
       tooltip: 'choose view',
       onSelected: widget.onSelected,
       itemBuilder: (BuildContext context) {

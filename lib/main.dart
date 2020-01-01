@@ -463,7 +463,7 @@ class HomeState extends State<Home> {
                   Visibility(
                       visible: todayIndex != indexView ? true : false,
                       child: NowButton(onPressed: goToToday)),
-                  PopupMenu(onSelected: switchView)
+                  PopupMenu(onSelected: switchView, isDaily: isDailyView)
                 ]),
             floatingActionButton: Visibility(
               visible: floatingButton,
