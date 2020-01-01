@@ -101,7 +101,7 @@ class GoalInputState extends State<AddGoalBox> {
       visible: widget.inputPosible,
       child: Container(
           alignment: Alignment.center,
-          height: 90,
+          height: 75,
           color: Colors.grey[100],
           child: inputButton()),
     );

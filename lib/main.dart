@@ -1,3 +1,4 @@
+import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:vaamos/UI_widgets/addGoalBox.dart';
 import 'package:vaamos/UI_widgets/goalBox.dart';
@@ -254,7 +255,7 @@ class HomeState extends State<Home> {
           isDone: isDone,
           onDone: onDone,
           isDailyView: isDailyView));
-      goalsDisplay.add(Container(height: 10));
+      goalsDisplay.add(Container(height: 5));
     }
 
     return Column(
@@ -272,7 +273,7 @@ class HomeState extends State<Home> {
           goalId: goal.goalId,
           editGoalName: editGoalName,
           disableGoal: disableGoal));
-      goalsStrings.add(Container(height: 10));
+      goalsStrings.add(Container(height: 5));
     }
 
     // if (activeGoals.length < 5) {
@@ -348,7 +349,7 @@ class HomeState extends State<Home> {
         color: Colors.white,
         child: Center(
             child: Padding(
-                padding: const EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 20),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -420,8 +421,8 @@ class HomeState extends State<Home> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text('Tips'),
-          content: new Text("blabla"),
+          title: new Text('Vaamos!'),
+          content: new Text('consistency is the key to success!'),
           // actions: <Widget>[
           // ],
         );
@@ -449,22 +450,21 @@ class HomeState extends State<Home> {
         : Scaffold(
             appBar: AppBar(
                 elevation: 0.0,
-                leading: IconButton(
-                  alignment: Alignment.bottomLeft,
-                  icon: Icon(Icons.help_outline, size: 25.0),
-                  color: Colors.grey[300],
-                  onPressed: () {
-                    _showDialog();
-                    // delete();
-                  },
-                ),
+                // leading: IconButton(
+                //   icon: Icon(FeatherIcons.helpCircle, size: 22),
+                //   color: Colors.grey[400],
+                //   onPressed: () {
+                //     _showDialog();
+                //     // delete();
+                //   },
+                // ),
                 title: Text(formatDate(allInstances[indexView].date, [yyyy]),
                     style: TextStyle(
                         fontFamily: 'Rubik',
                         fontWeight: FontWeight.w300,
                         fontSize: 16,
                         color: Colors.grey)),
-                centerTitle: true,
+                // centerTitle: true,
                 backgroundColor: Colors.white,
                 actions: <Widget>[
                   Visibility(
@@ -501,7 +501,7 @@ class HomeState extends State<Home> {
                                 flex: 2,
                                 child: topContainer(index, allInstances)),
                             Expanded(
-                                flex: 8,
+                                flex: 7,
                                 child: bottomContainer(instance, index))
                           ]);
                     },
@@ -510,7 +510,7 @@ class HomeState extends State<Home> {
                   child: Column(
                     children: <Widget>[
                       Expanded(flex: 2, child: Container()),
-                      Expanded(flex: 8, child: goalStringsWidget()),
+                      Expanded(flex: 7, child: goalStringsWidget()),
                     ],
                   ),
                 ),

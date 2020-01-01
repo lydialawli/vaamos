@@ -15,7 +15,7 @@ class GoalBox extends StatefulWidget {
       this.isDone,
       this.onDone,
       this.goalId,
-      this.index, 
+      this.index,
       this.isDailyView});
 
   @override
@@ -43,10 +43,12 @@ class GoalBoxState extends State<GoalBox> {
     return Material(
       child: InkWell(
         onTap: () {
-          if(widget.isDailyView) {setState(() {
-            isDone = !isDone;
-          });
-          changeDone(widget.goalId);}
+          if (widget.isDailyView) {
+            setState(() {
+              isDone = !isDone;
+            });
+            changeDone(widget.goalId);
+          }
         },
         child: Padding(
           padding: const EdgeInsets.all(1),
@@ -56,7 +58,7 @@ class GoalBoxState extends State<GoalBox> {
               ),
               // child: Text(widget.index.toString()),
               alignment: Alignment.center,
-              height: 90),
+              height: 75),
         ),
       ),
     );

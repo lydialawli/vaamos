@@ -136,7 +136,7 @@ class GoalStringState extends State<GoalString> {
         });
       },
       child: Container(
-          height: 90, child: longPressFlag ? editGoal() : goalString()),
+          height: 75, child: longPressFlag ? editGoal() : goalString()),
     );
   }
 }
