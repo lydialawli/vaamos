@@ -446,7 +446,7 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return loadingData
-        ? Spinner()
+        ? Center(child: Spinner())
         : Scaffold(
             appBar: AppBar(
                 elevation: 0.0,
