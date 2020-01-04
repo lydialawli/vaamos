@@ -301,19 +301,18 @@ class HomeState extends State<Home> {
     });
   }
 
-  Widget dailyDate(index) {
+  Widget dailyDate(index, array) {
     String viewDate;
 
-    int weekNum = allInstances[index].date.weekday;
+    int weekNum = array[index].date.weekday;
     String day = daysOfTheWeek[weekNum - 1];
 
     if (index == todayIndex)
       viewDate = 'TODAY';
     else if (index == todayIndex + 1) {
       viewDate = 'TOMORROW';
-      day = daysOfTheWeek[weekNum];
     } else {
-      viewDate = formatDate(allInstances[index].date, [dd, ' ', M]).toString();
+      viewDate = formatDate(array[index].date, [dd, ' ', M]).toString();
     }
 
     return Material(
@@ -353,7 +352,9 @@ class HomeState extends State<Home> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      isDailyView ? dailyDate(index) : weeklyDate(index, array)
+                      isDailyView
+                          ? dailyDate(index, array)
+                          : weeklyDate(index, array)
                     ]))));
   }
 
@@ -445,82 +446,93 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return loadingData
-        ? Center(child: Spinner())
-        : Scaffold(
-            appBar: AppBar(
-                elevation: 0.0,
-                // leading: IconButton(
-                //   icon: Icon(FeatherIcons.helpCircle, size: 22),
-                //   color: Colors.grey[400],
-                //   onPressed: () {
-                //     _showDialog();
-                //     // delete();
-                //   },
-                // ),
-                title: Text(formatDate(allInstances[indexView].date, [yyyy]),
-                    style: TextStyle(
-                        fontFamily: 'Rubik',
-                        fontWeight: FontWeight.w300,
-                        fontSize: 16,
-                        color: Colors.grey)),
-                // centerTitle: true,
-                backgroundColor: Colors.white,
-                actions: <Widget>[
-                  Visibility(
-                      visible: todayIndex != indexView ? true : false,
-                      child: NowButton(onPressed: goToToday)),
-                  PopupMenu(onSelected: switchView, isDaily: isDailyView)
-                ]),
-            floatingActionButton: Visibility(
-              visible: floatingButton,
-              child: FloatingActionButton(
-                onPressed: () {
-                  inputIsVisible();
-                },
-                child: Icon(Icons.add),
-                // backgroundColor: Colors.green,
-              ),
+    return new Scaffold(
+        body: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
             ),
-            body: Stack(
-              children: <Widget>[
-                PageView.builder(
-                    controller: _pageController,
-                    scrollDirection: scrollDirection,
-                    onPageChanged: (index) {
-                      setState(() {
-                        indexView = index;
-                      });
-                    },
-                    itemBuilder: (context, index) {
-                      Instance instance = allInstances[index];
-                      return Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                                flex: 2,
-                                child: topContainer(index, allInstances)),
-                            Expanded(
-                                flex: 7,
-                                child: bottomContainer(instance, index))
-                          ]);
-                    },
-                    itemCount: todayIndex + 2),
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(flex: 2, child: Container()),
-                      Expanded(flex: 7, child: goalStringsWidget()),
-                    ],
-                  ),
-                ),
-                Container(
-                    alignment: Alignment.bottomLeft,
-                    child: AddGoalBox(
-                        onSubmitGoal: onSubmitGoal,
-                        inputPosible: inputPosible,
-                        inputIsVisible: inputIsVisible)),
-              ],
-            ));
+            child: loadingData
+                ? Center(child: Spinner())
+                : Scaffold(
+                    appBar: AppBar(
+                        elevation: 0.0,
+                        // leading: IconButton(
+                        //   icon: Icon(FeatherIcons.helpCircle, size: 22),
+                        //   color: Colors.grey[400],
+                        //   onPressed: () {
+                        //     _showDialog();
+                        //     // delete();
+                        //   },
+                        // ),
+                        title: Text(
+                            formatDate(allInstances[indexView].date, [yyyy]),
+                            style: TextStyle(
+                                fontFamily: 'Rubik',
+                                fontWeight: FontWeight.w300,
+                                fontSize: 16,
+                                color: Colors.grey)),
+                        // centerTitle: true,
+                        backgroundColor: Colors.white,
+                        actions: <Widget>[
+                          Visibility(
+                              visible: todayIndex != indexView ? true : false,
+                              child: NowButton(onPressed: goToToday)),
+                          PopupMenu(
+                              onSelected: switchView, isDaily: isDailyView)
+                        ]),
+                    floatingActionButton: Visibility(
+                      visible: floatingButton,
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          inputIsVisible();
+                        },
+                        child: Icon(Icons.add),
+                        // backgroundColor: Colors.green,
+                      ),
+                    ),
+                    body: Stack(
+                      children: <Widget>[
+                        PageView.builder(
+                            controller: _pageController,
+                            scrollDirection: scrollDirection,
+                            onPageChanged: (index) {
+                              setState(() {
+                                indexView = index;
+                              });
+                            },
+                            itemBuilder: (context, index) {
+                              Instance instance = allInstances[index];
+                              return Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Expanded(
+                                        flex: 2,
+                                        child:
+                                            topContainer(index, allInstances)),
+                                    Expanded(
+                                        flex: 7,
+                                        child: bottomContainer(instance, index))
+                                  ]);
+                            },
+                            itemCount: todayIndex + 2),
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Expanded(flex: 2, child: Container()),
+                              Expanded(flex: 7, child: goalStringsWidget()),
+                            ],
+                          ),
+                        ),
+                        Container(
+                            alignment: Alignment.bottomLeft,
+                            child: AddGoalBox(
+                                onSubmitGoal: onSubmitGoal,
+                                inputPosible: inputPosible,
+                                inputIsVisible: inputIsVisible)),
+                      ],
+                    ))));
   }
 }

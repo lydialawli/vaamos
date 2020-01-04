@@ -5,7 +5,7 @@ import 'package:vaamos/model/goal_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Storage {
-  static String storageFileName = "test23.json";
+  static String storageFileName = "test22.json";
 
   static startStorage(todayDate) async {
     final dir = await getApplicationDocumentsDirectory();

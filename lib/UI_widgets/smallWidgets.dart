@@ -8,6 +8,7 @@ class Spinner extends StatelessWidget {
   }
 }
 
+
 class NowButton extends StatelessWidget {
   final VoidCallback onPressed;
 
@@ -30,4 +31,3 @@ class NowButton extends StatelessWidget {
     );
   }
 }
-
